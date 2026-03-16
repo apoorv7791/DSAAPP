@@ -31,6 +31,15 @@ const TabsLayout = () => {
                     )
                 }}
             />
+            <Tabs.Screen
+                name="settings"
+                options={{
+                    title: "Settings",
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="cog" size={size} color={color} />
+                    )
+                }}
+            />
         </Tabs>
     );
 }

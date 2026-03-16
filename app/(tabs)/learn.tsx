@@ -27,7 +27,7 @@ const Learn: React.FC = () => {
     // Function to handle topic selection
     const selectedTopic = (module: string, topic: string) => {
         const formattedTopic = topic.replace(/[^a-zA-Z0-9]/g, '');
-        const basePath = module === "Data Strcutures" ? "DataStructures" : "Algorithms";
+        const basePath = module === "Data Structures" ? "DataStructures" : "Algorithms";
         router.push(`/${basePath}/${formattedTopic}` as any);
     }
     // FlatList render function
