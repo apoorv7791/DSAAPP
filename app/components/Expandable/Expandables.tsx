@@ -6,6 +6,7 @@ interface ExpandableProps {
     item: string,
     topics: string[],
 }
+// this interface will be used for a component to inherit and reuse its properties to render the ui
 
 
 const Expandables = ({ item, topics }: ExpandableProps) => {
@@ -20,18 +21,24 @@ const Expandables = ({ item, topics }: ExpandableProps) => {
         }).start();
         setExpanded(!expanded);
     }
+    const height = () => {
+        if (expanded) {
+            return topics.length * 30 + 20; // 30 is the height of each topic and 20 is the padding
+        }
+        return 0;
+    }
     const rotate = rotateAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '90deg']
+        outputRange: ['0deg', '180deg']
     });
     return (
-        <View>
+        <View style={[styles.container, { width: '100%' }]}>
             <TouchableOpacity style={styles.header} onPress={toggleExpand}>
 
                 <Text style={styles.title}>{item}</Text>
 
 
-                <Animated.View>
+                <Animated.View style={{ transform: [{ rotate }] }}>
                     <Ionicons
                         name={expanded ? 'chevron-up' : 'chevron-down'}
                         size={24}
@@ -90,7 +97,22 @@ const styles = StyleSheet.create({
     topic: {
         fontSize: 16,
         marginBottom: 6
-    }
+    },
+    section: {
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 20,
+        elevation: 3, // Android shadow
+        shadowColor: '#000', // iOS shadow
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 10,
+    },
+
 
 })
 
