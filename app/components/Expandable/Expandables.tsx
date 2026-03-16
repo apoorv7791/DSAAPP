@@ -1,119 +1,87 @@
-import React from 'react';
-import { Animated, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-interface ExpandableProps {
-    item: string,
+interface Props {
+    title: string,
     topics: string[],
+    onSelected: (topic: string) => void
 }
-// this interface will be used for a component to inherit and reuse its properties to render the ui
 
+const Expandables = ({ title, topics, onSelected }: Props) => {
+    const [expanded, setExpanded] = useState(false);
+    const animation = useRef(new Animated.Value(0)).current;
 
-const Expandables = ({ item, topics }: ExpandableProps) => {
-    const [expanded, setExpanded] = React.useState(false);
-    const rotateAnim = React.useRef(new Animated.Value(0)).current;
-    const toggleExpand = () => {
-        const toValue = expanded ? 0 : 1;
-        Animated.timing(rotateAnim, {
-            toValue,
-            duration: 200,
-            useNativeDriver: true
+    useEffect(() => {
+        Animated.timing(animation, {
+            toValue: expanded ? 1 : 0,
+            duration: 300,
+            useNativeDriver: false
         }).start();
+    }, [expanded]);
+
+    // interpolate
+    const height = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, topics.length * 45], // 45 px per topic
+    })
+    const rotate = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '180deg'],
+    });
+
+    const toggleExpand = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(!expanded);
     }
-    const height = () => {
-        if (expanded) {
-            return topics.length * 30 + 20; // 30 is the height of each topic and 20 is the padding
-        }
-        return 0;
-    }
-    const rotate = rotateAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg']
-    });
     return (
-        <View style={[styles.container, { width: '100%' }]}>
-            <TouchableOpacity style={styles.header} onPress={toggleExpand}>
-
-                <Text style={styles.title}>{item}</Text>
-
-
-                <Animated.View style={{ transform: [{ rotate }] }}>
-                    <Ionicons
-                        name={expanded ? 'chevron-up' : 'chevron-down'}
-                        size={24}
-                        color="#555"
-                    />
-                </Animated.View>
+        <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.header} onPress={toggleExpand}
+            >
+                <Text style={styles.title}>{title}</Text>
+                <Ionicons
+                    name={expanded ? "chevron-up" : "chevron-down"}
+                    size={24}
+                    color="black"
+                />
             </TouchableOpacity>
-            {expanded && (
-                <View style={styles.content}>
-                    {topics.map((topic, index) => (
-                        <Text key={index} style={styles.topic}>
-                            • {topic}
-                        </Text>
-                    ))}
-                </View>
-            )}
+            <Animated.View style={{ height, overflow: 'hidden' }}>
+                {topics.map((topic, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.topicItem}
+                        onPress={() => onSelected(topic)}
+                    >
+                        <Text style={styles.topicText}>{topic}</Text>
+                    </TouchableOpacity>
+                ))}
+            </Animated.View>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 12,
-        backgroundColor: '#fff',
-        borderRadius: 12,
-        overflow: 'hidden',
-        elevation: 3,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
+        borderRadius: 10,
+        marginVertical: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        elevation: 2,
     },
     header: {
-        backgroundColor: "#fff",
-        padding: 16,
-        borderRadius: 10,
-        elevation: 3,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center"
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 8,
     },
-    content: {
-        padding: 16,
-        backgroundColor: "#f9f9f9"
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: "bold"
-    },
+    title: { fontSize: 18, fontWeight: '600' },
+    topicsContainer: { paddingLeft: 20, paddingVertical: 10 },
+    topicItem: { paddingVertical: 10, paddingHorizontal: 8 },
+    topicText: { fontSize: 16 }
+});
 
-    topicContainer: {
-        paddingLeft: 20,
-        marginTop: 10
-    },
-
-    topic: {
-        fontSize: 16,
-        marginBottom: 6
-    },
-    section: {
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 20,
-        elevation: 3, // Android shadow
-        shadowColor: '#000', // iOS shadow
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-    },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 10,
-    },
-
-
-})
 
 export default Expandables;
