@@ -56,6 +56,7 @@ const HomeScreen = () => {
                 data={modules}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
+                showsVerticalScrollIndicator={false}
             />
         </View>
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingBottom: 20,
 
     },
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     card: {
+        width: '100%',
         backgroundColor: "#fff",
         padding: 16,
         borderRadius: 12,
