@@ -48,6 +48,7 @@ const Learn: React.FC = () => {
                 ListHeaderComponent={<Text style={styles.heading}>Learn</Text>}
                 ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
                 contentContainerStyle={{ paddingBottom: 30 }}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     );
