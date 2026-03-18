@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +16,7 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
         Animated.timing(animation, {
             toValue: expanded ? 1 : 0,
             duration: 300,
-            useNativeDriver: true
+            useNativeDriver: false
         }).start();
     }, [expanded]);
 
@@ -41,15 +40,11 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
                 style={styles.header} onPress={toggleExpand}
             >
                 <Text style={styles.title}>{title}</Text>
-                <Ionicons
-                    name={expanded ? "chevron-up" : "chevron-down"}
-                    size={24}
-                    color="black"
-                />
+                <Animated.View style={{ transform: [{ rotate }] }}>
+                    <Ionicons name="chevron-down" size={24} color="black" />
+                </Animated.View>
             </TouchableOpacity>
-            <Animated.View style={{
-                transform: [{ rotate: rotate }], height, overflow: 'hidden'
-            }}>
+            <Animated.View style={{ height, overflow: 'hidden' }}>
                 {topics.map((topic, index) => (
                     <TouchableOpacity
                         key={index}
