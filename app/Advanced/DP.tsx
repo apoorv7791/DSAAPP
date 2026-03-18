@@ -1,13 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Trees = () => {
+const DP = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                Trees
-            </Text>
-
+            <Text style={styles.heading}>Dynamic Programming</Text>
         </View>
     );
 }
@@ -26,4 +23,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Trees;
+export default DP;

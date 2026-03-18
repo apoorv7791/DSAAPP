@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const HashMaps = () => {
     return (
-        <View>
+        <View style={styles.contianer}>
             <Text style={styles.heading}>
                 HashMaps
             </Text>
@@ -12,6 +12,12 @@ const HashMaps = () => {
 }
 
 const styles = StyleSheet.create({
+    contianer: {
+        flex: 1,
+        padding: 20,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
     heading: {
         fontSize: 24,
         marginBottom: 20,

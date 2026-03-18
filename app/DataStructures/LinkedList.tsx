@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const LinkedList = () => {
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.heading}>
                 Linked List
             </Text>
@@ -12,10 +12,17 @@ const LinkedList = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
     heading: {
         fontSize: 24,
         marginBottom: 20,
         fontWeight: 'bold',
+        alignItems: 'center',
     }
 })
 

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const Stacks = () => {
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.heading}>
                 Stacks
             </Text>
@@ -13,6 +13,12 @@ const Stacks = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
     heading: {
         fontSize: 24,
         marginBottom: 20,

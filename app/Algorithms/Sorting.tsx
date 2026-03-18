@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Trees = () => {
+const Sorting = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>
-                Trees
+                Sorting Algorithms
             </Text>
-
         </View>
     );
 }
@@ -26,4 +25,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Trees;
+export default Sorting;

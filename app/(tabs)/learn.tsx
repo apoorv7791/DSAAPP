@@ -16,11 +16,15 @@ const Learn: React.FC = () => {
     const modules: Module[] = [
         {
             title: "Data Structures",
-            topics: ["Arrays", "Linked Lists", "Stacks", "Queues", "HashMaps", "Trees", "Graphs"]
+            topics: ["Arrays", "LinkedList", "Stacks", "Queues", "HashMaps", "Trees", "Graphs"]
         },
         {
             title: "Algorithms",
-            topics: ["Sorting", "Searching", "Dynamic Programming", "Greedy Algorithms", "Graph Algorithms"]
+            topics: ["Sorting", "Searching"]
+        },
+        {
+            title: "Advanced Algorithms",
+            topics: ["Greedy Algorithm", "Dynamic Programming", "Graph Algorithms"]
         }
     ];
 

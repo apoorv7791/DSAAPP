@@ -5,7 +5,7 @@ const DataLayout = () => {
     return (
         <Stack>
             <Stack.Screen name="Arrays" options={{ title: "Arrays" }} />
-            <Stack.Screen name="LinkedList" options={{ title: "Linked List" }} />
+            <Stack.Screen name="Linkedlist" options={{ title: "Linked list" }} />
             <Stack.Screen name="Stacks" options={{ title: "Stacks" }} />
             <Stack.Screen name="Queues" options={{ title: "Queues" }} />
             <Stack.Screen name="HashMaps" options={{ title: "HashMaps" }} />

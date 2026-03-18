@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Trees = () => {
+const Searching = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>
-                Trees
+                Searching Algorithms
             </Text>
-
         </View>
     );
 }
@@ -26,4 +25,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Trees;
+export default Searching;

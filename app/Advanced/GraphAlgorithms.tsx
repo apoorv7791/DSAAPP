@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Trees = () => {
+const GraphAlgorithms = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                Trees
-            </Text>
+            <Text style={styles.heading}>Graph Algorithms</Text>
 
         </View>
     );
@@ -26,4 +24,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Trees;
+export default GraphAlgorithms;
