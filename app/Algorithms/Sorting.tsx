@@ -4,9 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 const Sorting = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                Sorting Algorithms
-            </Text>
+
         </View>
     );
 }

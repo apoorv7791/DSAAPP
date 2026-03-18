@@ -51,7 +51,7 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Welcome to AlgoTrainer!</Text>
+            <Text style={styles.heading}>“Welcome 👋”</Text>
             <FlatList<Module>
                 data={modules}
                 renderItem={renderItem}
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        alignItems: 'center',
+        backgroundColor: "#f5f5f5",
         paddingBottom: 20,
 
     },
@@ -77,15 +77,17 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     card: {
-        width: '100%',
         backgroundColor: "#fff",
+        borderRadius: 16,
         padding: 16,
-        borderRadius: 12,
-        marginBottom: 16,
+        marginVertical: 10,
+        width: "100%", // 👈 important
+
         shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 3
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 3,
     },
     cardTitle: {
         fontSize: 18,

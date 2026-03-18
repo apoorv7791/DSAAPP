@@ -41,7 +41,11 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
             >
                 <Text style={styles.title}>{title}</Text>
                 <Animated.View style={{ transform: [{ rotate }] }}>
-                    <Ionicons name="chevron-down" size={24} color="black" />
+                    <Ionicons
+                        name={expanded ? "chevron-up" : "chevron-down"}
+                        size={22}
+                        color="#23238c"
+                    />
                 </Animated.View>
             </TouchableOpacity>
             <Animated.View style={{ height, overflow: 'hidden' }}>
@@ -61,6 +65,7 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: "#f5f5f5",
         borderRadius: 10,
         marginVertical: 8,
         paddingHorizontal: 12,
@@ -74,8 +79,22 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 8,
     },
-    title: { fontSize: 18, fontWeight: '600' },
-    topicsContainer: { paddingLeft: 20, paddingVertical: 10 },
+    title: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#111",
+    },
+    topic: {
+        fontSize: 15,
+        color: "#555",
+        marginTop: 8,
+    },
+    topicsContainer: {
+        marginTop: 10,
+        paddingTop: 10,
+        borderTopWidth: 1,
+        borderTopColor: "#eee",
+    },
     topicItem: { paddingVertical: 10, paddingHorizontal: 8 },
     topicText: { fontSize: 16 }
 });

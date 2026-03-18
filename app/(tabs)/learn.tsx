@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
 
@@ -49,9 +49,8 @@ const Learn: React.FC = () => {
                 data={modules}
                 keyExtractor={(item) => item.title}
                 renderItem={renderModule}
-                ListHeaderComponent={<Text style={styles.heading}>Learn</Text>}
-                ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-                contentContainerStyle={{ paddingBottom: 30 }}
+                ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+                contentContainerStyle={{ paddingBottom: 40 }}
                 showsVerticalScrollIndicator={false}
             />
         </View>
@@ -61,13 +60,17 @@ const Learn: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        backgroundColor: "#f5f5f5", // 🔥 important
+        paddingHorizontal: 16,
+        paddingTop: 10,
     },
     heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
+        fontSize: 22,
+        fontWeight: "700",
+        color: "#111",
+        marginBottom: 10,
+        marginLeft: 4,
+    }
 });
 
 export default Learn;

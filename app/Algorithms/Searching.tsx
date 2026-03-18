@@ -4,9 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 const Searching = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>
-                Searching Algorithms
-            </Text>
+
         </View>
     );
 }
