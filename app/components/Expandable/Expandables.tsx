@@ -17,7 +17,7 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
         Animated.timing(animation, {
             toValue: expanded ? 1 : 0,
             duration: 300,
-            useNativeDriver: false
+            useNativeDriver: true
         }).start();
     }, [expanded]);
 
@@ -47,7 +47,9 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
                     color="black"
                 />
             </TouchableOpacity>
-            <Animated.View style={{ height, overflow: 'hidden' }}>
+            <Animated.View style={{
+                transform: [{ rotate: rotate }], height, overflow: 'hidden'
+            }}>
                 {topics.map((topic, index) => (
                     <TouchableOpacity
                         key={index}
