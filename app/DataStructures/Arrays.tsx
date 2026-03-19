@@ -1,129 +1,291 @@
-import React from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
+import { ToastAndroid } from 'react-native';;
+
 
 const Arrays = () => {
     const content = [
         {
-            type: "Subheading",
+            id: "1",
+            type: "subheading",
             text: "What is an Array?",
         },
         {
+            id: "2",
             type: "text",
             text: "An array is a collection of elements stored in contiguous memory locations.",
         },
         {
+            id: "3",
+            type: "subheading",
+            text: "Why do we use Arrays?",
+        },
+        {
+            id: "4",
+            type: "text",
+            text: "Before arrays, storing multiple values required separate variables, which was inefficient and hard to manage.",
+        },
+        {
+            id: "5",
+            type: "list",
+            items: [
+                "Without arrays: int a=10, b=20, c=30 (messy 😵)",
+                "Hard to process data using loops",
+                "No structured way to store large data",
+                "Memory handling becomes inefficient"
+            ],
+        },
+        {
+            id: "6",
+            type: "code",
+            text: "// Without Array\nint a = 10;\nint b = 20;\nint c = 30;\n\n// With Array\nint[] arr = {10, 20, 30};",
+            language: "Java",
+            dataType: "Comparison",
+        },
+        {
+            id: "7",
+            type: "text",
+            text: "Arrays solve this by storing multiple values in a single variable and allowing easy access using index.",
+        },
+
+        {
+            id: "8",
             type: "code",
             text: "int[] arr = {10, 20, 30, 40};",
             language: "Java",
             dataType: "Integer Array",
         },
         {
+            id: "9",
             type: "subheading",
             text: "Key Points",
         },
         {
+            id: "10",
             type: "list",
             items: [
                 "Fixed size",
-                "Fast access",
-                "Contiguous memory",
+                "Fast access using index",
+                "Stored in contiguous memory",
             ],
         },
-    ]
-    const renderItem = ({ item }: { item: typeof content[0] }) => {
+        {
+            id: "11",
+            type: "subheading",
+            text: "Common Operations",
+        },
+        {
+            id: "12",
+            type: "list",
+            items: [
+                "Traversal",
+                "Insertion",
+                "Deletion",
+                "Searching",
+            ],
+        },
+        {
+            id: "13",
+            type: "subheading",
+            text: "Try Yourself",
+        },
+        {
+            id: "14",
+            type: "code",
+            text: "// Print all elements\nfor(int i=0; i<arr.length; i++){\n   System.out.println(arr[i]);\n}",
+            language: "Java",
+            dataType: "Practice",
+        },
+        {
+            id: "15",
+            type: "code",
+            text: "// search an element (20)\nboolean found = false;\nfor(int i=0; i<arr.length; i++){\n   if(arr[i] == 20){\n       found = true;\n       break;\n   }\n}",
+            language: "Java",
+            dataType: "Practice",
+        }
+    ];
+
+    const handleCopy = async (text: string) => {
+        await Clipboard.setStringAsync(text);
+        ToastAndroid.show("Code copied to clipboard!", ToastAndroid.LONG);
+    }
+
+    const renderItem = useCallback(({ item }: any) => {
         switch (item.type) {
-            case "Heading":
-                return <Text style={styles.heading}>{item.text}</Text>;
-            case "Subheading":
-                return <Text style={styles.subHeading}>{item.text}</Text>;
+            case "subheading":
+                return (
+                    <View style={styles.section}>
+                        <Text style={styles.subHeading}>{item.text}</Text>
+                    </View>
+                );
             case "text":
-                return <Text style={styles.text}>{item.text}</Text>;
+                return (
+                    <View style={styles.section}>
+                        <Text style={styles.text}>
+                            {item.text}
+                        </Text>
+                    </View>
+                );
             case "code":
                 return (
-                    <View style={styles.codeBox}>
-                        <Text style={styles.codeType}>{item.language} . {item.dataType}</Text>
-                        <Text style={styles.code}>{item.text}</Text>
+                    <View style={styles.section}>
+                        <View style={styles.codeBox}>
+                            <View style={styles.codeHeader}>
+                                <Text style={styles.codeType}>
+                                    {item.language} • {item.dataType}
+                                </Text>
+
+                                <TouchableOpacity onPress={() => {
+                                    handleCopy(item.text);
+                                }}>
+                                    <Text style={styles.copy}>COPY</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <Text style={styles.code}>{item.text}</Text>
+                        </View>
                     </View>
                 );
             case "list":
                 return (
-                    <View style={styles.listContainer}>
-                        {item.items && item.items.map((i, index) => (
-                            <Text key={index} style={styles.listItem}>
-                                • {i}
-                            </Text>
+                    <View>
+                        {item.items.map((i: string, index: string) => (
+                            <View key={index} style={styles.listRow}>
+                                <Text style={styles.bullet}>•</Text>
+                                <Text style={styles.listText}>{i}</Text>
+                            </View>
                         ))}
                     </View>
-                )
-
+                );
             default:
                 return null;
         }
-    };
+    }, [content]);
+
     return (
         <View style={styles.container}>
             <FlatList
-                style={styles.container}
                 data={content}
                 renderItem={renderItem}
-                keyExtractor={(_, index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>TRY IT OUT</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         padding: 20,
-        marginBottom: 20,
+        backgroundColor: "#fff",
     },
+
+    section: {
+        marginBottom: 16,
+    },
+
     heading: {
         fontSize: 24,
-        marginBottom: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+        color: "#222",
+        marginBottom: 16,
     },
+
     subHeading: {
         fontSize: 20,
         fontWeight: "700",
-        marginTop: 20,
-        marginBottom: 8,
+        color: "#222",
+        marginBottom: 6,
+        marginTop: 10,
     },
+
     text: {
         fontSize: 16,
         color: "#555",
-        lineHeight: 24, // 🔥 big difference
+        lineHeight: 24,
     },
 
+    bold: {
+        fontWeight: "bold",
+        color: "#000",
+    },
+
+    // 🔥 Code Block
     codeBox: {
-        backgroundColor: "#1e1e1e", // 🔥 proper dev feel
+        backgroundColor: "#1e1e1e",
         padding: 14,
         borderRadius: 12,
-        marginVertical: 12,
+        borderWidth: 1,
+        borderColor: "#333",
+        marginTop: 8,
+    },
+
+    codeHeader: {
+        marginBottom: 8,
+    },
+
+    codeType: {
+        color: "#aaa",
+        fontSize: 12,
     },
 
     code: {
         color: "#fff",
         fontFamily: "monospace",
-
+        fontSize: 14,
+        lineHeight: 20,
     },
-    codeType: {
-        color: "#aaa",
+    copy: {
+        color: "#4da6ff",
         fontSize: 12,
-        marginBottom: 6,
-    },
-    listContainer: {
-        marginTop: 4,
+        fontWeight: "600",
     },
 
-    listItem: {
+    // 🔥 List Styling
+    listRow: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginVertical: 4,
+    },
+
+    bullet: {
+        marginRight: 8,
+        color: "#888",
+        fontSize: 16,
+    },
+
+    listText: {
+        flex: 1,
         fontSize: 16,
         color: "#555",
-        marginVertical: 4,
-        paddingLeft: 6, // 🔥 slight indent
+    },
+    btn: {
+        backgroundColor: "#4da6ff",
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        alignSelf: "flex-start",
+    },
+    btnText: {
+        color: "#3617e0",
+        fontSize: 14,
+        fontWeight: "600",
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 20,
     }
-
-})
+});
 
 export default Arrays;
