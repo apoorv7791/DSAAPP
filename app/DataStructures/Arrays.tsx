@@ -103,6 +103,13 @@ const Arrays = () => {
             text: "// search an element (20)\nboolean found = false;\nfor(int i=0; i<arr.length; i++){\n   if(arr[i] == 20){\n       found = true;\n       break;\n   }\n}",
             language: "Java",
             dataType: "Practice",
+        },
+        {
+            id: "17",
+            type: "code",
+            text: "// Insert an element at a specific index\nint[] newArr = new int[arr.length + 1];\nfor(int i=0; i<index; i++){\n   newArr[i] = arr[i];\n}\nnewArr[index] = element;\nfor(int i=index; i<arr.length; i++){\n   newArr[i+1] = arr[i];\n}",
+            language: "Java",
+            dataType: "Practice",
         }
     ];
 
@@ -242,7 +249,7 @@ const styles = StyleSheet.create({
     code: {
         color: "#fff",
         fontFamily: "monospace",
-        fontSize: 14,
+        fontSize: 13,
         lineHeight: 20,
     },
     copy: {

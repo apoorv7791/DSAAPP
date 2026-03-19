@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
+import CustomTabBar from '../navigation/Tabbar';
 const TabsLayout = () => {
     return (
         <Tabs screenOptions={{
@@ -12,7 +13,9 @@ const TabsLayout = () => {
                 elevation: 10,
             }
 
-        }}>
+        }}
+            tabBar={(props) => <CustomTabBar {...props} />}
+        >
             <Tabs.Screen
                 name="index"
                 options={{
