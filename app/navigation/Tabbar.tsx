@@ -2,9 +2,15 @@ import React, { useRef, useEffect } from "react";
 import { View, TouchableOpacity, Animated, StyleSheet, Dimensions, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
+interface TabBarProps {
+    state: BottomTabBarProps["state"];
+    descriptors: BottomTabBarProps["descriptors"];
+    navigation: BottomTabBarProps["navigation"];
+}
+
 const { width } = Dimensions.get("window");
 
-const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
+const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
     const translateX = useRef(new Animated.Value(0)).current;
     const tabWidth = width / state.routes.length;
 

@@ -110,6 +110,11 @@ const Arrays = () => {
             text: "// Insert an element at a specific index\nint[] newArr = new int[arr.length + 1];\nfor(int i=0; i<index; i++){\n   newArr[i] = arr[i];\n}\nnewArr[index] = element;\nfor(int i=index; i<arr.length; i++){\n   newArr[i+1] = arr[i];\n}",
             language: "Java",
             dataType: "Practice",
+        },
+        {
+            "id": "18",
+            "type": "code",
+            "text": "// Delete an element at a specific index\nvoid deleteAtIndex(int[] arr, int n, int index) {\n    if (index < 0 || index >= n) {\n        System.out.println(\"Invalid index\");\n        return;\n    }\n\n    // Shift elements to the left\n    for (int i = index; i < n - 1; i++) {\n        arr[i] = arr[i + 1];\n    }\n\n    // Reduce size\n    n = n - 1;\n}"
         }
     ];
 
@@ -180,7 +185,7 @@ const Arrays = () => {
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.btn}>
-                            <Text style={styles.btnText}>TRY IT OUT</Text>
+                            <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>
                 }
