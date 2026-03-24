@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 const LinkedList = () => {
@@ -52,6 +52,19 @@ const LinkedList = () => {
             id: "7",
             type: "code",
             language: "Java",
+            dataType: "Class LinkedList",
+            text: `Class LinkedList {
+    Node head;
+
+    LinkedList() {
+        this.head = null;
+    }
+}`
+        },
+        {
+            id: "8",
+            type: "code",
+            language: "Java",
             dataType: "Insert Node",
             text: `public void insert(int data) {
     Node newNode = new Node(data);
@@ -67,7 +80,7 @@ const LinkedList = () => {
 }`
         },
         {
-            id: "8",
+            id: "10",
             type: "code",
             language: "Java",
             dataType: "Display Node",
@@ -81,7 +94,7 @@ const LinkedList = () => {
         },
         {
 
-            id: "9",
+            id: "11",
             type: "code",
             language: "Java",
             dataType: "Delete Node",
@@ -103,6 +116,13 @@ const LinkedList = () => {
     prev.next = temp.next;
 }`
 
+        },
+        {
+            id: "12",
+            type: "code",
+            language: "Java",
+            dataType: "Output",
+            text: `Linked List: 10 -> 20 -> 30 -> 40 -> 50 null`
         }
     ]
 
@@ -126,16 +146,16 @@ const LinkedList = () => {
                                 {item.language} • {item.dataType}
                             </Text>
 
-                            <TouchableOpacity onPress={() => {
-                                handleCopy(item.text);
-                            }}>
+                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
                                 <Text style={styles.copy}>COPY</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <Text style={styles.code}>{item.text}</Text>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <Text style={styles.code}>{item.text}</Text>
+                        </ScrollView>
                     </View>
-                )
+                );
             case "list":
                 return (
                     <View>
@@ -209,30 +229,34 @@ const styles = StyleSheet.create({
         color: "#000",
     },
 
-    // 🔥 Code Block
+
     codeBox: {
         backgroundColor: "#1e1e1e",
         padding: 14,
         borderRadius: 12,
         borderWidth: 1,
         borderColor: "#333",
-        marginTop: 8,
+        marginTop: 12,   // 👈 thoda gap badhao
+        marginBottom: 8,
     },
-
     codeHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 8,
     },
 
     codeType: {
         color: "#aaa",
         fontSize: 12,
+        flex: 1, // 🔥 important
     },
-
     code: {
         color: "#fff",
         fontFamily: "monospace",
         fontSize: 13,
         lineHeight: 20,
+        flexWrap: "wrap", // 🔥 fix
     },
     copy: {
         color: "#4da6ff",

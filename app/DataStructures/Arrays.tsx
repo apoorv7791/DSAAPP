@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';;
 
@@ -46,7 +46,8 @@ const Arrays = () => {
         {
             id: "7",
             type: "text",
-            text: "Arrays solve this by storing multiple values in a single variable and allowing easy access using index.",
+            text: "Arrays solve this by storing multiple values in a single variable and allowing easy access using index .",
+
         },
 
         {
@@ -58,11 +59,18 @@ const Arrays = () => {
         },
         {
             id: "9",
+            type: "code",
+            text: "Accessing elements: arr[0] = {10};\n arr[1] = {20}; \n arr[2] = {30};\n arr[3] = {40};",
+            language: "Java",
+            dataType: "Integer Array",
+        },
+        {
+            id: "10",
             type: "subheading",
             text: "Key Points",
         },
         {
-            id: "10",
+            id: "11",
             type: "list",
             items: [
                 "Fixed size",
@@ -71,12 +79,12 @@ const Arrays = () => {
             ],
         },
         {
-            id: "11",
+            id: "12",
             type: "subheading",
             text: "Common Operations",
         },
         {
-            id: "12",
+            id: "13",
             type: "list",
             items: [
                 "Traversal",
@@ -86,19 +94,19 @@ const Arrays = () => {
             ],
         },
         {
-            id: "13",
+            id: "14",
             type: "subheading",
             text: "Try Yourself",
         },
         {
-            id: "14",
+            id: "15",
             type: "code",
             text: "// Print all elements\nfor(int i=0; i<arr.length; i++){\n   System.out.println(arr[i]);\n}",
             language: "Java",
             dataType: "Practice",
         },
         {
-            id: "15",
+            id: "16",
             type: "code",
             text: "// search an element (20)\nboolean found = false;\nfor(int i=0; i<arr.length; i++){\n   if(arr[i] == 20){\n       found = true;\n       break;\n   }\n}",
             language: "Java",
@@ -112,10 +120,18 @@ const Arrays = () => {
             dataType: "Practice",
         },
         {
-            "id": "18",
-            "type": "code",
-            "text": "// Delete an element at a specific index\nvoid deleteAtIndex(int[] arr, int n, int index) {\n    if (index < 0 || index >= n) {\n        System.out.println(\"Invalid index\");\n        return;\n    }\n\n    // Shift elements to the left\n    for (int i = index; i < n - 1; i++) {\n        arr[i] = arr[i + 1];\n    }\n\n    // Reduce size\n    n = n - 1;\n}"
-        }
+            id: "18",
+            type: "code",
+            text: "// Delete an element at a specific index\nvoid deleteAtIndex(int[] arr, int n, int index) {\n    if (index < 0 || index >= n) {\n        System.out.println(\"Invalid index\");\n        return;\n    }\n\n    // Shift elements to the left\n    for (int i = index; i < n - 1; i++) {\n        arr[i] = arr[i + 1];\n    }\n\n    // Reduce size\n    n = n - 1;\n}"
+        },
+        {
+            id: "19",
+            type: "code",
+            text: "// Search for en element in log time using binary search (sorted array)\nboolean binarySearch(int[] arr, int target) {\n    int left = 0, right = arr.length - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (arr[mid] == target) return true;\n        else if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return false;\n}",
+            language: "Java",
+            dataType: "Practice",
+        },
+
     ];
 
     const handleCopy = async (text: string) => {
@@ -141,22 +157,20 @@ const Arrays = () => {
                 );
             case "code":
                 return (
-                    <View style={styles.section}>
-                        <View style={styles.codeBox}>
-                            <View style={styles.codeHeader}>
-                                <Text style={styles.codeType}>
-                                    {item.language} • {item.dataType}
-                                </Text>
+                    <View style={styles.codeBox}>
+                        <View style={styles.codeHeader}>
+                            <Text style={styles.codeType}>
+                                {item.language} • {item.dataType}
+                            </Text>
 
-                                <TouchableOpacity onPress={() => {
-                                    handleCopy(item.text);
-                                }}>
-                                    <Text style={styles.copy}>COPY</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <Text style={styles.code}>{item.text}</Text>
+                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
+                                <Text style={styles.copy}>COPY</Text>
+                            </TouchableOpacity>
                         </View>
+
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <Text style={styles.code}>{item.text}</Text>
+                        </ScrollView>
                     </View>
                 );
             case "list":
@@ -232,37 +246,40 @@ const styles = StyleSheet.create({
         color: "#000",
     },
 
-    // 🔥 Code Block
+
     codeBox: {
         backgroundColor: "#1e1e1e",
         padding: 14,
         borderRadius: 12,
         borderWidth: 1,
         borderColor: "#333",
-        marginTop: 8,
+        marginTop: 12,   // 👈 thoda gap badhao
+        marginBottom: 8,
     },
-
     codeHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 8,
     },
 
     codeType: {
         color: "#aaa",
         fontSize: 12,
+        flex: 1, // 🔥 important
     },
-
     code: {
         color: "#fff",
         fontFamily: "monospace",
         fontSize: 13,
         lineHeight: 20,
+        flexWrap: "wrap", // 🔥 fix
     },
     copy: {
         color: "#4da6ff",
         fontSize: 12,
         fontWeight: "600",
     },
-
     // 🔥 List Styling
     listRow: {
         flexDirection: "row",
