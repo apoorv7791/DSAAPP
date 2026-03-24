@@ -32,9 +32,9 @@ const Stacks = () => {
             language: "Java",
             dataType: "Stack Implementation",
             text: `class Stack {
-            int stk[] = new int[100];
-            int top = -1;
-            }`
+    int stk[] = new int[100];
+    int top = -1;
+}`
         },
         {
             id: "6",
@@ -42,12 +42,12 @@ const Stacks = () => {
             language: "Java",
             dataType: "Push Operations",
             text: `void push(int item) {
-                if (top >= 99) {
-                    System.out.println("Stack overflow");
-                } else {
-                    stk[++top] = item;
-                }
-            }`
+if (top >= 99) {
+    System.out.println("Stack overflow");
+} else {
+    stk[++top] = item;
+    }
+}`
         },
         {
             id: "7",
@@ -55,13 +55,13 @@ const Stacks = () => {
             language: "Java",
             dataType: "Pop Operations",
             text: `int pop() {
-                if (top < 0) {
-                    System.out.println("Stack underflow");
-                    return 0;
-                } else {
-                    return stk[top--];
-                }
-            }`
+if (top < 0) {
+    System.out.println("Stack underflow");
+    return 0;
+} else {
+    return stk[top--];
+    }
+}`
         },
         {
             id: "8",
@@ -69,13 +69,13 @@ const Stacks = () => {
             language: "Java",
             dataType: "Peek Operations",
             text: `int peek() {
-                if (top < 0) {
-                    System.out.println("Stack is empty");
-                    return 0;
-                } else {
-                    return stk[top];
-                }
-            }`
+ if (top < 0) {
+    System.out.println("Stack is empty");
+    return 0;
+} else {
+    return stk[top];
+    }
+}`
         },
         {
             id: "9",
@@ -83,8 +83,8 @@ const Stacks = () => {
             language: "Java",
             dataType: "Is Empty Operations",
             text: `boolean isEmpty() {
-                return (top < 0);
-            }`
+return (top < 0);
+}`
         },
         {
             id: "10",
@@ -92,15 +92,15 @@ const Stacks = () => {
             language: "Java",
             dataType: "Display Stack",
             text: `void display() {
-                if (top < 0) {
-                    System.out.println("Stack is empty");
-                } else {
-                    for (int i = top; i >= 0; i--) {
-                        System.out.print(stk[i] + " ");
-                    }
-                    System.out.println();
-                }
-            }`
+if (top < 0) {
+    System.out.println("Stack is empty");
+} else {
+    for (int i = top; i >= 0; i--) {
+        System.out.print(stk[i] + " ");
+    }
+    System.out.println();
+    }
+}`
         }
 
     ]
