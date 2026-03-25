@@ -120,6 +120,10 @@ const HashMaps = () => {
                     text: `{B=20, C=30}`
                 },
                 {
+                    title: "Contains",
+                    text: `map.containsKey("B"); // true\n map.containsKey("A"); // false`
+                },
+                {
                     title: "Output",
                     text: `{A=10, B=20, C=30}`
                 },
