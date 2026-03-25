@@ -213,6 +213,13 @@ The final output shows the remaining key-value pairs in the map.`
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>Visualize</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             />
 
         </View>

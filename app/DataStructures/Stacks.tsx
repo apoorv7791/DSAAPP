@@ -153,6 +153,13 @@ if (top < 0) {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>Visualize</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             />
         </View>
     );
