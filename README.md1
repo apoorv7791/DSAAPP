@@ -1,56 +1,56 @@
-# AlgoTrainer
+    # AlgoTrainer
 
-## 🌟 What AlgoTrainer Is
-AlgoTrainer is a mobile learning app to help beginners learn Data Structures and Algorithms step-by-step with easy explanations, visual examples, and quick practice.
+    ## 🌟 What AlgoTrainer Is
+    AlgoTrainer is a mobile learning app to help beginners learn Data Structures and Algorithms step-by-step with easy explanations, visual examples, and quick practice.
 
-## 🎯 Why This App Exists
-Algorithm skills are essential for coding interviews and real-world software problems. This app gives you:
-- Concept-focused lessons
-- Visual intuition for algorithm behavior
-- Practice sets to apply what you learn
+    ## 🎯 Why This App Exists
+    Algorithm skills are essential for coding interviews and real-world software problems. This app gives you:
+    - Concept-focused lessons
+    - Visual intuition for algorithm behavior
+    - Practice sets to apply what you learn
 
-## 📚 What You Learn
-### Core foundations
-- Arrays
-- Linked Lists
-- Stacks
-- Queues
-- Trees
-- Graphs
-- Hash Maps
+    ## 📚 What You Learn
+    ### Core foundations
+    - Arrays
+    - Linked Lists
+    - Stacks
+    - Queues
+    - Trees
+    - Graphs
+    - Hash Maps
 
-### Algorithms
-- Searching
-- Sorting
-- Graph traversal and basics
+    ### Algorithms
+    - Searching
+    - Sorting
+    - Graph traversal and basics
 
-### Advanced concepts
-- Dynamic Programming
-- Greedy approaches
-- Backtracking
+    ### Advanced concepts
+    - Dynamic Programming
+    - Greedy approaches
+    - Backtracking
 
-## 🚀 App Structure
-- **Home**: Welcome + quick overview cards
-- **Learn**: Lesson modules and topic pages
-- **Settings**: App preferences and progress controls
-- **Modules**: Data structures, algorithms, advanced topics with explanations
+    ## 🚀 App Structure
+    - **Home**: Welcome + quick overview cards
+    - **Learn**: Lesson modules and topic pages
+    - **Settings**: App preferences and progress controls
+    - **Modules**: Data structures, algorithms, advanced topics with explanations
 
-## 🧠 How to Use It
-1. Start with basic topics (Arrays, Linked Lists).
-2. Read the short explanation and examples.
-3. Practice problems for each topic.
-4. Move to advanced topics when ready.
+    ## 🧠 How to Use It
+    1. Start with basic topics (Arrays, Linked Lists).
+    2. Read the short explanation and examples.
+    3. Practice problems for each topic.
+    4. Move to advanced topics when ready.
 
-## 🔧 Future Enhancements
-- Interactive algorithm visualizations
-- Quizzes + scoring
-- Goal tracking and streaks
-- Daily challenge mode
+    ## 🔧 Future Enhancements
+    - Interactive algorithm visualizations
+    - Quizzes + scoring
+    - Goal tracking and streaks
+    - Daily challenge mode
 
-## 💡 Developer Notes
-- Built with Expo + React Native (TypeScript)
-- Main UI files are in `app/(tabs)` and topic pages in `app/DataStructures`, `app/Algorithms`, `app/Advanced`
+    ## 💡 Developer Notes
+    - Built with Expo + React Native (TypeScript)
+    - Main UI files are in `app/(tabs)` and topic pages in `app/DataStructures`, `app/Algorithms`, `app/Advanced`
 
----
+    ---
 
-> Keep this note as your single source of truth. Update it whenever you add new topics, new screens, or new features.
+    > Keep this note as your single source of truth. Update it whenever you add new topics, new screens, or new features.
