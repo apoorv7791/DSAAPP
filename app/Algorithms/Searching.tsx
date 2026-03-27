@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-
+import { StyleSheet, View, Text, ToastAndroid } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 const Searching = () => {
     return (
         <View style={styles.container}>
