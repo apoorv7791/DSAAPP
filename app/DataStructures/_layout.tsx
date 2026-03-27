@@ -11,6 +11,7 @@ const DataLayout = () => {
             <Stack.Screen name="HashMaps" options={{ title: "HashMaps" }} />
             <Stack.Screen name="Trees" options={{ title: "Trees" }} />
             <Stack.Screen name="Graphs" options={{ title: "Graphs" }} />
+            <Stack.Screen name="Heaps" options={{ title: "Heaps" }} />
         </Stack>
     );
 }
