@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ToastAndroid } from 'react-native';
+import { StyleSheet, View, Text, ToastAndroid, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 
 const Searching = () => {
@@ -66,34 +66,184 @@ const Searching = () => {
     }
     const renderItem = ({ item }: { item: any }) => {
         switch (item.type) {
-            case "text":
-                return <Text key={item.id}>{item.text}</Text>;
+            case "subheading":
+                return (
+                    <View style={styles.section}>
+                        <Text style={styles.subHeading}>{item.title}</Text>
+                        <Text style={styles.text}>{item.description}</Text>
+                    </View>
+                )
             case "list":
-                return <Text key={item.id}>{item.title}</Text>;
+                return (
+                    <View style={styles.section}>
+                        <Text style={styles.subHeading}>{item.title}</Text>
+                        {item.list.map((listItem: string, index: number) => (
+                            <View key={index} style={styles.listItem}>
+                                <Text style={styles.bullet}>•</Text>
+                                <Text style={styles.listText}>{listItem}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )
             case "code":
-                return <Text key={item.id}>{item.code}</Text>;
+                return (
+                    <View style={styles.section}>
+                        <Text style={styles.subHeading}>{item.title}</Text>
+                        <Text style={styles.text}>{item.description}</Text>
+
+                        <View style={styles.codeBox}>
+                            <View style={styles.codeHeader}>
+                                <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                    <Text style={styles.copy}>Copy</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <Text style={styles.code}>{item.code}</Text>
+                            </ScrollView>
+                        </View>
+                    </View>
+                )
             default:
                 return null;
         }
     }
     return (
         <View style={styles.container}>
+            <FlatList
+                data={moudle}
+                renderItem={renderItem}
+                keyExtractor={(item => item.id)}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>Visualize</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         padding: 20,
-        marginBottom: 20,
-        alignItems: 'center',
+        backgroundColor: "#fff",
     },
+
+    section: {
+        marginBottom: 16,
+    },
+
     heading: {
         fontSize: 24,
-        marginBottom: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+        color: "#222",
+        marginBottom: 16,
+    },
+
+    subHeading: {
+        fontSize: 20,
+        fontWeight: "700",
+        color: "#222",
+        marginBottom: 6,
+        marginTop: 10,
+    },
+
+    text: {
+        fontSize: 16,
+        color: "#555",
+        lineHeight: 24,
+    },
+
+    bold: {
+        fontWeight: "bold",
+        color: "#000",
+    },
+
+
+    codeBox: {
+        backgroundColor: "#1e1e1e",
+        padding: 14,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: "#333",
+        marginTop: 12,   // 👈 thoda gap badhao
+        marginBottom: 8,
+    },
+    codeHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 8,
+    },
+
+    codeType: {
+        color: "#aaa",
+        fontSize: 12,
+    },
+    code: {
+        color: "#ffffff",
+        fontFamily: "monospace",
+        fontSize: 13,
+        lineHeight: 20,
+        flexWrap: "wrap", // 🔥 fix
+    },
+    copy: {
+        color: "#20b912",
+        fontSize: 12,
+        fontWeight: "600",
+        alignSelf: "flex-start",
+
+    },
+
+    // 🔥 List Styling
+    listRow: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginVertical: 4,
+    },
+    listItem: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginVertical: 4,
+        paddingHorizontal: 12,
+        backgroundColor: "#f5f5f5",
+        borderRadius: 10,
+        elevation: 2,
+    },
+
+    bullet: {
+        marginRight: 8,
+        color: "#888",
+        fontSize: 16,
+    },
+
+    listText: {
+        flex: 1,
+        fontSize: 16,
+        color: "#555",
+    },
+    btn: {
+        backgroundColor: "#4da6ff",
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        alignSelf: "flex-start",
+    },
+    btnText: {
+        color: "#3617e0",
+        fontSize: 14,
+        fontWeight: "600",
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 20,
     }
-})
+});
 
 export default Searching;
