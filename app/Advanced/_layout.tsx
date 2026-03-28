@@ -4,9 +4,9 @@ import { Stack } from 'expo-router';
 const AdvancedLayout = () => {
     return (
         <Stack>
-            <Stack.Screen name="Greedy" options={{ title: "Greedy Algorithm" }} />
-            <Stack.Screen name="DP" options={{ title: "Dynamic Programming" }} />
-            <Stack.Screen name="GraphAlgorithms" options={{ title: "Graph Algorithms" }} />
+            <Stack.Screen name="Greedy Algorithm" options={{ title: "Greedy Algorithm" }} />
+            <Stack.Screen name="Dynamic Programming" options={{ title: "Dynamic Programming" }} />
+            <Stack.Screen name="Graph Algorithms" options={{ title: "Graph Algorithms" }} />
         </Stack>
     );
 }
