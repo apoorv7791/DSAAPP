@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 const GraphAlgorithms = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Graph Algorithms</Text>
+
 
         </View>
     );
