@@ -14,16 +14,25 @@ const Searching = () => {
             id: "2",
             type: "list",
             title: "Types of Searching Algorithms",
-            list: [
-                "Linear Search",
-                "Binary Search",
-            ]
+            list: ["Linear Search", "Binary Search"]
         },
         {
             id: "3",
+            type: "subheading",
+            title: "Linear Search",  // ✅ changed from text to title
+            description: "Linear search is a simple searching algorithm that checks each element in a list until it finds the target element.\n"
+        },
+        {
+            id: "4",
+            type: "subheading",
+            title: "Binary Search", // ✅ changed from text to title
+            description: "Binary search is a searching algorithm that finds the position of a target value within a sorted array. \nIt works by repeatedly dividing the search interval in half. \nIt works by finding the middle element and then compare the middle to it's target value if the middle is greater than target value then search in the left half else search in the right half."
+        },
+        {
+            id: "5",
             type: "code",
+            title: "Linear Search Code", // add a title
             language: "Java",
-            dataType: "Array",
             code: `public class LinearSearch {
     public static int search(int[] arr, int x) {
         for (int i = 0; i < arr.length; i++) {
@@ -36,10 +45,10 @@ const Searching = () => {
 }`
         },
         {
-            id: "4",
+            id: "6",
             type: "code",
+            title: "Binary Search Code", // add a title
             language: "Java",
-            dataType: "Array",
             code: `public class BinarySearch {
     public static int search(int[] arr, int x) {
         int left = 0;
@@ -59,7 +68,7 @@ const Searching = () => {
     }
 }`
         }
-    ]
+    ];
     const handleCopy = async (code: string) => {
         await Clipboard.setStringAsync(code);
         ToastAndroid.show('Code copied to clipboard', ToastAndroid.SHORT);
@@ -72,7 +81,7 @@ const Searching = () => {
                         <Text style={styles.subHeading}>{item.title}</Text>
                         <Text style={styles.text}>{item.description}</Text>
                     </View>
-                )
+                );
             case "list":
                 return (
                     <View style={styles.section}>
@@ -84,12 +93,12 @@ const Searching = () => {
                             </View>
                         ))}
                     </View>
-                )
+                );
             case "code":
                 return (
                     <View style={styles.section}>
                         <Text style={styles.subHeading}>{item.title}</Text>
-                        <Text style={styles.text}>{item.description}</Text>
+                        {item.description && <Text style={styles.text}>{item.description}</Text>}
 
                         <View style={styles.codeBox}>
                             <View style={styles.codeHeader}>
@@ -102,11 +111,11 @@ const Searching = () => {
                             </ScrollView>
                         </View>
                     </View>
-                )
+                );
             default:
                 return null;
         }
-    }
+    };
     return (
         <View style={styles.container}>
             <FlatList

@@ -1,8 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, ToastAndroid, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 
 const Sorting = () => {
+    const router = useRouter();
     const modules = [
         {
             id: "1",
