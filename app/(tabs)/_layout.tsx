@@ -2,20 +2,22 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import CustomTabBar from '../navigation/Tabbar';
-const TabsLayout = () => {
-    return (
-        <Tabs screenOptions={{
-            headerShown: true,
-            animation: "fade",
-            tabBarStyle: {
-                height: 60,
-                borderTopWidth: 0,
-                elevation: 10,
-            }
 
-        }}
+export default function TabsLayout() {
+    return (
+        <Tabs
+            screenOptions={{
+                headerShown: true,
+                animation: "fade",
+                tabBarStyle: {
+                    height: 60,
+                    borderTopWidth: 0,
+                    elevation: 10,
+                }
+            }}
             tabBar={(props) => <CustomTabBar {...props} />}
         >
+            {/* Home Screen */}
             <Tabs.Screen
                 name="index"
                 options={{
@@ -25,6 +27,8 @@ const TabsLayout = () => {
                     )
                 }}
             />
+
+            {/* Learn Screen */}
             <Tabs.Screen
                 name="learn"
                 options={{
@@ -34,6 +38,8 @@ const TabsLayout = () => {
                     )
                 }}
             />
+
+            {/* Settings Screen */}
             <Tabs.Screen
                 name="settings"
                 options={{
@@ -46,7 +52,3 @@ const TabsLayout = () => {
         </Tabs>
     );
 }
-
-
-
-export default TabsLayout;

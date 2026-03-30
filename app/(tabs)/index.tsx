@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, ListRenderItem } from 'react-native';
 
-
+// INTERFACE TO DEFINE THE MODULE OBJECT
 type Module = {
     id: string,
     title: string,
     description: string,
 }
-
+// HOMESCREEN COMPONENT 
 const HomeScreen = () => {
-
+    // MODULES ARRAY
     const modules: Module[] = [
         {
             id: "1",
@@ -40,6 +40,7 @@ const HomeScreen = () => {
             description: "Regular practice is key to mastering DSA. Use our curated problem sets and quizzes to test your understanding and track your progress."
         }
     ];
+    // THIS RENDERITEM FUNCTION IS RENDERING THE ARRAY OBJECTS AS CARDS
     const renderItem: ListRenderItem<Module> = ({ item }) => {
         return (
             <View style={styles.card}>
@@ -48,7 +49,7 @@ const HomeScreen = () => {
             </View>
         )
     }
-
+    // THIS FUNCTION IS THE MAIN RENDER FUNCTION FOR THE HOME SCREEN
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>“Welcome 👋”</Text>
@@ -62,7 +63,7 @@ const HomeScreen = () => {
 
     );
 }
-
+// STYLESHEET PROPS 
 const styles = StyleSheet.create({
     container: {
         flex: 1,

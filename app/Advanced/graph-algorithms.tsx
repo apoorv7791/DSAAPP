@@ -100,20 +100,18 @@ const GraphAlgorithms = () => {
                 return (
                     <View style={styles.codeBox}>
                         <View style={styles.codeHeader}>
-                            <View style={styles.codeBox}>
-                                <View style={styles.codeHeader}>
-                                    <TouchableOpacity onPress={() => handleCopy(item.code)}>
-                                        <Text style={styles.copy}>Copy</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                    <Text style={styles.code}>{item.code}</Text>
-                                </ScrollView>
-                            </View>
+                            <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                <Text style={styles.copy}>Copy</Text>
+                            </TouchableOpacity>
+
                             <Text style={styles.codeType}>
                                 {item.language} • {item.dataType}
                             </Text>
                         </View>
+
+                        <ScrollView horizontal>
+                            <Text style={styles.code}>{item.code}</Text>
+                        </ScrollView>
                     </View>
                 )
             default:
@@ -125,7 +123,7 @@ const GraphAlgorithms = () => {
             <FlatList
                 data={modules}
                 renderItem={renderItem}
-                keyExtractor={(item => item.id)}
+                keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
@@ -260,5 +258,3 @@ const styles = StyleSheet.create({
 });
 
 export default GraphAlgorithms;
-
-

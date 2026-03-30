@@ -1,127 +1,133 @@
 import React from 'react';
-import { StyleSheet, View, Text, ToastAndroid, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
+import { FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 
-const Searching = () => {
-    const moudle = [
+const GreedyAlgorithm = () => {
+    const modules = [
         {
             id: "1",
             type: "subheading",
-            title: "Searching Algorithms",
-            description: "Searching is the process of finding a specific element in a collection of elements. \n There are many different searching algorithms, each with their own advantages and disadvantages.\n"
+            text: "Greedy Algorithms",
+            paragraph: "Greedy algorithms are a class of algorithms that make locally optimal choices at each step with the hope of finding a global optimum. \n These algorithms work by making the best possible decision at the current moment without considering future consequences. \n Greedy algorithms are often used for optimization problems where a solution needs to be found from a set of feasible solutions. \n Main usecases are coin change problem, activity selection, Huffman coding."
         },
         {
             id: "2",
             type: "list",
-            title: "Types of Searching Algorithms",
-            list: ["Linear Search", "Binary Search"]
+            items: [
+                "Coin Change Problem",
+                "Activity Selection Problem",
+                "Huffman Coding",
+                "Kruskal's Algorithm",
+                "Prim's Algorithm"
+            ]
         },
         {
             id: "3",
-            type: "subheading",
-            title: "Linear Search",  // ✅ changed from text to title
-            description: "Linear search is a simple searching algorithm that checks each element in a list until it finds the target element.\n"
+            type: "code",
+            language: "Java",
+            dataType: "greedy",
+            code: `// Coin Change Problem
+            public int coinChange(int[] coins, int amount) {
+                Arrays.sort(coins);
+                int count = 0;
+                
+                for (int i = coins.length - 1; i >= 0; i--) {
+                    while (amount >= coins[i]) {
+                        amount -= coins[i];
+                        count++;
+                    }
+                }
+                
+                return amount == 0 ? count : -1;
+            }`
         },
         {
             id: "4",
-            type: "subheading",
-            title: "Binary Search", // ✅ changed from text to title
-            description: "Binary search is a searching algorithm that finds the position of a target value within a sorted array. \nIt works by repeatedly dividing the search interval in half. \nIt works by finding the middle element and then compare the middle to it's target value if the middle is greater than target value then search in the left half else search in the right half."
-        },
-        {
-            id: "5",
             type: "code",
-            title: "Linear Search Code", // add a title
             language: "Java",
-            code: `public class LinearSearch {
-    public static int search(int[] arr, int x) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == x) {
-                return i;
-            }
+            dataType: "greedy",
+            code: `// Activity Selection Problem
+            public void activitySelection(int[] start, int[] end) {
+                int n = start.length;
+                int[][] activities = new int[n][3];
+                
+                for (int i = 0; i < n; i++) {
+                    activities[i][0] = start[i];
+                    activities[i][1] = end[i];
+                    activities[i][2] = i;
+                }
+                
+                Arrays.sort(activities, (a, b) -> a[1] - b[1]);
+                
+                System.out.print("Selected activities: " + activities[0][2] + " ");
+                int lastEnd = activities[0][1];
+                
+                for (int i = 1; i < n; i++) {
+                    if (activities[i][0] >= lastEnd) {
+                        System.out.print(activities[i][2] + " ");
+                        lastEnd = activities[i][1];
+                    }
+                }
+            }`
         }
-        return -1;
-    }
-}`
-        },
-        {
-            id: "6",
-            type: "code",
-            title: "Binary Search Code", // add a title
-            language: "Java",
-            code: `public class BinarySearch {
-    public static int search(int[] arr, int x) {
-        int left = 0;
-        int right = arr.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (arr[mid] == x) {
-                return mid;
-            }
-            if (arr[mid] < x) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        return -1;
-    }
-}`
-        }
-    ];
+    ]
+
     const handleCopy = async (code: string) => {
         await Clipboard.setStringAsync(code);
-        ToastAndroid.show('Code copied to clipboard', ToastAndroid.LONG);
+        ToastAndroid.show("Code copied to clipboard", ToastAndroid.LONG);
     }
+
     const renderItem = ({ item }: { item: any }) => {
         switch (item.type) {
             case "subheading":
                 return (
                     <View style={styles.section}>
-                        <Text style={styles.subHeading}>{item.title}</Text>
-                        <Text style={styles.text}>{item.description}</Text>
+                        <Text style={styles.subHeading}>{item.text}</Text>
+                        {item.paragraph && (
+                            <Text style={styles.text}>{item.paragraph}</Text>
+                        )}
                     </View>
-                );
+                )
             case "list":
                 return (
                     <View style={styles.section}>
-                        <Text style={styles.subHeading}>{item.title}</Text>
-                        {item.list.map((listItem: string, index: number) => (
+                        {item.items.map((itemText: string, index: number) => (
                             <View key={index} style={styles.listItem}>
                                 <Text style={styles.bullet}>•</Text>
-                                <Text style={styles.listText}>{listItem}</Text>
+                                <Text style={styles.listText}>{itemText}</Text>
                             </View>
                         ))}
                     </View>
-                );
+                )
             case "code":
                 return (
-                    <View style={styles.section}>
-                        <Text style={styles.subHeading}>{item.title}</Text>
-                        {item.description && <Text style={styles.text}>{item.description}</Text>}
+                    <View style={styles.codeBox}>
+                        <View style={styles.codeHeader}>
+                            <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                <Text style={styles.copy}>Copy</Text>
+                            </TouchableOpacity>
 
-                        <View style={styles.codeBox}>
-                            <View style={styles.codeHeader}>
-                                <TouchableOpacity onPress={() => handleCopy(item.code)}>
-                                    <Text style={styles.copy}>Copy</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                <Text style={styles.code}>{item.code}</Text>
-                            </ScrollView>
+                            <Text style={styles.codeType}>
+                                {item.language} • {item.dataType}
+                            </Text>
                         </View>
+
+                        <ScrollView horizontal>
+                            <Text style={styles.code}>{item.code}</Text>
+                        </ScrollView>
                     </View>
-                );
+                )
             default:
                 return null;
         }
-    };
+    }
     return (
         <View style={styles.container}>
             <FlatList
-                data={moudle}
+                data={modules}
                 renderItem={renderItem}
-                keyExtractor={(item => item.id)}
+                keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
@@ -255,4 +261,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Searching;
+export default GreedyAlgorithm;
