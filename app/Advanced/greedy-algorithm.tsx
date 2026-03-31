@@ -28,6 +28,7 @@ const GreedyAlgorithm = () => {
             language: "Java",
             dataType: "greedy",
             code: `// Coin Change Problem
+             "Problem Statement": "Given a set of n activities with their start and end times, find the maximum number of activities that can be performed by a single person or machine, assuming that a person can only work on a single activity at a time. \n" ,
             public int coinChange(int[] coins, int amount) {
                 Arrays.sort(coins);
                 int count = 0;
@@ -40,7 +41,9 @@ const GreedyAlgorithm = () => {
                 }
                 
                 return amount == 0 ? count : -1;
-            }`
+            } 
+               `
+
         },
         {
             id: "4",
@@ -48,6 +51,7 @@ const GreedyAlgorithm = () => {
             language: "Java",
             dataType: "greedy",
             code: `// Activity Selection Problem
+            "Problem Statement": "Given a set of n activities with their start and end times, find the maximum number of activities that can be performed by a single person or machine, assuming that a person can only work on a single activity at a time. \n",
             public void activitySelection(int[] start, int[] end) {
                 int n = start.length;
                 int[][] activities = new int[n][3];
@@ -69,7 +73,8 @@ const GreedyAlgorithm = () => {
                         lastEnd = activities[i][1];
                     }
                 }
-            }`
+            }`,
+            description: "The Activity Selection Problem is a problem of selecting the maximum number of activities that can be performed by a single person or machine, assuming that a person can only work on a single activity at a time. \n The problem statement is as follows: \n Given a set of n activities with their start and end times, the task is to select the maximum number of activities that can be performed by a single person or machine, assuming that a person can only work on a single activity at a time. \n Note: The order of activities selected is not important. \n For example, for n = 4 and S = {1, 2, 3, 4}, the answer is 2 activities of 1 and 4. \n So, the output should be 2.",
         }
     ]
 
@@ -203,7 +208,7 @@ const styles = StyleSheet.create({
     code: {
         color: "#ffffff",
         fontFamily: "monospace",
-        fontSize: 13,
+        fontSize: 15,
         lineHeight: 20,
         flexWrap: "wrap", // 🔥 fix
     },

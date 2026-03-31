@@ -1,116 +1,74 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Platform, ScrollView } from 'react-native';
-import { ToastAndroid } from 'react-native';
-import * as Clipboard from 'expo-clipboard';
+import React from 'react';
+import { StyleSheet, View, Text, ToastAndroid, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import * as ClipBoard from 'expo-clipboard';
 
-const Stacks = () => {
-
+const Recursion = () => {
     const modules = [
         {
             id: "1",
             type: "subheading",
-            text: "What is a Stack?",
+            text: "What is Recursion?\n",
         },
         {
             id: "2",
             type: "text",
-            text: "A stack is a linear data structure that follows the Last In First Out (LIFO) principle. It allows operations only at one end, called the top of the stack. The main operations are push (to add an element) and pop (to remove the top element).",
+            text: "Recursion is a programming technique where a function calls itself to solve a problem.\n It breaks down a complex problem into smaller, similar subproblems until it reaches a base case that can be solved directly.\n"
         },
         {
             id: "3",
             type: "subheading",
-            text: "Why do we use Stacks?",
+            text: "Why do we use Recursion?\n",
         },
         {
             id: "4",
             type: "text",
-            text: "Stacks are used in various applications such as expression evaluation, backtracking algorithms, and function call management in programming languages. They provide a simple way to manage data that needs to be processed in reverse order.",
+            text: "Recursion is useful for problems that have a naturally recursive structure,\n such as tree traversals, graph algorithms, divide-and-conquer algorithms,\n and mathematical computations like factorials or Fibonacci sequences.\n"
         },
         {
             id: "5",
-            type: "code",
-            language: "Java",
-            dataType: "Stack Implementation",
-            text: `class Stack {
-    int stk[] = new int[100];
-    int top = -1;
-}`
+            type: "subheading",
+            text: "How does Recursion work?\n"
         },
         {
             id: "6",
-            type: "code",
-            language: "Java",
-            dataType: "Push Operations",
-            text: `void push(int item) {
-if (top >= 99) {
-    System.out.println("Stack overflow");
-} else {
-    stk[++top] = item;
-    }
-}`
+            type: "text",
+            text: "Recursion works by breaking down a problem into smaller subproblems of the same type.\n Each recursive call processes a smaller portion of the problem until it reaches a base case,\n which is a condition that stops the recursion.\n The base case is crucial to prevent infinite recursion and ensure the function eventually returns a result.\n"
         },
         {
             id: "7",
             type: "code",
             language: "Java",
-            dataType: "Pop Operations",
-            text: `int pop() {
-if (top < 0) {
-    System.out.println("Stack underflow");
-    return 0;
-} else {
-    return stk[top--];
+            dataType: "Factorial implementaion",
+            code: `public static int factorial(int n) {
+    if (n == 0) {
+        return 1;
     }
-}`
+    return n * factorial(n - 1);
+} 
+    public static void main(){
+        System.out.println(factorial(5));
+    }
+    output: 1 2 6 24 120`
         },
         {
             id: "8",
             type: "code",
             language: "Java",
-            dataType: "Peek Operations",
-            text: `int peek() {
- if (top < 0) {
-    System.out.println("Stack is empty");
-    return 0;
-} else {
-    return stk[top];
+            dataType: "Fibonacci implementaion",
+            code: `public static int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
     }
-}`
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+    public static void main(){
+        System.out.println(fibonacci(10));
+    }
+    output: 0 1 1 2 3 5 8 13 21 34`
         },
-        {
-            id: "9",
-            type: "code",
-            language: "Java",
-            dataType: "Is Empty Operations",
-            text: `boolean isEmpty() {
-return (top < 0);
-}`
-        },
-        {
-            id: "10",
-            type: "code",
-            language: "Java",
-            dataType: "Display Stack",
-            text: `void display() {
-if (top < 0) {
-    System.out.println("Stack is empty");
-} else {
-    for (int i = top; i >= 0; i--) {
-        System.out.print(stk[i] + " ");
-    }
-    System.out.println();
-    }
-}`
-        }
 
     ]
-
-    const handleCopy = async (text: string) => {
-        await Clipboard.setStringAsync(text);
-        ToastAndroid.show("Code copied to clipboard!", ToastAndroid.LONG);
-    }
-
-    const renderItem = useCallback(({ item }: any) => {
+    const renderItem = ({ item }: { item: any }) => {
         switch (item.type) {
             case "subheading":
                 return (
@@ -128,24 +86,28 @@ if (top < 0) {
                 return (
                     <View style={styles.codeBox}>
                         <View style={styles.codeHeader}>
+                            <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                <Text style={styles.copy}>Copy</Text>
+                            </TouchableOpacity>
+
                             <Text style={styles.codeType}>
                                 {item.language} • {item.dataType}
                             </Text>
-
-                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
-                                <Text style={styles.copy}>COPY</Text>
-                            </TouchableOpacity>
                         </View>
 
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <Text style={styles.code}>{item.text}</Text>
+                        <ScrollView horizontal>
+                            <Text style={styles.code}>{item.code}</Text>
                         </ScrollView>
                     </View>
-                );
+                )
             default:
                 return null;
         }
-    }, [modules]);
+    }
+    const handleCopy = async (code: string) => {
+        await ClipBoard.setStringAsync(code);
+        ToastAndroid.show("code copied Successfull", ToastAndroid.LONG)
+    }
     return (
         <View style={styles.container}>
             <FlatList
@@ -223,24 +185,36 @@ const styles = StyleSheet.create({
     codeType: {
         color: "#aaa",
         fontSize: 12,
-        flex: 1, // 🔥 important
     },
     code: {
-        color: "#fff",
-        fontFamily: Platform.OS === "ios" ? "Courier" : "monospace",
+        color: "#ffffff",
+        fontFamily: "monospace",
         fontSize: 13,
         lineHeight: 20,
+        flexWrap: "wrap", // 🔥 fix
     },
     copy: {
-        color: "#4da6ff",
+        color: "#20b912",
         fontSize: 15,
         fontWeight: "600",
+        alignSelf: "flex-start",
+
     },
+
     // 🔥 List Styling
     listRow: {
         flexDirection: "row",
         alignItems: "flex-start",
         marginVertical: 4,
+    },
+    listItem: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginVertical: 4,
+        paddingHorizontal: 12,
+        backgroundColor: "#f5f5f5",
+        borderRadius: 10,
+        elevation: 2,
     },
 
     bullet: {
@@ -273,5 +247,4 @@ const styles = StyleSheet.create({
     }
 });
 
-
-export default Stacks;
+export default Recursion;

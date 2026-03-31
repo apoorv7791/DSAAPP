@@ -7,6 +7,7 @@ const AdvancedLayout = () => {
             <Stack.Screen name="greedy-algorithm" options={{ title: "Greedy Algorithm" }} />
             <Stack.Screen name="dynamic-programming" options={{ title: "Dynamic Programming" }} />
             <Stack.Screen name="graph-algorithms" options={{ title: "Graph Algorithms" }} />
+            <Stack.Screen name="recursion" options={{ title: "Recursion" }} />
         </Stack>
     );
 }

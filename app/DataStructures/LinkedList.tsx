@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     },
     copy: {
         color: "#4da6ff",
-        fontSize: 12,
+        fontSize: 15,
         fontWeight: "600",
     },
 

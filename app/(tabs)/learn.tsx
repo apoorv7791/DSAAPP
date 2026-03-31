@@ -24,7 +24,7 @@ const Learn: React.FC = () => {
         },
         {
             title: "Advanced Algorithms",
-            topics: ["Greedy Algorithm", "Dynamic Programming", "Graph Algorithms"]
+            topics: ["Greedy Algorithm", "Dynamic Programming", "Graph Algorithms", "Recursion"]
         }
     ];
 

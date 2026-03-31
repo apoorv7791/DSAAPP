@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     },
     copy: {
         color: "#20b912",
-        fontSize: 12,
+        fontSize: 15,
         fontWeight: "600",
         alignSelf: "flex-start",
 
