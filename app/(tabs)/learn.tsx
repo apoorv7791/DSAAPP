@@ -3,6 +3,12 @@ import { StyleSheet, View, FlatList } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
 
+interface Topic {
+    id: string;
+    lable: string;
+}
+
+
 // Define the module type
 interface Module {
     title: string;
