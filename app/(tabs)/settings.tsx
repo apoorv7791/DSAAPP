@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 const Settings = () => {
     return (
         <View>
-
+            <Text style={styles.heading}>Settings</Text>
         </View>
     );
 }

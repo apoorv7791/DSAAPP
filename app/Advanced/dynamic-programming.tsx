@@ -80,7 +80,8 @@ const DP = () => {
             id: "14",
             type: "code",
             dataType: "Top down approach",
-            code: `function fibonacci(n, memo = {}) {
+            code: `DP using memoization
+            function fibonacci(n, memo = {}) {
   if (n in memo) return memo[n];
   if (n <= 1) return n;
   memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
@@ -91,7 +92,8 @@ const DP = () => {
             id: "15",
             type: "code",
             dataType: "Bottom up approach",
-            code: `function fibonacci(n) {
+            code: `DP using tabulation
+function fibonacci(n) {
   if (n <= 1) return n;
   let dp = new Array(n + 1);
   dp[0] = 0;
