@@ -121,6 +121,24 @@ const LinkedList = () => {
             id: "12",
             type: "code",
             language: "Java",
+            dataType: "Main method",
+            text: `
+    void main(){
+        var list = new LinkedList();
+            list.insert(10);
+            list.insert(20);
+            list.insert(30);
+            list.insert(40);
+            list.insert(50);
+            list.display();
+
+    }
+`
+        },
+        {
+            id: "13",
+            type: "code",
+            language: "Java",
             dataType: "Output",
             text: `Linked List: 10 -> 20 -> 30 -> 40 -> 50 null`
         }
@@ -132,7 +150,7 @@ const LinkedList = () => {
         ToastAndroid.show("Code copied to clipboard!", ToastAndroid.LONG);
     }
 
-    const rendetItem = ({ item }: any) => {
+    const rendetItem = ({ item }: { item: any }) => {
         switch (item.type) {
             case "subheading":
                 return <Text style={styles.subHeading}>{item.text}</Text>
@@ -178,7 +196,7 @@ const LinkedList = () => {
             <FlatList
                 data={content}
                 renderItem={rendetItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>

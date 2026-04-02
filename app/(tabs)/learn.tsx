@@ -3,11 +3,6 @@ import { StyleSheet, View, FlatList } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
 
-interface Topic {
-    id: string;
-    lable: string;
-}
-
 
 // Define the module type
 interface Module {
@@ -22,7 +17,7 @@ const Learn: React.FC = () => {
     const modules: Module[] = [
         {
             title: "Data Structures",
-            topics: ["Arrays", "Linked List", "Stacks", "Queues", "HashMaps", "Trees", "Graphs", "Heaps"]
+            topics: ["Arrays", "LinkedList", "Stacks", "Queues", "HashMaps", "Trees", "Graphs", "Heaps"]
         },
         {
             title: "Algorithms",
