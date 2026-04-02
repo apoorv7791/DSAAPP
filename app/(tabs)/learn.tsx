@@ -45,8 +45,8 @@ const Learn: React.FC = () => {
     const renderModule = ({ item }: { item: Module }) => (
         <Expandables
             title={item.title}
-            topics={item.topics}
-            onSelected={(topic) => selectedTopic(item.title, topic)}
+            topics={item.topics.map(topic => ({ name: topic, route: topic.toLowerCase().replace(/\s+/g, '-') }))}
+            onSelected={(topic) => selectedTopic(item.title, topic.name)}
         />
     );
 

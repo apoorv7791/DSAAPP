@@ -2,17 +2,23 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { ToastAndroid } from 'react-native';
+import { useRouter } from 'expo-router';
 
 const Settings = () => {
+    const router = useRouter();
     const modules = [
         {
             title: "Account",
-            items: ["Profile", "Language", "Themes"]
+            items: [
+                { name: "Profile", route: "/Screens/Profile" },
+                { name: "Language", route: "/Screens/Language" },
+                { name: "Themes", route: "/Screens/Themes" }
+            ]
         }
-    ]
+    ];
 
-    const handleSelect = (item: string) => {
-        ToastAndroid.show(item, ToastAndroid.SHORT);
+    const handleSelect = (item: { name: string; route: string }) => {
+        router.push(item.route as any);
     }
     return (
         <View style={styles.container}>

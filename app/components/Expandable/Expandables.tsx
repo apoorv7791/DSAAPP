@@ -2,10 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, LayoutAnimation } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+
+
+interface Topic {
+    name: string;
+    route: string;
+}
+
+
 interface Props {
     title: string,
-    topics: string[],
-    onSelected: (topic: string) => void
+    topics: Topic[],
+    onSelected: (topic: Topic) => void
 }
 
 const Expandables = ({ title, topics, onSelected }: Props) => {
@@ -23,7 +31,7 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
     // interpolate
     const height = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, topics.length * 45], // 45 px per topic
+        outputRange: [0, topics.length * 50], // 50 px per topic
     })
     const rotate = animation.interpolate({
         inputRange: [0, 1],
@@ -55,7 +63,7 @@ const Expandables = ({ title, topics, onSelected }: Props) => {
                         style={styles.topicItem}
                         onPress={() => onSelected(topic)}
                     >
-                        <Text style={styles.topicText}>{topic}</Text>
+                        <Text style={styles.topicText}>{topic.name}</Text>
                     </TouchableOpacity>
                 ))}
             </Animated.View>
