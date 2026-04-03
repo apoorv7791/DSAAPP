@@ -9,9 +9,9 @@ const ScreenLayout = () => {
                 headerTitleStyle: { fontWeight: "600" },
             }}
         >
-            <Stack.Screen name='profile' options={{ title: "Profile" }} />
-            <Stack.Screen name='language' options={{ title: "Language" }} />
-            <Stack.Screen name='themes' options={{ title: "Themes" }} />
+            <Stack.Screen name='Profile' options={{ title: "Profile" }} />
+            <Stack.Screen name='Language' options={{ title: "Language" }} />
+            <Stack.Screen name='Themes' options={{ title: "Themes" }} />
         </Stack>
     );
 }

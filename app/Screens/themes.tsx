@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#000',
+        textAlign: 'center'
     }
 })
 export default Themes;

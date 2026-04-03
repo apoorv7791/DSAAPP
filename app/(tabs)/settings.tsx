@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
-import { ToastAndroid } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const Settings = () => {

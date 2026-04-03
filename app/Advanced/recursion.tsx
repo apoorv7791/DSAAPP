@@ -106,7 +106,7 @@ const Recursion = () => {
     }
     const handleCopy = async (code: string) => {
         await ClipBoard.setStringAsync(code);
-        ToastAndroid.show("code copied Successfull", ToastAndroid.LONG)
+        ToastAndroid.show("code copied Successfull", ToastAndroid.SHORT)
     }
     return (
         <View style={styles.container}>
