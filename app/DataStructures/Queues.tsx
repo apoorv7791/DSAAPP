@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Platform, ToastAndroid, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-
+import { useRouter } from 'expo-router'
 const Queues = () => {
+    const router = useRouter();
     const content = [
         {
             id: "1",
@@ -134,7 +135,7 @@ const Queues = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/queue-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

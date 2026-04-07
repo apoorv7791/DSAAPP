@@ -2,8 +2,10 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Platform, ScrollView } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 
 const Stacks = () => {
+    const router = useRouter();
 
     const modules = [
         {
@@ -155,7 +157,7 @@ if (top < 0) {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/stack-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

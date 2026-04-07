@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, ToastAndroid, Platform, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 const Trees = () => {
+    const router = useRouter();
     const data = [
         {
             id: "1",
@@ -168,7 +170,7 @@ void inorder() {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/tree-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, Text, Platform, ToastAndroid, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 
 
 const Graphs = () => {
     const handleCopy = async (text: string) => {
         await Clipboard.setStringAsync(text);
         ToastAndroid.show("Code copied to clipboard!", ToastAndroid.LONG);
+
     }
+    const router = useRouter();
     const modules = [
         {
             id: "1",
@@ -136,7 +139,7 @@ const Graphs = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/graph-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>
