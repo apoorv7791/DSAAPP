@@ -1,84 +1,119 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated, LayoutAnimation } from 'react-native';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Animated,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-
 
 interface Topic {
     name: string;
     route: string;
 }
 
-
 interface Props {
-    title: string,
-    topics: Topic[],
-    onSelected: (topic: Topic) => void
+    title: string;
+    topics: Topic[];
+    onSelected: (topic: Topic) => void;
+    defaultOpen?: boolean;
 }
 
-const Expandables = ({ title, topics, onSelected }: Props) => {
-    const [expanded, setExpanded] = useState(false);
-    const animation = useRef(new Animated.Value(0)).current;
+const Expandables = ({
+    title,
+    topics,
+    onSelected,
+    defaultOpen = false,
+}: Props) => {
+    const [expanded, setExpanded] = useState(defaultOpen);
+    const [contentHeight, setContentHeight] = useState(0);
+
+    const animation = useRef(new Animated.Value(defaultOpen ? 1 : 0)).current;
 
     useEffect(() => {
         Animated.timing(animation, {
             toValue: expanded ? 1 : 0,
             duration: 300,
-            useNativeDriver: false
+            useNativeDriver: false,
         }).start();
     }, [expanded]);
 
-    // interpolate
+    // Height animation (dynamic)
     const height = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, topics.length * 50], // 50 px per topic
-    })
+        outputRange: [0, contentHeight],
+    });
+
+    // Rotate icon
     const rotate = animation.interpolate({
         inputRange: [0, 1],
         outputRange: ['0deg', '180deg'],
     });
 
+    // Fade effect
+    const opacity = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+    });
+
     const toggleExpand = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setExpanded(!expanded);
-    }
+        setExpanded((prev) => !prev);
+    };
+
+    // Memoized topics (performance boost)
+    const renderedTopics = useMemo(() => {
+        return topics.map((topic, index) => (
+            <TouchableOpacity
+                key={index}
+                style={styles.topicItem}
+                onPress={() => onSelected(topic)}
+            >
+                <Text style={styles.topicText}>{topic.name}</Text>
+            </TouchableOpacity>
+        ));
+    }, [topics]);
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.header} onPress={toggleExpand}
-            >
+            {/* Header */}
+            <TouchableOpacity style={styles.header} onPress={toggleExpand}>
                 <Text style={styles.title}>{title}</Text>
+
                 <Animated.View style={{ transform: [{ rotate }] }}>
                     <Ionicons
-                        name={expanded ? "chevron-up" : "chevron-down"}
+                        name="chevron-down"
                         size={22}
                         color="#23238c"
                     />
                 </Animated.View>
             </TouchableOpacity>
-            <Animated.View style={{ height, overflow: 'hidden' }}>
-                {topics.map((topic, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.topicItem}
-                        onPress={() => onSelected(topic)}
-                    >
-                        <Text style={styles.topicText}>{topic.name}</Text>
-                    </TouchableOpacity>
-                ))}
+
+            {/* Animated Content */}
+            <Animated.View style={{ height, opacity, overflow: 'hidden' }}>
+                <View
+                    style={styles.contentContainer}
+                    onLayout={(e) =>
+                        setContentHeight(e.nativeEvent.layout.height)
+                    }
+                >
+                    {renderedTopics}
+                </View>
             </Animated.View>
         </View>
-    )
-}
+    );
+};
+
+export default Expandables;
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#f5f5f5",
-        borderRadius: 10,
+        borderRadius: 12,
         marginVertical: 8,
         paddingHorizontal: 12,
         paddingVertical: 6,
-        elevation: 2,
+        elevation: 3,
     },
     header: {
         flexDirection: 'row',
@@ -92,20 +127,18 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#111",
     },
-    topic: {
-        fontSize: 15,
-        color: "#555",
-        marginTop: 8,
-    },
-    topicsContainer: {
-        marginTop: 10,
-        paddingTop: 10,
+    contentContainer: {
+        paddingTop: 8,
         borderTopWidth: 1,
         borderTopColor: "#eee",
     },
-    topicItem: { paddingVertical: 10, paddingHorizontal: 8 },
-    topicText: { fontSize: 16 }
+    topicItem: {
+        paddingVertical: 12,
+        paddingHorizontal: 8,
+        borderRadius: 8,
+    },
+    topicText: {
+        fontSize: 16,
+        color: "#333",
+    },
 });
-
-
-export default Expandables;

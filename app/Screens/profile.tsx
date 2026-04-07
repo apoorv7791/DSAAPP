@@ -1,61 +1,87 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 const Profile = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>👤 Profile</Text>
 
+            {/* 👤 Profile Header */}
+            <View style={styles.header}>
+                <Image
+                    source={{ uri: "https://i.pravatar.cc/150?img=3" }}
+                    style={styles.avatar}
+                />
+                <Text style={styles.name}>Apoorv</Text>
+                <Text style={styles.email}>singhapoorv7791@gmail.com</Text>
+            </View>
+
+            {/* 📊 Stats */}
             <View style={styles.card}>
-                <Text style={styles.label}>Username</Text>
-                <Text style={styles.value}>Apoorv</Text>
+                <Text style={styles.label}>🔥 Streak</Text>
+                <Text style={styles.value}>5 Days</Text>
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.label}>Email</Text>
-                <Text style={styles.value}>apoorv@example.com</Text>
+                <Text style={styles.label}>📚 Problems Solved</Text>
+                <Text style={styles.value}>23</Text>
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.label}>Streak</Text>
-                <Text style={styles.value}>🔥 5 Days</Text>
+                <Text style={styles.label}>🏆 Level</Text>
+                <Text style={styles.value}>Beginner</Text>
             </View>
+
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 20,
+        backgroundColor: "#f5f5f5",
+        padding: 20,
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#000',
-        textAlign: 'center',
-        marginTop: 20,
-    },
-    card: {
-        width: '90%',
-        padding: 15,
-        backgroundColor: '#f8f8f8',
-        borderRadius: 12,
-        marginTop: 15,
 
-        // 👇 subtle shadow (Android + iOS feel)
-        elevation: 3,
+    header: {
+        alignItems: "center",
+        marginBottom: 25,
+    },
+
+    avatar: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 10,
+    },
+
+    name: {
+        fontSize: 22,
+        fontWeight: "bold",
+    },
+
+    email: {
+        fontSize: 14,
+        color: "gray",
+    },
+
+    card: {
+        backgroundColor: "#fff",
+        padding: 18,
+        borderRadius: 15,
+        marginBottom: 15,
+        elevation: 4,
     },
 
     label: {
         fontSize: 14,
-        color: 'gray',
+        color: "gray",
+        marginBottom: 5,
     },
 
     value: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
-})
+});
 
 export default Profile;

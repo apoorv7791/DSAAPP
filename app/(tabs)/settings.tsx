@@ -13,6 +13,20 @@ const Settings = () => {
                 { name: "Language", route: "/Screens/Language" },
                 { name: "Themes", route: "/Screens/Themes" }
             ]
+        },
+        {
+            title: "App Settings",
+            items: [
+                { name: "Notifications", route: "/Screens/Notifications" },
+                { name: "Privacy", route: "/Screens/Privacy" }
+            ]
+        },
+        {
+            title: "Support",
+            items: [
+                { name: "Help Center", route: "/Screens/Help" },
+                { name: "About App", route: "/Screens/About" }
+            ]
         }
     ];
 
