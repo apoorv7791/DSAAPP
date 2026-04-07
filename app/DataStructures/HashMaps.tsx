@@ -2,7 +2,9 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Platform } from 'react-native';
 import * as  Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';
+import { useRouter } from 'expo-router';
 const HashMaps = () => {
+    const router = useRouter();
     const data = [
         {
             id: "1",
@@ -198,7 +200,7 @@ The final output shows the remaining key-value pairs in the map.`
                                         <Text style={styles.code}>{code.text}</Text>
                                     </ScrollView>
                                     <TouchableOpacity onPress={() => handleCopy(code.text)} style={{ position: "absolute", top: 8, right: 8 }}>
-                                        <Text style={styles.copy}>Visualize</Text>
+                                        <Text style={styles.copy}>Copy</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -219,7 +221,7 @@ The final output shows the remaining key-value pairs in the map.`
                 showsHorizontalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/hash-map-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

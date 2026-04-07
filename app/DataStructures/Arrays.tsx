@@ -2,9 +2,11 @@ import React, { useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';;
+import { useRouter } from 'expo-router';
 
 
 const Arrays = () => {
+    const router = useRouter();
     const content = [
         {
             id: "1",
@@ -198,7 +200,7 @@ const Arrays = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/array-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

@@ -2,12 +2,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ToastAndroid, Platform, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 
 const Heaps = () => {
     const handleCopy = async (text: string) => {
         await Clipboard.setStringAsync(text);
         if (Platform.OS === 'android') ToastAndroid.show('Copied to clipboard', ToastAndroid.LONG);
     }
+
+    const router = useRouter();
 
     const modules = [
         {
@@ -233,7 +236,7 @@ Min Heap: 10 30 20 40 70 60 50
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/heap-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>

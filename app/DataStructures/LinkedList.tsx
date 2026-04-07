@@ -2,7 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
 const LinkedList = () => {
+    const router = useRouter();
     const content = [
         {
             id: "1",
@@ -200,7 +202,7 @@ const LinkedList = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/linked-list-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
                         </TouchableOpacity>
                     </View>
