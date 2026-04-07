@@ -1,17 +1,18 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
 
 const Settings = () => {
     const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const modules = [
         {
             title: "Account",
             items: [
-                { name: "Profile", route: "/Screens/Profile" },
-                { name: "Language", route: "/Screens/Language" },
-                { name: "Themes", route: "/Screens/Themes" }
+                { name: "Profile", route: "/Account/Profile" },
+                { name: "Language", route: "/Account/Language" },
+                { name: "Themes", route: "/Account/Themes" }
             ]
         },
         {
@@ -21,20 +22,20 @@ const Settings = () => {
                 { name: "Privacy", route: "/Screens/Privacy" }
             ]
         },
-        {
-            title: "Support",
-            items: [
-                { name: "Help Center", route: "/Screens/Help" },
-                { name: "About App", route: "/Screens/About" }
-            ]
-        }
+
     ];
+
+
 
     const handleSelect = (item: { name: string; route: string }) => {
         router.push(item.route as any);
     }
+    const handleAuth = () => {
+        setIsLoggedIn(!isLoggedIn);
+    }
     return (
         <View style={styles.container}>
+
             {modules.map((module, index) => (
                 <Expandables
                     key={index}
@@ -43,6 +44,11 @@ const Settings = () => {
                     onSelected={handleSelect}
                 />
             ))}
+            <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
+                <Text style={styles.authText}>
+                    {isLoggedIn ? "Logout" : "Login"}
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -53,7 +59,18 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: "#f5f5f5",
         paddingBottom: 20,
-
+    },
+    authButton: {
+        backgroundColor: "#0e3c6d",
+        padding: 12,
+        borderRadius: 8,
+        marginTop: 30,
+        alignSelf: "center",
+    },
+    authText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 })
 
