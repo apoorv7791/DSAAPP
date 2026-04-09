@@ -7,7 +7,13 @@ import { useRouter } from 'expo-router';
 // Define the module type
 interface Module {
     title: string;
-    topics: string[];
+    topics: Topic[];
+}
+
+type Topic = {
+    name: string;
+    icon: string;
+    route: string;
 }
 
 const Learn: React.FC = () => {
@@ -17,15 +23,32 @@ const Learn: React.FC = () => {
     const modules: Module[] = [
         {
             title: "Data Structures",
-            topics: ["Arrays", "LinkedList", "Stacks", "Queues", "HashMaps", "Trees", "Graphs", "Heaps"]
+            topics: [
+                { name: "Arrays", icon: "grid-outline", route: "arrays" },
+                { name: "LinkedList", icon: "git-branch-outline", route: "linkedlist" },
+                { name: "Stacks", icon: "layers-outline", route: "stacks" },
+                { name: "Queues", icon: "menu-outline", route: "queues" },
+                { name: "HashMaps", icon: "key-outline", route: "hashmaps" },
+                { name: "Trees", icon: "leaf-outline", route: "trees" },
+                { name: "Graphs", icon: "share-social-outline", route: "graphs" },
+                { name: "Heaps", icon: "cube-outline", route: "heaps" }
+            ]
         },
         {
             title: "Algorithms",
-            topics: ["Sorting", "Searching"]
+            topics: [
+                { name: "Sorting", icon: "swap-vertical-outline", route: "sorting" },
+                { name: "Searching", icon: "search-outline", route: "searching" }
+            ]
         },
         {
             title: "Advanced Algorithms",
-            topics: ["Greedy Algorithm", "Dynamic Programming", "Graph Algorithms", "Recursion"]
+            topics: [
+                { name: "Greedy Algorithm", icon: "trending-up-outline", route: "greedy-algorithm" },
+                { name: "Dynamic Programming", icon: "code-outline", route: "dynamic-programming" },
+                { name: "Graph Algorithms", icon: "share-social-outline", route: "graph-algorithms" },
+                { name: "Recursion", icon: "refresh-outline", route: "recursion" }
+            ]
         }
     ];
 
@@ -45,7 +68,7 @@ const Learn: React.FC = () => {
     const renderModule = ({ item }: { item: Module }) => (
         <Expandables
             title={item.title}
-            topics={item.topics.map(topic => ({ name: topic, route: topic.toLowerCase().replace(/\s+/g, '-'), action: '', danger: false }))}
+            topics={item.topics}
             onSelected={(topic) => selectedTopic(item.title, topic.name)}
         />
     );

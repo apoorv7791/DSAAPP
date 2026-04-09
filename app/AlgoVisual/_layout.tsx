@@ -1,14 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-
+import { Stack } from 'expo-router';
 const Layout = () => {
     return (
-        <View>
-
-        </View>
+        <Stack>
+            <Stack.Screen name="sorting-visual" options={{ title: "Sorting Visualizer" }} />
+            <Stack.Screen name="searching-visual" options={{ title: "Searching Visualizer" }} />
+        </Stack>
     );
 }
 
-const styles = StyleSheet.create({})
 
 export default Layout;

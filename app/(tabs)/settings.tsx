@@ -2,24 +2,26 @@ import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
+// import { useAuth } from '../auth/AuthContext';
 
 const Settings = () => {
     const router = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const { isLoggedIn, login, logout } = useAuth();
     const modules = [
         {
             title: "Account",
             items: [
-                { name: "Profile", route: "/Account/Profile" },
-                { name: "Language", route: "/Account/Language" },
-                { name: "Themes", route: "/Account/Themes" }
+                { name: "Profile", route: "/Account/Profile", icon: "person" },
+                { name: "Language", route: "/Account/Language", icon: "language" },
+                { name: "Themes", route: "/Account/Themes", icon: "color-palette" }
             ]
         },
         {
             title: "App Settings",
             items: [
-                { name: "Notifications", route: "/Screens/Notifications" },
-                { name: "Privacy", route: "/Screens/Privacy" }
+                { name: "Notifications", route: "/Screens/Notifications", icon: "notifications" },
+                { name: "Privacy", route: "/Screens/Privacy", icon: "shield" },
+                { name: "About", route: "Screens/About", icon: "information-circle" },
             ]
         },
 
@@ -30,9 +32,13 @@ const Settings = () => {
     const handleSelect = (item: { name: string; route: string }) => {
         router.push(item.route as any);
     }
-    const handleAuth = () => {
-        setIsLoggedIn(!isLoggedIn);
-    }
+    // const handleAuth = () => {
+    //     if (isLoggedIn) {
+    //         logout();
+    //     } else {
+    //         login();
+    //     }
+    // }
     return (
         <View style={styles.container}>
 
@@ -44,11 +50,11 @@ const Settings = () => {
                     onSelected={handleSelect}
                 />
             ))}
-            <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
+            {/* <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
                 <Text style={styles.authText}>
                     {isLoggedIn ? "Logout" : "Login"}
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     );
 }

@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 interface Topic {
     name: string;
     route: string;
+    icon?: string;
 }
 
 interface Props {
@@ -68,8 +69,24 @@ const Expandables = ({
                 key={index}
                 style={styles.topicItem}
                 onPress={() => onSelected(topic)}
+                activeOpacity={0.7}
             >
-                <Text style={styles.topicText}>{topic.name}</Text>
+                <View style={styles.topicContent}>
+                    {topic.icon && (
+                        <Ionicons
+                            name={topic.icon as any}
+                            size={20}
+                            color="#666"
+                            style={styles.topicIcon}
+                        />
+                    )}
+                    <Text style={styles.topicText}>{topic.name}</Text>
+                </View>
+                <Ionicons
+                    name="chevron-forward"
+                    size={16}
+                    color="#ccc"
+                />
             </TouchableOpacity>
         ));
     }, [topics]);
@@ -108,19 +125,23 @@ export default Expandables;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "white",
         borderRadius: 12,
         marginVertical: 8,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
         elevation: 3,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 8,
+        paddingVertical: 16,
+        paddingHorizontal: 4,
     },
     title: {
         fontSize: 18,
@@ -133,12 +154,26 @@ const styles = StyleSheet.create({
         borderTopColor: "#eee",
     },
     topicItem: {
-        paddingVertical: 12,
+        paddingVertical: 14,
         paddingHorizontal: 8,
         borderRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    topicContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
+    topicIcon: {
+        marginRight: 12,
+        width: 24,
+        textAlign: 'center',
     },
     topicText: {
         fontSize: 16,
         color: "#333",
+        fontWeight: "500",
     },
 });
