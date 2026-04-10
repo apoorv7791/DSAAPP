@@ -1,36 +1,117 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    Animated
+} from 'react-native';
 
 const ArrayVisual = () => {
-    const [animatedArray, setAnimatedArray] = React.useState<
-        { value: number; anim: Animated.Value; prev: number }[]
+
+    // 🔥 CHANGE 1: animated array
+    const [animatedArray, setAnimatedArray] = useState<
+        { value: number; anim: Animated.Value }[]
     >([]);
+
     const [element, setElement] = useState("");
 
+    // ➕ ADD ELEMENT WITH ANIMATION
     const addElement = () => {
-        if (element.trim() === "" || isNaN(Number(element))) return;
+        if (element.trim() === '' || isNaN(Number(element))) return;
+
         const newItem = {
-            Value: Number(element),
-            amim: new Animated.Value(0),
             value: Number(element),
             anim: new Animated.Value(0),
-            prev: 0,
         };
+
         setAnimatedArray((prev) => [...prev, newItem]);
         setElement("");
+
         // 🔥 animation start
         Animated.timing(newItem.anim, {
             toValue: 1,
             duration: 300,
             useNativeDriver: true,
         }).start();
-    }
-    return (
-        <View>
+    };
 
+    // ➖ REMOVE WITH ANIMATION
+    const handleRemove = () => {
+        if (animatedArray.length === 0) return;
+
+        const lastItem = animatedArray[animatedArray.length - 1];
+
+        Animated.timing(lastItem.anim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => {
+            setAnimatedArray((prev) => prev.slice(0, -1));
+        });
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.heading}>Array Visualizer</Text>
+
+            {/* ARRAY VISUAL */}
+            <View style={styles.wrapper}>
+                <Text style={styles.bracket}>[</Text>
+
+                <View style={{ flexDirection: 'row' }}>
+                    {animatedArray.map((item, index) => (
+                        <Animated.View
+                            key={index}
+                            style={[
+                                styles.box,
+                                {
+                                    opacity: item.anim,
+                                    transform: [
+                                        {
+                                            scale: item.anim.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.5, 1],
+                                            }),
+                                        },
+                                    ],
+                                },
+                            ]}
+                        >
+                            <Text style={styles.boxText}>{item.value}</Text>
+                        </Animated.View>
+                    ))}
+                </View>
+
+                <Text style={styles.bracket}>]</Text>
+            </View>
+
+            {/* INPUT */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    placeholder="Enter element"
+                    value={element}
+                    onChangeText={setElement}
+                    style={styles.input}
+                    keyboardType='numeric'
+                />
+            </View>
+
+            {/* BUTTONS */}
+            <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.button} onPress={addElement}>
+                    <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={handleRemove}>
+                    <Text style={styles.buttonText}>Remove</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
-}
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
