@@ -142,7 +142,7 @@ const LinkedList = () => {
             type: "code",
             language: "Java",
             dataType: "Output",
-            text: `Linked List: 10 -> 20 -> 30 -> 40 -> 50 null`
+            text: `Linked List: 10 -> 20 -> 30 -> 40 -> 50 -> null`
         }
     ]
 

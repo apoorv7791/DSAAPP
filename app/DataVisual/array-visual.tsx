@@ -6,7 +6,8 @@ import {
     TextInput,
     TouchableOpacity,
     Animated,
-    ScrollView
+    ScrollView,
+    ToastAndroid
 } from 'react-native';
 
 const ArrayVisual = () => {
@@ -65,6 +66,27 @@ const ArrayVisual = () => {
         }).start(() => {
             setAnimatedArray((prev) => prev.slice(1));
         });
+    }
+
+    const searchElement = () => {
+        const foundIndex = animatedArray.findIndex((item) => item.value === Number(element));
+        if (foundIndex === -1) {
+            ToastAndroid.show("Element not found", ToastAndroid.SHORT);
+        } else {
+            ToastAndroid.show("Element found at index " + foundIndex, ToastAndroid.SHORT);
+            Animated.sequence([
+                Animated.timing(animatedArray[foundIndex].anim, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(animatedArray[foundIndex].anim, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+            ]).start();
+        }
     }
 
     const resetArray = () => {
@@ -133,6 +155,11 @@ const ArrayVisual = () => {
                 <TouchableOpacity style={styles.button} onPress={deletefromFront}>
                     <Text style={styles.buttonText}>Remove from front</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={searchElement}>
+                    <Text style={styles.buttonText}>Search</Text>
+                </TouchableOpacity>
+
 
                 <TouchableOpacity style={styles.button} onPress={resetArray}>
                     <Text style={styles.buttonText}>Reset</Text>
