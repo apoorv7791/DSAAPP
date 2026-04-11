@@ -80,32 +80,34 @@ const ArrayVisual = () => {
                 <Text style={styles.bracket}>[</Text>
 
                 <View style={{ flexDirection: 'row' }}>
-
-                    {animatedArray.map((item, index) => (
-                        <Animated.View
-                            key={index}
-                            style={[
-                                styles.box,
-                                {
-                                    opacity: item.anim,
-                                    transform: [
-                                        {
-                                            scale: item.anim.interpolate({
-                                                inputRange: [0, 1],
-                                                outputRange: [0.5, 1],
-                                            }),
-                                        },
-                                    ],
-                                },
-                            ]}
-                        >
-                            <Text style={styles.boxText}>{item.value}</Text>
-                        </Animated.View>
-                    ))}
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        {animatedArray.map((item, index) => (
+                            <Animated.View
+                                key={index}
+                                style={[
+                                    styles.box,
+                                    {
+                                        opacity: item.anim,
+                                        transform: [
+                                            {
+                                                scale: item.anim.interpolate({
+                                                    inputRange: [0, 1],
+                                                    outputRange: [0.5, 1],
+                                                }),
+                                            },
+                                        ],
+                                    },
+                                ]}
+                            >
+                                <Text style={styles.boxText}>{item.value}</Text>
+                            </Animated.View>
+                        ))}
+                    </ScrollView>
                 </View>
 
                 <Text style={styles.bracket}>]</Text>
             </View>
+
 
             {/* INPUT */}
             <View style={styles.inputContainer}>

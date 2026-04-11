@@ -1,329 +1,252 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Switch } from 'react-native';
+import React, { useState } from 'react';
+import {
+    StyleSheet,
+    View,
+    Text,
+    ScrollView,
+    Switch,
+    Pressable
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../auth/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 
 const Settings = () => {
-    const navigate = useRouter();
-    const { isLoggedIn, logout } = useAuth();
-    const [darkMode, setDarkMode] = React.useState(false);
-    const [notifications, setNotifications] = React.useState(true);
-    const [soundEffects, setSoundEffects] = React.useState(true);
-    const [autoPlay, setAutoPlay] = React.useState(false);
+    const router = useRouter();
+    const { isLoggedIn, logout, user } = useAuth();
 
-    const handleLogout = () => {
-        logout();
-    };
+    const [darkMode, setDarkMode] = useState(false);
+    const [notifications, setNotifications] = useState(true);
+    const [soundEffects, setSoundEffects] = useState(true);
+    const [autoPlay, setAutoPlay] = useState(false);
 
-    const SettingsSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-        <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{title}</Text>
+    const isGuest = !isLoggedIn;
+
+    const theme = darkMode
+        ? {
+            bg: '#121212',
+            card: '#1e1e1e',
+            text: '#ffffff',
+            subText: '#aaaaaa'
+        }
+        : {
+            bg: '#f5f5f5',
+            card: '#ffffff',
+            text: '#2c3e50',
+            subText: '#7f8c8d'
+        };
+
+    const handleLogin = () => router.push('/Registration/Login');
+    const handleSignup = () => router.push('/Registration/Signup');
+
+    const handleLogout = () => logout();
+
+    const SettingsSection = ({ title, children }: any) => (
+        <View style={[styles.section, { backgroundColor: theme.card }]}>
+            <Text style={[styles.sectionTitle, { color: theme.text }]}>{title}</Text>
             {children}
         </View>
     );
 
-    const SettingsItem = ({
-        icon,
-        title,
-        subtitle,
-        onPress,
-        rightComponent
-    }: {
-        icon: string;
-        title: string;
-        subtitle?: string;
-        onPress?: () => void;
-        rightComponent?: React.ReactNode;
-    }) => (
-        <TouchableOpacity style={styles.settingsItem} onPress={onPress}>
+    const SettingsItem = ({ icon, title, subtitle, onPress, right }: any) => (
+        <Pressable
+            onPress={onPress}
+            disabled={!onPress}
+            style={({ pressed }) => [
+                styles.item,
+                {
+                    backgroundColor: pressed ? '#eee' : theme.card
+                }
+            ]}
+        >
             <View style={styles.itemLeft}>
-                <Ionicons name={icon as any} size={24} color="#6c5ce7" style={styles.itemIcon} />
-                <View>
-                    <Text style={styles.itemTitle}>{title}</Text>
-                    {subtitle && <Text style={styles.itemSubtitle}>{subtitle}</Text>}
+                <Ionicons name={icon} size={22} color="#6c5ce7" />
+                <View style={{ marginLeft: 12 }}>
+                    <Text style={[styles.itemTitle, { color: theme.text }]}>{title}</Text>
+                    {subtitle && (
+                        <Text style={[styles.itemSubtitle, { color: theme.subText }]}>
+                            {subtitle}
+                        </Text>
+                    )}
                 </View>
             </View>
-            {rightComponent || <Ionicons name="chevron-forward" size={20} color="#999" />}
-        </TouchableOpacity>
+            {right || <Ionicons name="chevron-forward" size={18} color="#999" />}
+        </Pressable>
     );
 
-    if (!isLoggedIn) {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.heading}>Settings</Text>
-                <Text style={styles.subHeading}>Not logged in</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigate.push("/Registration/Login")}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigate.push("/Registration/Signup")}>
-                    <Text style={styles.buttonText}>Register</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
-
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.heading}>Settings</Text>
+        <ScrollView style={[styles.container, { backgroundColor: theme.bg }]}>
+            <Text style={[styles.heading, { color: theme.text }]}>Settings</Text>
 
-            {/* User Profile Section */}
-            <SettingsSection title="Profile">
-                <View style={styles.profileContainer}>
-                    <View style={styles.avatar}>
-                        <Ionicons name="person" size={40} color="#fff" />
-                    </View>
-                    <View style={styles.profileInfo}>
-                        <Text style={styles.profileName}>John Doe</Text>
-                        <Text style={styles.profileEmail}>john.doe@example.com</Text>
-                        <Text style={styles.profileStats}>Level 5 · 150 problems solved</Text>
-                    </View>
+            {/* Auth Section */}
+            {isGuest && (
+                <View style={styles.authBox}>
+                    <Text style={styles.subHeading}>Login to save progress</Text>
+                    <Pressable style={styles.button} onPress={handleLogin}>
+                        <Text style={styles.buttonText}>Login</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={handleSignup}>
+                        <Text style={styles.buttonText}>Signup</Text>
+                    </Pressable>
                 </View>
-            </SettingsSection>
+            )}
 
-            {/* App Preferences */}
+            {/* Profile */}
+            {!isGuest && (
+                <SettingsSection title="Profile">
+                    <View style={styles.profile}>
+                        <View style={styles.avatar}>
+                            <Ionicons name="person" size={30} color="#fff" />
+                        </View>
+                        <View>
+                            <Text style={{ color: theme.text, fontSize: 18 }}>
+                                {user?.name || 'User'}
+                            </Text>
+                            <Text style={{ color: theme.subText }}>
+                                {user?.email}
+                            </Text>
+                        </View>
+                    </View>
+                </SettingsSection>
+            )}
+
+            {/* Preferences */}
             <SettingsSection title="Preferences">
                 <SettingsItem
                     icon="moon-outline"
                     title="Dark Mode"
-                    subtitle="Reduce eye strain in low light"
-                    rightComponent={
+                    right={
                         <Switch
                             value={darkMode}
                             onValueChange={setDarkMode}
-                            trackColor={{ false: '#e0e0e0', true: '#6c5ce7' }}
-                            thumbColor={darkMode ? '#fff' : '#f4f3f4'}
                         />
                     }
                 />
                 <SettingsItem
                     icon="notifications-outline"
                     title="Notifications"
-                    subtitle="Get reminders for daily practice"
-                    rightComponent={
+                    right={
                         <Switch
                             value={notifications}
                             onValueChange={setNotifications}
-                            trackColor={{ false: '#e0e0e0', true: '#6c5ce7' }}
-                            thumbColor={notifications ? '#fff' : '#f4f3f4'}
                         />
                     }
                 />
                 <SettingsItem
                     icon="volume-high-outline"
                     title="Sound Effects"
-                    subtitle="Play sounds for interactions"
-                    rightComponent={
+                    right={
                         <Switch
                             value={soundEffects}
                             onValueChange={setSoundEffects}
-                            trackColor={{ false: '#e0e0e0', true: '#6c5ce7' }}
-                            thumbColor={soundEffects ? '#fff' : '#f4f3f4'}
                         />
                     }
                 />
             </SettingsSection>
 
-            {/* Learning Settings */}
+            {/* Learning */}
             <SettingsSection title="Learning">
                 <SettingsItem
                     icon="bar-chart-outline"
                     title="Difficulty"
-                    subtitle="Intermediate"
-                    onPress={() => { }}
+                    subtitle={isGuest ? 'Login to unlock' : 'Intermediate'}
+                    onPress={isGuest ? handleLogin : () => { }}
                 />
                 <SettingsItem
                     icon="time-outline"
                     title="Daily Goal"
-                    subtitle="30 minutes"
-                    onPress={() => { }}
+                    subtitle={isGuest ? 'Login required' : '30 mins'}
+                    onPress={isGuest ? handleLogin : () => { }}
                 />
                 <SettingsItem
                     icon="play-circle-outline"
-                    title="Auto-play Visualizations"
-                    subtitle="Automatically start animations"
-                    rightComponent={
+                    title="Auto Play"
+                    right={
                         <Switch
                             value={autoPlay}
                             onValueChange={setAutoPlay}
-                            trackColor={{ false: '#e0e0e0', true: '#6c5ce7' }}
-                            thumbColor={autoPlay ? '#fff' : '#f4f3f4'}
                         />
                     }
                 />
-                <SettingsItem
-                    icon="trophy-outline"
-                    title="Achievements"
-                    subtitle="View your accomplishments"
-                    onPress={() => { }}
-                />
             </SettingsSection>
 
-            {/* Account Management */}
-            <SettingsSection title="Account">
-                <SettingsItem
-                    icon="person-circle-outline"
-                    title="Edit Profile"
-                    onPress={() => { }}
-                />
-                <SettingsItem
-                    icon="download-outline"
-                    title="Export Progress"
-                    subtitle="Download your learning data"
-                    onPress={() => { }}
-                />
-                <SettingsItem
-                    icon="help-circle-outline"
-                    title="Help & Support"
-                    onPress={() => { }}
-                />
-                <SettingsItem
-                    icon="information-circle-outline"
-                    title="About"
-                    subtitle="Version 1.0.0"
-                    onPress={() => { }}
-                />
+            {/* General */}
+            <SettingsSection title="General">
+                <SettingsItem icon="help-circle-outline" title="Help" />
+                <SettingsItem icon="information-circle-outline" title="About" />
             </SettingsSection>
 
-            {/* Logout Button */}
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Ionicons name="log-out-outline" size={24} color="#e74c3c" />
-                <Text style={styles.logoutText}>Logout</Text>
-            </TouchableOpacity>
+            {!isGuest && (
+                <Pressable style={styles.logout} onPress={handleLogout}>
+                    <Text style={{ color: 'red', fontWeight: 'bold' }}>Logout</Text>
+                </Pressable>
+            )}
         </ScrollView>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f5f5f5",
-    },
-    heading: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 24,
-        color: '#2c3e50',
-    },
-    subHeading: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 20,
-        color: '#7f8c8d',
-    },
+    container: { flex: 1, padding: 16 },
+    heading: { fontSize: 26, fontWeight: 'bold', marginBottom: 20 },
+    subHeading: { textAlign: 'center', marginBottom: 10 },
+
+    authBox: { marginBottom: 20 },
+
     button: {
-        backgroundColor: "#6c5ce7",
-        padding: 16,
-        borderRadius: 12,
-        marginVertical: 10,
+        backgroundColor: '#6c5ce7',
+        padding: 14,
+        borderRadius: 10,
+        marginVertical: 5
     },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: "#fff",
-        textAlign: 'center',
-    },
+    buttonText: { color: '#fff', textAlign: 'center' },
+
     section: {
-        backgroundColor: '#fff',
         borderRadius: 12,
-        marginBottom: 20,
-        overflow: 'hidden',
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
+        marginBottom: 16,
+        paddingBottom: 10
     },
+
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '600',
-        color: '#2c3e50',
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 10,
+        padding: 12
     },
-    profileContainer: {
+
+    item: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 14
+    },
+
+    itemLeft: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    itemTitle: { fontSize: 15, fontWeight: '500' },
+    itemSubtitle: { fontSize: 13 },
+
+    profile: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 20,
+        padding: 12
     },
+
     avatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
         backgroundColor: '#6c5ce7',
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 16,
+        marginRight: 10
     },
-    profileInfo: {
-        flex: 1,
-    },
-    profileName: {
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#2c3e50',
-        marginBottom: 4,
-    },
-    profileEmail: {
-        fontSize: 14,
-        color: '#7f8c8d',
-        marginBottom: 4,
-    },
-    profileStats: {
-        fontSize: 14,
-        color: '#6c5ce7',
-        fontWeight: '500',
-    },
-    settingsItem: {
-        flexDirection: 'row',
+
+    logout: {
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingVertical: 16,
-        backgroundColor: '#fff',
-        borderBottomWidth: 1,
-        borderBottomColor: '#f0f0f0',
-    },
-    itemLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-    },
-    itemIcon: {
-        marginRight: 16,
-    },
-    itemTitle: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#2c3e50',
-    },
-    itemSubtitle: {
-        fontSize: 14,
-        color: '#7f8c8d',
-        marginTop: 2,
-    },
-    logoutButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-        padding: 16,
-        borderRadius: 12,
-        marginBottom: 20,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-    },
-    logoutText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#e74c3c',
-        marginLeft: 8,
-    },
-})
+        padding: 16
+    }
+});
 
 export default Settings;
