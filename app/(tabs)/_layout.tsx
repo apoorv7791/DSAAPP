@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import CustomTabBar from '../navigation/Tabbar';
+import { ThemeContext } from '@react-navigation/native';
 
 export default function TabsLayout() {
     return (
@@ -9,10 +10,14 @@ export default function TabsLayout() {
             screenOptions={{
                 headerShown: true,
                 animation: "fade",
+                headerStyle: {
+
+                },
                 tabBarStyle: {
                     height: 60,
                     borderTopWidth: 0,
                     elevation: 10,
+
                 }
             }}
             tabBar={(props) => <CustomTabBar {...props} />}

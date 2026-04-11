@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface Topic {
     name: string;
-    route: string;
+    route?: string;
     icon?: string;
 }
 
@@ -19,6 +19,7 @@ interface Props {
     topics: Topic[];
     onSelected: (topic: Topic) => void;
     defaultOpen?: boolean;
+    theme?: any;
 }
 
 const Expandables = ({
@@ -26,6 +27,7 @@ const Expandables = ({
     topics,
     onSelected,
     defaultOpen = false,
+    theme,
 }: Props) => {
     const [expanded, setExpanded] = useState(defaultOpen);
     const [contentHeight, setContentHeight] = useState(0);

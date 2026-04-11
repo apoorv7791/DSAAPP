@@ -1,252 +1,192 @@
-import React, { useState } from 'react';
+import React, { useContext, useCallback, useMemo } from 'react';
 import {
     StyleSheet,
     View,
+    FlatList,
     Text,
-    ScrollView,
     Switch,
-    Pressable
+    ListRenderItem
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../auth/AuthContext';
-import { Ionicons } from '@expo/vector-icons';
+import Expandables from '../components/Expandable/Expandables';
+import { ThemeContext } from '../theme/ThemeContext';
+
+interface Topic {
+    name: string;
+    route?: string;
+    icon?: string;
+    right?: React.ReactNode;
+}
+
+interface Section {
+    title: string;
+    topics: Topic[];
+}
+
+interface FlatListItem {
+    type: 'header' | 'auth' | 'section';
+    title?: string;
+    topics?: Topic[];
+}
 
 const Settings = () => {
     const router = useRouter();
-    const { isLoggedIn, logout, user } = useAuth();
+    const { theme, toggleTheme } = useContext(ThemeContext);
 
-    const [darkMode, setDarkMode] = useState(false);
-    const [notifications, setNotifications] = useState(true);
-    const [soundEffects, setSoundEffects] = useState(true);
-    const [autoPlay, setAutoPlay] = useState(false);
+    const isLoggedIn = false;
 
-    const isGuest = !isLoggedIn;
+    // 🔥 navigation handler (clean + reusable)
+    const handleNavigation = useCallback((topic: Topic) => {
+        if (!topic.route) return;
+        router.push(topic.route as any);
+    }, []);
 
-    const theme = darkMode
-        ? {
-            bg: '#121212',
-            card: '#1e1e1e',
-            text: '#ffffff',
-            subText: '#aaaaaa'
-        }
-        : {
-            bg: '#f5f5f5',
-            card: '#ffffff',
-            text: '#2c3e50',
-            subText: '#7f8c8d'
-        };
-
-    const handleLogin = () => router.push('/Registration/Login');
-    const handleSignup = () => router.push('/Registration/Signup');
-
-    const handleLogout = () => logout();
-
-    const SettingsSection = ({ title, children }: any) => (
-        <View style={[styles.section, { backgroundColor: theme.card }]}>
-            <Text style={[styles.sectionTitle, { color: theme.text }]}>{title}</Text>
-            {children}
-        </View>
-    );
-
-    const SettingsItem = ({ icon, title, subtitle, onPress, right }: any) => (
-        <Pressable
-            onPress={onPress}
-            disabled={!onPress}
-            style={({ pressed }) => [
-                styles.item,
+    // 🔥 memoized settings data (performance + clarity)
+    const settingsData: Section[] = useMemo(() => [
+        {
+            title: "Preferences",
+            topics: [
                 {
-                    backgroundColor: pressed ? '#eee' : theme.card
+                    name: "Dark Mode",
+                    right: (
+                        <Switch
+                            value={theme.mode === 'dark'}
+                            onValueChange={toggleTheme}
+                        />
+                    )
+                },
+                {
+                    name: "Language",
+                    route: "/Screens/Language"
                 }
-            ]}
-        >
-            <View style={styles.itemLeft}>
-                <Ionicons name={icon} size={22} color="#6c5ce7" />
-                <View style={{ marginLeft: 12 }}>
-                    <Text style={[styles.itemTitle, { color: theme.text }]}>{title}</Text>
-                    {subtitle && (
-                        <Text style={[styles.itemSubtitle, { color: theme.subText }]}>
-                            {subtitle}
+            ]
+        },
+        {
+            title: "Learning",
+            topics: [
+                {
+                    name: "Difficulty",
+                    route: isLoggedIn
+                        ? "/Screens/Difficulty"
+                        : "/Screens/login"
+                },
+                {
+                    name: "Daily Goal",
+                    route: isLoggedIn
+                        ? "/Screens/DailyGoal"
+                        : "/Screens/login"
+                }
+            ]
+        },
+        {
+            title: "General",
+            topics: [
+                { name: "Help" },
+                { name: "About" }
+            ]
+        }
+    ], [theme.mode, isLoggedIn]);
+
+    // flattened data for FlatList
+    const flatListData: FlatListItem[] = useMemo(() => {
+        const data: FlatListItem[] = [
+            { type: 'header' }
+        ];
+
+        if (!isLoggedIn) {
+            data.push({ type: 'auth' });
+        }
+
+        settingsData.forEach(section => {
+            data.push({
+                type: 'section',
+                title: section.title,
+                topics: section.topics
+            });
+        });
+
+        return data;
+    }, [settingsData, isLoggedIn]);
+
+    // renderItem function for FlatList
+    const renderItem: ListRenderItem<FlatListItem> = useCallback(({ item }) => {
+        switch (item.type) {
+            case 'header':
+                return (
+                    <Text style={[styles.heading, { color: theme.text }]}>
+                        Settings
+                    </Text>
+                );
+            case 'auth':
+                return (
+                    <View style={styles.authBox}>
+                        <Text style={[styles.authText, { color: theme.text }]}>
+                            Login Required
                         </Text>
-                    )}
-                </View>
-            </View>
-            {right || <Ionicons name="chevron-forward" size={18} color="#999" />}
-        </Pressable>
-    );
+
+                        <Text
+                            style={[styles.loginBtn, { color: theme.primary }]}
+                            onPress={() => router.push('/Screens/login')}
+                        >
+                            Login / Sign Up
+                        </Text>
+                    </View>
+                );
+            case 'section':
+                return (
+                    <Expandables
+                        title={item.title!}
+                        theme={theme}
+                        topics={item.topics!}
+                        onSelected={handleNavigation}
+                    />
+                );
+            default:
+                return null;
+        }
+    }, [theme, handleNavigation]);
 
     return (
-        <ScrollView style={[styles.container, { backgroundColor: theme.bg }]}>
-
-
-            {/* Auth Section */}
-            {isGuest && (
-                <View style={styles.authBox}>
-                    <Text style={styles.subHeading}>Login to save progress</Text>
-                    <Pressable style={styles.button} onPress={handleLogin}>
-                        <Text style={styles.buttonText}>Login</Text>
-                    </Pressable>
-                    <Pressable style={styles.button} onPress={handleSignup}>
-                        <Text style={styles.buttonText}>Signup</Text>
-                    </Pressable>
-                </View>
-            )}
-
-            {/* Profile */}
-            {!isGuest && (
-                <SettingsSection title="Profile">
-                    <View style={styles.profile}>
-                        <View style={styles.avatar}>
-                            <Ionicons name="person" size={30} color="#fff" />
-                        </View>
-                        <View>
-                            <Text style={{ color: theme.text, fontSize: 18 }}>
-                                {user?.name || 'User'}
-                            </Text>
-                            <Text style={{ color: theme.subText }}>
-                                {user?.email}
-                            </Text>
-                        </View>
-                    </View>
-                </SettingsSection>
-            )}
-
-            {/* Preferences */}
-            <SettingsSection title="Preferences">
-                <SettingsItem
-                    icon="moon-outline"
-                    title="Dark Mode"
-                    right={
-                        <Switch
-                            value={darkMode}
-                            onValueChange={setDarkMode}
-                        />
-                    }
-                />
-                <SettingsItem
-                    icon="notifications-outline"
-                    title="Notifications"
-                    right={
-                        <Switch
-                            value={notifications}
-                            onValueChange={setNotifications}
-                        />
-                    }
-                />
-                <SettingsItem
-                    icon="volume-high-outline"
-                    title="Sound Effects"
-                    right={
-                        <Switch
-                            value={soundEffects}
-                            onValueChange={setSoundEffects}
-                        />
-                    }
-                />
-            </SettingsSection>
-
-            {/* Learning */}
-            <SettingsSection title="Learning">
-                <SettingsItem
-                    icon="bar-chart-outline"
-                    title="Difficulty"
-                    subtitle={isGuest ? 'Login to unlock' : 'Intermediate'}
-                    onPress={isGuest ? handleLogin : () => { }}
-                />
-                <SettingsItem
-                    icon="time-outline"
-                    title="Daily Goal"
-                    subtitle={isGuest ? 'Login required' : '30 mins'}
-                    onPress={isGuest ? handleLogin : () => { }}
-                />
-                <SettingsItem
-                    icon="play-circle-outline"
-                    title="Auto Play"
-                    right={
-                        <Switch
-                            value={autoPlay}
-                            onValueChange={setAutoPlay}
-                        />
-                    }
-                />
-            </SettingsSection>
-
-            {/* General */}
-            <SettingsSection title="General">
-                <SettingsItem icon="help-circle-outline" title="Help" />
-                <SettingsItem icon="information-circle-outline" title="About" />
-            </SettingsSection>
-
-            {!isGuest && (
-                <Pressable style={styles.logout} onPress={handleLogout}>
-                    <Text style={{ color: 'red', fontWeight: 'bold' }}>Logout</Text>
-                </Pressable>
-            )}
-        </ScrollView>
+        <FlatList
+            style={[styles.container, { backgroundColor: theme.bg }]}
+            data={flatListData}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.contentContainer}
+        />
     );
 };
 
+export default Settings;
+
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16 },
-    heading: { fontSize: 26, fontWeight: 'bold', marginBottom: 20 },
-    subHeading: { textAlign: 'center', marginBottom: 10 },
-
-    authBox: { marginBottom: 20 },
-
-    button: {
-        backgroundColor: '#6c5ce7',
-        padding: 14,
-        borderRadius: 10,
-        marginVertical: 5
+    container: {
+        flex: 1
     },
-    buttonText: { color: '#fff', textAlign: 'center' },
-
-    section: {
-        borderRadius: 12,
-        marginBottom: 16,
-        paddingBottom: 10
-    },
-
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: '600',
-        padding: 12
-    },
-
-    item: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 14
-    },
-
-    itemLeft: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-
-    itemTitle: { fontSize: 15, fontWeight: '500' },
-    itemSubtitle: { fontSize: 13 },
-
-    profile: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 12
-    },
-
-    avatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#6c5ce7',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10
-    },
-
-    logout: {
-        alignItems: 'center',
+    contentContainer: {
         padding: 16
+    },
+    heading: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginBottom: 20
+    },
+
+    authBox: {
+        marginBottom: 12,
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: "#f5f5f5"
+    },
+
+    authText: {
+        textAlign: 'center',
+        fontSize: 14
+    },
+    loginBtn: {
+        textAlign: 'center',
+        marginTop: 6,
+        fontWeight: '600'
     }
 });
-
-export default Settings;
