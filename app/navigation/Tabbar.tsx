@@ -25,6 +25,10 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
         <View style={styles.tabContainer}>
             <Animated.View style={[styles.slider, { width: tabWidth, transform: [{ translateX }] }]} />
             {state.routes.map((route, index) => {
+                // Skip duplicate routes by name (case-insensitive)
+                if (index > 0 && state.routes.slice(0, index).some(r => r.name.toLowerCase() === route.name.toLowerCase())) {
+                    return null;
+                }
                 const descriptor = descriptors[route.key];
                 const options = descriptor.options;
                 const isFocused = state.index === index;
@@ -46,9 +50,6 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                     size: 28,
                 });
 
-                // Get the title from options
-                const label = options.title ?? route.name;
-
                 return (
                     <TouchableOpacity key={route.key} onPress={onPress} style={styles.tabButton}>
                         {icon ? (
@@ -57,7 +58,7 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                             <View style={{ width: 28, height: 28 }} />
                         )}
                         <Text style={{ marginTop: 4, color: isFocused ? "#6c5ce7" : "#222", fontSize: 12 }}>
-                            {options.title ?? route.name}   {/* Wrapped in Text */}
+                            {options.title ?? route.name}
                         </Text>
                     </TouchableOpacity>
                 );

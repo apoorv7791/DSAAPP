@@ -5,7 +5,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Animated
+    Animated,
+    ScrollView
 } from 'react-native';
 
 const ArrayVisual = () => {
@@ -52,6 +53,24 @@ const ArrayVisual = () => {
         });
     };
 
+    const deletefromFront = () => {
+        if (animatedArray.length === 0) return;
+
+        const firstItem = animatedArray[0];
+
+        Animated.timing(firstItem.anim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => {
+            setAnimatedArray((prev) => prev.slice(1));
+        });
+    }
+
+    const resetArray = () => {
+        setAnimatedArray([]);
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Array Visualizer</Text>
@@ -61,6 +80,7 @@ const ArrayVisual = () => {
                 <Text style={styles.bracket}>[</Text>
 
                 <View style={{ flexDirection: 'row' }}>
+
                     {animatedArray.map((item, index) => (
                         <Animated.View
                             key={index}
@@ -99,13 +119,21 @@ const ArrayVisual = () => {
             </View>
 
             {/* BUTTONS */}
-            <View style={styles.buttonRow}>
+            <View style={styles.buttonGrid}>
                 <TouchableOpacity style={styles.button} onPress={addElement}>
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.button} onPress={handleRemove}>
                     <Text style={styles.buttonText}>Remove</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={deletefromFront}>
+                    <Text style={styles.buttonText}>Remove from front</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={resetArray}>
+                    <Text style={styles.buttonText}>Reset</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -150,11 +178,18 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     button: {
-        padding: 12,
+        width: "48%",   // 🔥 2 buttons per row
+        padding: 15,
         backgroundColor: "#4CAF50",
-        borderRadius: 8,
-        minWidth: 100,
+        borderRadius: 10,
         alignItems: "center",
+        marginBottom: 10,
+    },
+    buttonGrid: {
+        flexDirection: "row",
+        flexWrap: "wrap",   // 🔥 THIS makes grid possible
+        justifyContent: "space-between",
+        marginTop: 20,
     },
     buttonRow: {
         flexDirection: "row",
@@ -175,6 +210,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    grid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+    }
 });
 
 export default ArrayVisual;
