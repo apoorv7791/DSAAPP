@@ -76,7 +76,7 @@ const Settings = () => {
 
     return (
         <ScrollView style={[styles.container, { backgroundColor: theme.bg }]}>
-            <Text style={[styles.heading, { color: theme.text }]}>Settings</Text>
+
 
             {/* Auth Section */}
             {isGuest && (
