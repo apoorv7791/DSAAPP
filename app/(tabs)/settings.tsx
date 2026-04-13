@@ -126,7 +126,7 @@ const Settings = () => {
 
                         <Text
                             style={[styles.loginBtn, { color: theme.primary }]}
-                            onPress={() => router.push('/Screens/login')}
+                            onPress={() => router.push('/Registration/Login')}
                         >
                             Login / Sign Up
                         </Text>
