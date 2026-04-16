@@ -1,106 +1,137 @@
 import React from 'react';
 import { StyleSheet, View, Text, FlatList, ListRenderItem } from 'react-native';
+import { ThemeContext } from '../theme/ThemeContext';
+import { createTypography } from '../theme/Typography';
+import { spacingUtils } from '../theme/Spacing';
+import Card from '../components/Card/Card';
 
 // INTERFACE TO DEFINE THE MODULE OBJECT
 type Module = {
     id: string,
     title: string,
     description: string,
+    category?: 'algorithms' | 'dataStructures' | 'practice' | 'visual';
+    icon?: string;
 }
+
 // HOMESCREEN COMPONENT 
 const HomeScreen = () => {
+    const { theme } = React.useContext(ThemeContext);
+    const typography = createTypography(theme);
+
     // MODULES ARRAY
     const modules: Module[] = [
         {
             id: "1",
-            title: "AlgoTrainer",
+            title: "Welcome to AlgoTrainer",
             description:
-                "AlgoTrainer helps you learn Data Structures and Algorithms through simple explanations, visual examples, and hands-on practice."
+                "Master Data Structures and Algorithms through interactive learning, visual examples, and hands-on practice.",
+            category: 'algorithms',
+            icon: 'rocket'
         },
         {
             id: "2",
-            title: "What you will learn",
+            title: "What You'll Learn",
             description:
-                "Understand core DSA topics like Arrays, Linked Lists, Trees, Graphs, and Hashing step by step."
+                "Arrays, Linked Lists, Trees, Graphs, Hashing, Sorting, Searching, and Advanced Algorithmic Techniques.",
+            category: 'dataStructures',
+            icon: 'book'
         },
         {
             id: "3",
-            title: "What we offer",
+            title: "Interactive Learning",
             description:
-                "Interactive lessons, visual algorithm explanations, practice problems, and quizzes to strengthen your problem-solving skills."
+                "Visual algorithm explanations, step-by-step tutorials, and real-time code execution to enhance understanding.",
+            category: 'visual',
+            icon: 'eye'
         },
         {
             id: "4",
-            title: "Advanced concepts",
-            description: "After mastering the basics you can explore advanced techniques like BackTracking and Dynamic Programming to tackle complex problems with confidence."
+            title: "Practice Problems",
+            description: "Curated problem sets with varying difficulty levels, instant feedback, and detailed solution explanations.",
+            category: 'practice',
+            icon: 'code'
         },
         {
             id: "5",
-            title: "Practice and improve",
-            description: "Regular practice is key to mastering DSA. Use our curated problem sets and quizzes to test your understanding and track your progress."
+            title: "Track Your Progress",
+            description: "Monitor your learning journey with detailed analytics, achievement badges, and personalized recommendations.",
+            category: 'practice',
+            icon: 'trending-up'
         }
     ];
     // THIS RENDERITEM FUNCTION IS RENDERING THE ARRAY OBJECTS AS CARDS
     const renderItem: ListRenderItem<Module> = ({ item }) => {
+        const getCategoryColor = () => {
+            switch (item.category) {
+                case 'algorithms': return theme.algorithms;
+                case 'dataStructures': return theme.dataStructures;
+                case 'practice': return theme.practice;
+                case 'visual': return theme.visual;
+                default: return theme.primary;
+            }
+        };
+
+        const getGradient = () => {
+            const baseColor = getCategoryColor();
+            return [baseColor, theme.primary];
+        };
+
         return (
-            <View style={styles.card}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDescription}>{item.description}</Text>
-            </View>
+            <Card
+                theme={theme}
+                variant={item.id === "1" ? "gradient" : "elevated"}
+                gradient={item.id === "1" ? theme.primaryGradient : undefined}
+                style={spacingUtils.my.md}
+            >
+                <View style={styles.cardHeader}>
+                    <View style={[styles.categoryIndicator, { backgroundColor: getCategoryColor() }]} />
+                    <Text style={[typography.h4, { color: item.id === "1" ? theme.textInverse : theme.text }]}>
+                        {item.title}
+                    </Text>
+                </View>
+                <Text style={[typography.bodyMedium, { color: item.id === "1" ? theme.textInverse : theme.textSecondary, marginTop: 8 }]}>
+                    {item.description}
+                </Text>
+            </Card>
         )
     }
     // THIS FUNCTION IS THE MAIN RENDER FUNCTION FOR THE HOME SCREEN
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>“Welcome 👋”</Text>
+        <View style={[styles.container, { backgroundColor: theme.bg }]}>
+            <View style={[spacingUtils.px.lg, spacingUtils.py.lg]}>
+                <Text style={[typography.h1, { color: theme.text }]}>
+                    Welcome to AlgoTrainer
+                </Text>
+                <Text style={[typography.bodyMedium, { color: theme.textSecondary, marginTop: 8 }]}>
+                    Start your journey to mastering Data Structures and Algorithms
+                </Text>
+            </View>
             <FlatList<Module>
                 data={modules}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={[spacingUtils.px.lg, spacingUtils.py.xl]}
             />
         </View>
-
     );
 }
 // STYLESHEET PROPS 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: "#f5f5f5",
-        paddingBottom: 20,
-
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    cardHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
     },
-    card: {
-        backgroundColor: "#fff",
-        borderRadius: 16,
-        padding: 16,
-        marginVertical: 10,
-
-        shadowColor: "#000",
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 3 },
-        elevation: 2,
+    categoryIndicator: {
+        width: 4,
+        height: 24,
+        borderRadius: 2,
     },
-    cardTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    cardDescription: {
-        fontSize: 14,
-        color: '#555',
-        fontStyle: 'italic',
-        fontWeight: 'bold',
-        lineHeight: 20,
-    }
 })
 
 export default HomeScreen;

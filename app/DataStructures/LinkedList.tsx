@@ -3,8 +3,11 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, ScrollView } from '
 import { ToastAndroid } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
+import { ThemeContext } from '../theme/ThemeContext';
 const LinkedList = () => {
     const router = useRouter();
+    const { theme } = React.useContext(ThemeContext);
+    const styles = getStyles(theme);
     const content = [
         {
             id: "1",
@@ -211,114 +214,84 @@ const LinkedList = () => {
         </View>
     );
 }
-const styles = StyleSheet.create({
+const getStyles = (theme: any) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: theme.bg,
+        },
 
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
-    },
+        section: {
+            marginBottom: 16,
+        },
 
-    section: {
-        marginBottom: 16,
-    },
+        subHeading: {
+            fontSize: 20,
+            fontWeight: "700",
+            color: theme.text,
+            marginBottom: 6,
+            marginTop: 10,
+        },
 
-    heading: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#222",
-        marginBottom: 16,
-    },
+        text: {
+            fontSize: 16,
+            color: theme.textSecondary,
+            lineHeight: 24,
+        },
 
-    subHeading: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#222",
-        marginBottom: 6,
-        marginTop: 10,
-    },
+        listText: {
+            flex: 1,
+            fontSize: 16,
+            color: theme.textSecondary,
+        },
 
-    text: {
-        fontSize: 16,
-        color: "#555",
-        lineHeight: 24,
-    },
+        bullet: {
+            marginRight: 8,
+            color: theme.textSecondary,
+            fontSize: 16,
+        },
 
-    bold: {
-        fontWeight: "bold",
-        color: "#000",
-    },
+        codeBox: {
+            backgroundColor: theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+            padding: 14,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: theme.border,
+            marginTop: 12,
+            marginBottom: 8,
+        },
 
+        code: {
+            color: theme.mode === "dark" ? "#fff" : "#000",
+            fontFamily: "monospace",
+            fontSize: 13,
+            lineHeight: 20,
+        },
 
-    codeBox: {
-        backgroundColor: "#1e1e1e",
-        padding: 14,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: "#333",
-        marginTop: 12,   // 👈 thoda gap badhao
-        marginBottom: 8,
-    },
-    codeHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 8,
-    },
+        codeType: {
+            color: theme.textSecondary,
+            fontSize: 12,
+            flex: 1,
+        },
 
-    codeType: {
-        color: "#aaa",
-        fontSize: 12,
-        flex: 1, // 🔥 important
-    },
-    code: {
-        color: "#fff",
-        fontFamily: "monospace",
-        fontSize: 13,
-        lineHeight: 20,
-        flexWrap: "wrap", // 🔥 fix
-    },
-    copy: {
-        color: "#4da6ff",
-        fontSize: 15,
-        fontWeight: "600",
-    },
+        copy: {
+            color: theme.primary,
+            fontSize: 15,
+            fontWeight: "600",
+        },
 
-    // 🔥 List Styling
-    listRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginVertical: 4,
-    },
+        btn: {
+            backgroundColor: theme.primary,
+            paddingVertical: 10,
+            paddingHorizontal: 16,
+            borderRadius: 8,
+        },
 
-    bullet: {
-        marginRight: 8,
-        color: "#888",
-        fontSize: 16,
-    },
-
-    listText: {
-        flex: 1,
-        fontSize: 16,
-        color: "#555",
-    },
-    btn: {
-        backgroundColor: "#4da6ff",
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        alignSelf: "flex-start",
-    },
-    btnText: {
-        color: "#3617e0",
-        fontSize: 14,
-        fontWeight: "600",
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 20,
-    }
-});
-
+        btnText: {
+            color: "#fff",
+            fontSize: 14,
+            fontWeight: "600",
+        },
+    });
 export default LinkedList;

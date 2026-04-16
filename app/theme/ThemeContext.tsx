@@ -14,18 +14,31 @@ export interface ThemeType {
     bg: string;
     bgSecondary: string;
     bgTertiary: string;
+    bgCard: string;
+    bgSurface: string;
     // Text colors
     text: string;
     textSecondary: string;
     textTertiary: string;
+    textInverse: string;
     // UI elements
     border: string;
+    borderLight: string;
     shadow: string;
     // Semantic colors
     success: string;
     warning: string;
     error: string;
     info: string;
+    // Learning category colors
+    algorithms: string;
+    dataStructures: string;
+    practice: string;
+    visual: string;
+    // Gradients
+    primaryGradient: string[];
+    secondaryGradient: string[];
+    surfaceGradient: string[];
 }
 
 interface ThemeContextProps {
@@ -44,21 +57,32 @@ interface ThemeContextType {
 const defaultLightTheme: ThemeType = {
     mode: 'light',
     name: 'Light',
-    primary: '#007AFF',
-    secondary: '#5856D6',
-    accent: '#FF9500',
+    primary: '#6366f1',
+    secondary: '#8b5cf6',
+    accent: '#f59e0b',
     bg: '#ffffff',
-    bgSecondary: '#f8f9fa',
-    bgTertiary: '#e9ecef',
-    text: '#000000',
-    textSecondary: '#6c757d',
-    textTertiary: '#adb5bd',
-    border: '#dee2e6',
+    bgSecondary: '#f8fafc',
+    bgTertiary: '#f1f5f9',
+    bgCard: '#ffffff',
+    bgSurface: '#f8fafc',
+    text: '#0f172a',
+    textSecondary: '#64748b',
+    textTertiary: '#94a3b8',
+    textInverse: '#ffffff',
+    border: '#e2e8f0',
+    borderLight: '#f1f5f9',
     shadow: '#000000',
-    success: '#28a745',
-    warning: '#ffc107',
-    error: '#dc3545',
-    info: '#17a2b8',
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444',
+    info: '#06b6d4',
+    algorithms: '#6366f1',
+    dataStructures: '#8b5cf6',
+    practice: '#10b981',
+    visual: '#f59e0b',
+    primaryGradient: ['#6366f1', '#8b5cf6'],
+    secondaryGradient: ['#8b5cf6', '#ec4899'],
+    surfaceGradient: ['#ffffff', '#f8fafc'],
     card: undefined,
     subText: undefined
 };
@@ -67,21 +91,32 @@ const defaultLightTheme: ThemeType = {
 const defaultDarkTheme: ThemeType = {
     mode: 'dark',
     name: 'Dark',
-    primary: '#0A84FF',
-    secondary: '#5E5CE6',
-    accent: '#FF9F0A',
-    bg: '#000000',
-    bgSecondary: '#1c1c1e',
-    bgTertiary: '#2c2c2e',
-    text: '#ffffff',
-    textSecondary: '#8e8e93',
-    textTertiary: '#636366',
-    border: '#38383a',
+    primary: '#818cf8',
+    secondary: '#a78bfa',
+    accent: '#fbbf24',
+    bg: '#0f172a',
+    bgSecondary: '#1e293b',
+    bgTertiary: '#334155',
+    bgCard: '#1e293b',
+    bgSurface: '#1e293b',
+    text: '#f8fafc',
+    textSecondary: '#cbd5e1',
+    textTertiary: '#94a3b8',
+    textInverse: '#0f172a',
+    border: '#334155',
+    borderLight: '#475569',
     shadow: '#000000',
-    success: '#30d158',
-    warning: '#ff9f0a',
-    error: '#ff453a',
-    info: '#32d74b',
+    success: '#34d399',
+    warning: '#fbbf24',
+    error: '#f87171',
+    info: '#22d3ee',
+    algorithms: '#818cf8',
+    dataStructures: '#a78bfa',
+    practice: '#34d399',
+    visual: '#fbbf24',
+    primaryGradient: ['#818cf8', '#a78bfa'],
+    secondaryGradient: ['#a78bfa', '#f472b6'],
+    surfaceGradient: ['#1e293b', '#0f172a'],
     card: undefined,
     subText: undefined
 };
@@ -135,3 +170,5 @@ export const ThemeProvider: React.FC<ThemeContextProps> = ({ children }) => {
         </ThemeContext.Provider>
     )
 }
+
+export default ThemeProvider;

@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { View, TouchableOpacity, Animated, StyleSheet, Dimensions, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { ThemeContext } from "../theme/ThemeContext";
 
 interface TabBarProps {
     state: BottomTabBarProps["state"];
@@ -11,6 +12,8 @@ interface TabBarProps {
 const { width } = Dimensions.get("window");
 
 const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation }) => {
+    const { theme } = useContext(ThemeContext);
+
     const translateX = useRef(new Animated.Value(0)).current;
     const tabWidth = width / state.routes.length;
 
@@ -22,13 +25,27 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
     }, [state.index, tabWidth]);
 
     return (
-        <View style={styles.tabContainer}>
-            <Animated.View style={[styles.slider, { width: tabWidth, transform: [{ translateX }] }]} />
-            {state.routes.map((route, index) => {
-                // Skip duplicate routes by name (case-insensitive)
-                if (index > 0 && state.routes.slice(0, index).some(r => r.name.toLowerCase() === route.name.toLowerCase())) {
-                    return null;
+        <View
+            style={[
+                styles.tabContainer,
+                {
+                    backgroundColor: theme.bg,   // 🔥 FIXED
+                    borderTopColor: theme.border,
                 }
+            ]}
+        >
+            <Animated.View
+                style={[
+                    styles.slider,
+                    {
+                        width: tabWidth,
+                        backgroundColor: theme.primary, // 🔥 FIXED
+                        transform: [{ translateX }]
+                    }
+                ]}
+            />
+
+            {state.routes.map((route, index) => {
                 const descriptor = descriptors[route.key];
                 const options = descriptor.options;
                 const isFocused = state.index === index;
@@ -39,6 +56,7 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                         target: route.key,
                         canPreventDefault: true,
                     });
+
                     if (!isFocused && !event.defaultPrevented) {
                         navigation.navigate(route.name);
                     }
@@ -46,18 +64,21 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
 
                 const icon = options.tabBarIcon?.({
                     focused: isFocused,
-                    color: isFocused ? "#6c5ce7" : "#222",
+                    color: isFocused ? theme.primary : theme.textSecondary,
                     size: 28,
                 });
 
                 return (
                     <TouchableOpacity key={route.key} onPress={onPress} style={styles.tabButton}>
-                        {icon ? (
-                            typeof icon === "string" ? <Text>{icon}</Text> : icon
-                        ) : (
-                            <View style={{ width: 28, height: 28 }} />
-                        )}
-                        <Text style={{ marginTop: 4, color: isFocused ? "#6c5ce7" : "#222", fontSize: 12 }}>
+                        {icon}
+
+                        <Text
+                            style={{
+                                marginTop: 4,
+                                color: isFocused ? theme.primary : theme.textSecondary,
+                                fontSize: 12
+                            }}
+                        >
                             {options.title ?? route.name}
                         </Text>
                     </TouchableOpacity>
@@ -72,8 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         height: 70,
         elevation: 10,
-        backgroundColor: "#fff",
-        borderTopWidth: 0,
+        borderTopWidth: 1,
         position: "relative",
         paddingBottom: 10,
     },
@@ -84,8 +104,7 @@ const styles = StyleSheet.create({
     },
     slider: {
         position: "absolute",
-        height: 4,
-        backgroundColor: "#6c5ce7",
+        height: 3,
         bottom: 0,
         borderRadius: 2,
     },

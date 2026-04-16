@@ -153,14 +153,14 @@ export class ThemeStorage {
       const currentTheme = await this.loadCurrentTheme();
       const customThemes = await this.loadCustomThemes();
       const preferences = await this.loadThemePreferences();
-      
+
       const exportData = {
         currentTheme,
         customThemes,
         preferences,
         exportDate: new Date().toISOString()
       };
-      
+
       return JSON.stringify(exportData, null, 2);
     } catch (error) {
       console.error('Error exporting themes:', error);
@@ -172,15 +172,15 @@ export class ThemeStorage {
   static async importThemes(importData: string): Promise<void> {
     try {
       const data = JSON.parse(importData);
-      
+
       if (data.currentTheme) {
         await this.saveCurrentTheme(data.currentTheme);
       }
-      
+
       if (data.customThemes) {
         await this.saveCustomThemes(data.customThemes);
       }
-      
+
       if (data.preferences) {
         await this.saveThemePreferences(data.preferences);
       }
@@ -217,11 +217,11 @@ export class ThemeStorage {
         STORAGE_KEYS.CUSTOM_THEMES,
         STORAGE_KEYS.THEME_PREFERENCES
       ]);
-      
+
       const currentThemeSize = keys[0][1] ? keys[0][1].length : 0;
       const customThemesSize = keys[1][1] ? keys[1][1].length : 0;
       const preferencesSize = keys[2][1] ? keys[2][1].length : 0;
-      
+
       return {
         currentThemeSize,
         customThemesSize,
@@ -239,3 +239,5 @@ export class ThemeStorage {
     }
   }
 }
+
+export default ThemeStorage;

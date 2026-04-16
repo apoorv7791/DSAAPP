@@ -7,6 +7,8 @@ import {
     Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { createTypography } from '../../theme/Typography';
+import { spacingUtils } from '../../theme/Spacing';
 
 interface Topic {
     name: string;
@@ -31,6 +33,18 @@ const Expandables = ({
 }: Props) => {
     const [expanded, setExpanded] = useState(defaultOpen);
     const [contentHeight, setContentHeight] = useState(0);
+    const safeTheme = theme || {
+        text: '#000000',
+        textSecondary: '#666666',
+        textTertiary: '#999999',
+        bg: '#ffffff',
+        bgCard: '#ffffff',
+        bgSurface: '#f8f9fa',
+        border: '#e0e0e0',
+        primary: '#6366f1',
+    };
+
+    const typography = createTypography(safeTheme);
 
     const animation = useRef(new Animated.Value(defaultOpen ? 1 : 0)).current;
 
@@ -69,7 +83,7 @@ const Expandables = ({
         return topics.map((topic, index) => (
             <TouchableOpacity
                 key={index}
-                style={styles.topicItem}
+                style={[styles.topicItem, { backgroundColor: safeTheme.bgSurface }]}
                 onPress={() => onSelected(topic)}
                 activeOpacity={0.7}
             >
@@ -78,32 +92,33 @@ const Expandables = ({
                         <Ionicons
                             name={topic.icon as any}
                             size={20}
-                            color="#666"
+                            color={safeTheme.textSecondary}
                             style={styles.topicIcon}
                         />
                     )}
-                    <Text style={styles.topicText}>{topic.name}</Text>
+                    <Text style={[typography.bodyMedium, { color: safeTheme.text }]}>{topic.name}</Text>
                 </View>
                 <Ionicons
                     name="chevron-forward"
                     size={16}
-                    color="#ccc"
+                    color={safeTheme.textTertiary}
                 />
+                {topic.right && topic.right}
             </TouchableOpacity>
         ));
-    }, [topics]);
+    }, [topics, theme, typography]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: safeTheme.bgCard, borderColor: safeTheme.border }]}>
             {/* Header */}
             <TouchableOpacity style={styles.header} onPress={toggleExpand}>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={[typography.labelLarge, { color: safeTheme.text }]}>{title}</Text>
 
                 <Animated.View style={{ transform: [{ rotate }] }}>
                     <Ionicons
                         name="chevron-down"
                         size={22}
-                        color="#23238c"
+                        color={safeTheme.primary}
                     />
                 </Animated.View>
             </TouchableOpacity>
@@ -111,7 +126,7 @@ const Expandables = ({
             {/* Animated Content */}
             <Animated.View style={{ height, opacity, overflow: 'hidden' }}>
                 <View
-                    style={styles.contentContainer}
+                    style={[styles.contentContainer, { borderTopColor: safeTheme.border }]}
                     onLayout={(e) =>
                         setContentHeight(e.nativeEvent.layout.height)
                     }
@@ -127,8 +142,8 @@ export default Expandables;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "white",
-        borderRadius: 12,
+        borderRadius: 16,
+        borderWidth: 1,
         marginVertical: 8,
         paddingHorizontal: 16,
         paddingVertical: 8,
@@ -156,12 +171,13 @@ const styles = StyleSheet.create({
         borderTopColor: "#eee",
     },
     topicItem: {
-        paddingVertical: 14,
+        paddingVertical: 12,
         paddingHorizontal: 8,
         borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        marginVertical: 2,
     },
     topicContent: {
         flexDirection: 'row',

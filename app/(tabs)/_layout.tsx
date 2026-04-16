@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import CustomTabBar from '../navigation/Tabbar';
-import { ThemeContext } from '@react-navigation/native';
+import { ThemeContext } from '../theme/ThemeContext';
 
 export default function TabsLayout() {
+    const { theme } = useContext(ThemeContext);
     return (
         <Tabs
             screenOptions={{
@@ -17,8 +18,15 @@ export default function TabsLayout() {
                     height: 60,
                     borderTopWidth: 0,
                     elevation: 10,
-
-                }
+                    backgroundColor: theme.bg,
+                    borderTopColor: theme.border,
+                },
+                tabBarActiveTintColor: theme.primary,
+                tabBarInactiveTintColor: theme.textSecondary,
+                // optional icons styling
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                },
             }}
             tabBar={(props) => <CustomTabBar {...props} />}
         >

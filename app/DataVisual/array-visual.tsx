@@ -9,8 +9,11 @@ import {
     ScrollView,
     ToastAndroid
 } from 'react-native';
+import { useTheme } from '../theme/ThemeContext';
 
 const ArrayVisual = () => {
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     // 🔥 CHANGE 1: animated array
     const [animatedArray, setAnimatedArray] = useState<
@@ -168,83 +171,88 @@ const ArrayVisual = () => {
         </View>
     );
 };
+const getStyles = (theme: any) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: theme.bg,
+        },
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20, // 🔥 added spacing
-    },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-    input: {
-        borderWidth: 1,
-        margin: 10,
-        padding: 10,
-        borderRadius: 8,
-    },
-    wrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-    },
-    box: {
-        width: 50,
-        height: 50,
-        backgroundColor: "#333",
-        margin: 5,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 8,
-    },
-    boxText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    button: {
-        width: "48%",   // 🔥 2 buttons per row
-        padding: 15,
-        backgroundColor: "#4CAF50",
-        borderRadius: 10,
-        alignItems: "center",
-        marginBottom: 10,
-    },
-    buttonGrid: {
-        flexDirection: "row",
-        flexWrap: "wrap",   // 🔥 THIS makes grid possible
-        justifyContent: "space-between",
-        marginTop: 20,
-    },
-    buttonRow: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 10,
-    },
-    bracket: {
-        fontSize: 28,
-        fontWeight: "bold",
-        marginHorizontal: 5,
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    inputContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    grid: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        alignItems: "center",
-    }
-});
+        heading: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: 20,
+            color: theme.text,
+        },
+
+        input: {
+            borderWidth: 1,
+            borderColor: theme.border,
+            margin: 10,
+            padding: 10,
+            borderRadius: 8,
+            color: theme.text,
+            backgroundColor: theme.mode === 'dark' ? '#1e1e1e' : '#fff',
+        },
+
+        wrapper: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 20,
+        },
+
+        box: {
+            width: 50,
+            height: 50,
+            backgroundColor: theme.primary,
+            margin: 5,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 8,
+        },
+
+        boxText: {
+            color: "#fff",
+            fontSize: 18,
+            fontWeight: "bold",
+        },
+
+        button: {
+            width: "48%",
+            padding: 15,
+            backgroundColor: theme.primary,
+            borderRadius: 10,
+            alignItems: "center",
+            marginBottom: 10,
+        },
+
+        buttonGrid: {
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            marginTop: 20,
+        },
+
+        buttonText: {
+            color: "#fff",
+            fontSize: 16,
+            fontWeight: "bold",
+        },
+
+        bracket: {
+            fontSize: 28,
+            fontWeight: "bold",
+            marginHorizontal: 5,
+            color: theme.text,
+        },
+
+        inputContainer: {
+            justifyContent: "center",
+            alignItems: "center",
+        },
+    });
 
 export default ArrayVisual;

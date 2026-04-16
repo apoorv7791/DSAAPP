@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, ToastAndroid, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import { ThemeContext } from '../theme/ThemeContext';
+import { useRouter } from 'expo-router';
 
 const Searching = () => {
+    const { theme } = useContext(ThemeContext);
+    const styles = getStyles(theme);
+    const router = useRouter();
     const moudle = [
         {
             id: "1",
@@ -135,124 +140,126 @@ const Searching = () => {
     );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme: any) => {
+    return StyleSheet.create({
 
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: "#fff",
-    },
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: theme.bg,
+        },
 
-    section: {
-        marginBottom: 16,
-    },
+        section: {
+            marginBottom: 16,
+        },
 
-    heading: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#222",
-        marginBottom: 16,
-    },
+        heading: {
+            fontSize: 24,
+            fontWeight: "bold",
+            color: theme.text,
+            marginBottom: 16,
+        },
 
-    subHeading: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#222",
-        marginBottom: 6,
-        marginTop: 10,
-    },
+        subHeading: {
+            fontSize: 20,
+            fontWeight: "700",
+            color: theme.text,
+            marginBottom: 6,
+            marginTop: 10,
+        },
 
-    text: {
-        fontSize: 16,
-        color: "#555",
-        lineHeight: 24,
-    },
+        text: {
+            fontSize: 16,
+            color: theme.textSecondary,
+            lineHeight: 24,
+        },
 
-    bold: {
-        fontWeight: "bold",
-        color: "#000",
-    },
+        bold: {
+            fontWeight: "bold",
+            color: theme.text,
+        },
 
 
-    codeBox: {
-        backgroundColor: "#1e1e1e",
-        padding: 14,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: "#333",
-        marginTop: 12,   // 👈 thoda gap badhao
-        marginBottom: 8,
-    },
-    codeHeader: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 8,
-    },
+        codeBox: {
+            backgroundColor: "#1e1e1e",
+            padding: 14,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: "#333",
+            marginTop: 12,   // 👈 thoda gap badhao
+            marginBottom: 8,
+        },
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+        },
 
-    codeType: {
-        color: "#aaa",
-        fontSize: 12,
-    },
-    code: {
-        color: "#ffffff",
-        fontFamily: "monospace",
-        fontSize: 13,
-        lineHeight: 20,
-        flexWrap: "wrap", // 🔥 fix
-    },
-    copy: {
-        color: "#20b912",
-        fontSize: 15,
-        fontWeight: "600",
-        alignSelf: "flex-start",
+        codeType: {
+            color: "#aaa",
+            fontSize: 12,
+        },
+        code: {
+            color: "#ffffff",
+            fontFamily: "monospace",
+            fontSize: 13,
+            lineHeight: 20,
+            flexWrap: "wrap", // 🔥 fix
+        },
+        copy: {
+            color: "#20b912",
+            fontSize: 15,
+            fontWeight: "600",
+            alignSelf: "flex-start",
 
-    },
+        },
 
-    // 🔥 List Styling
-    listRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginVertical: 4,
-    },
-    listItem: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        marginVertical: 4,
-        paddingHorizontal: 12,
-        backgroundColor: "#f5f5f5",
-        borderRadius: 10,
-        elevation: 2,
-    },
+        // 🔥 List Styling
+        listRow: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginVertical: 4,
+        },
+        listItem: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginVertical: 4,
+            paddingHorizontal: 12,
+            backgroundColor: "#f5f5f5",
+            borderRadius: 10,
+            elevation: 2,
+        },
 
-    bullet: {
-        marginRight: 8,
-        color: "#888",
-        fontSize: 16,
-    },
+        bullet: {
+            marginRight: 8,
+            color: "#888",
+            fontSize: 16,
+        },
 
-    listText: {
-        flex: 1,
-        fontSize: 16,
-        color: "#555",
-    },
-    btn: {
-        backgroundColor: "#4da6ff",
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        alignSelf: "flex-start",
-    },
-    btnText: {
-        color: "#3617e0",
-        fontSize: 14,
-        fontWeight: "600",
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 20,
-    }
-});
+        listText: {
+            flex: 1,
+            fontSize: 16,
+            color: "#555",
+        },
+        btn: {
+            backgroundColor: "#4da6ff",
+            paddingVertical: 10,
+            paddingHorizontal: 16,
+            borderRadius: 8,
+            alignSelf: "flex-start",
+        },
+        btnText: {
+            color: "#3617e0",
+            fontSize: 14,
+            fontWeight: "600",
+        },
+        buttonContainer: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 20,
+        }
+    });
+}
 
 export default Searching;

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import Expandables from '../components/Expandable/Expandables';
 import { useRouter } from 'expo-router';
-
+import { ThemeContext } from '../theme/ThemeContext';
 
 // Define the module type
 interface Module {
@@ -18,6 +18,7 @@ type Topic = {
 
 const Learn: React.FC = () => {
     const router = useRouter();
+    const { theme } = useContext(ThemeContext);
 
     // Your modules data
     const modules: Module[] = [
@@ -31,14 +32,14 @@ const Learn: React.FC = () => {
                 { name: "HashMaps", icon: "key-outline", route: "hashmaps" },
                 { name: "Trees", icon: "leaf-outline", route: "trees" },
                 { name: "Graphs", icon: "share-social-outline", route: "graphs" },
-                { name: "Heaps", icon: "cube-outline", route: "heaps" }
+                { name: "Heaps", icon: "cube-outline", route: "heaps" },
             ]
         },
         {
             title: "Algorithms",
             topics: [
                 { name: "Sorting", icon: "swap-vertical-outline", route: "sorting" },
-                { name: "Searching", icon: "search-outline", route: "searching" }
+                { name: "Searching", icon: "search-outline", route: "searching" },
             ]
         },
         {
@@ -47,7 +48,7 @@ const Learn: React.FC = () => {
                 { name: "Greedy Algorithm", icon: "trending-up-outline", route: "greedy-algorithm" },
                 { name: "Dynamic Programming", icon: "code-outline", route: "dynamic-programming" },
                 { name: "Graph Algorithms", icon: "share-social-outline", route: "graph-algorithms" },
-                { name: "Recursion", icon: "refresh-outline", route: "recursion" }
+                { name: "Recursion", icon: "refresh-outline", route: "recursion" },
             ]
         }
     ];
@@ -69,12 +70,13 @@ const Learn: React.FC = () => {
         <Expandables
             title={item.title}
             topics={item.topics}
+            theme={theme}
             onSelected={(topic) => selectedTopic(item.title, topic.name)}
         />
     );
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.bg }]}>
             <FlatList
                 data={modules}
                 keyExtractor={(item) => item.title}
@@ -90,7 +92,6 @@ const Learn: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f5f5f5", // 🔥 important
         paddingHorizontal: 16,
         paddingTop: 10,
     },

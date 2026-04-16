@@ -5,11 +5,16 @@ import {
     FlatList,
     Text,
     Switch,
-    ListRenderItem
+    ListRenderItem,
+    TouchableOpacity
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import Expandables from '../components/Expandable/Expandables';
 import { ThemeContext } from '../theme/ThemeContext';
+import { createTypography } from '../theme/Typography';
+import { spacingUtils } from '../theme/Spacing';
+import Card from '../components/Card/Card';
 
 interface Topic {
     name: string;
@@ -32,6 +37,7 @@ interface FlatListItem {
 const Settings = () => {
     const router = useRouter();
     const { theme, toggleTheme } = useContext(ThemeContext);
+    const typography = createTypography(theme);
 
     const isLoggedIn = false;
 
@@ -48,41 +54,76 @@ const Settings = () => {
             topics: [
                 {
                     name: "Dark Mode",
+                    icon: "moon-outline",
                     right: (
                         <Switch
                             value={theme.mode === 'dark'}
                             onValueChange={toggleTheme}
+                            trackColor={{ false: theme.border, true: theme.primary }}
+                            thumbColor={theme.mode === 'dark' ? theme.text : theme.textSecondary}
                         />
                     )
                 },
                 {
                     name: "Language",
-                    route: "/Screens/Language"
-                }
+                    icon: "language-outline",
+                    route: "/Screens/Language",
+                    right: (
+                        <Switch
+                            value={false}
+                            onValueChange={() => { }}
+                            trackColor={{ false: theme.border, true: theme.primary }}
+                            thumbColor={theme.textSecondary}
+                        />
+                    )
+                },
+
             ]
         },
+        // {
+        //     title: "Learning",
+        //     topics: [
+        //         {
+        //             name: "Difficulty Level",
+        //             icon: "bar-chart-outline",
+        //             route: isLoggedIn
+        //                 ? "/Screens/Difficulty"
+        //                 : "/Screens/login"
+        //         },
+        //         {
+        //             name: "Daily Goal",
+        //             icon: "flag-outline",
+        //             route: isLoggedIn
+        //                 ? "/Screens/DailyGoal"
+        //                 : "/Screens/login"
+        //         },
+        //         {
+        //             name: "Progress Tracking",
+        //             icon: "analytics-outline",
+        //             route: isLoggedIn
+        //                 ? "/Screens/Progress"
+        //                 : "/Screens/login"
+        //         }
+        //     ]
+        // },
         {
-            title: "Learning",
+            title: "Support",
             topics: [
                 {
-                    name: "Difficulty",
-                    route: isLoggedIn
-                        ? "/Screens/Difficulty"
-                        : "/Screens/login"
+                    name: "Help Center",
+                    icon: "help-circle-outline",
+                    route: "/Screens/Help"
                 },
                 {
-                    name: "Daily Goal",
-                    route: isLoggedIn
-                        ? "/Screens/DailyGoal"
-                        : "/Screens/login"
+                    name: "About",
+                    icon: "information-circle-outline",
+                    route: "/Screens/About"
+                },
+                {
+                    name: "Privacy Policy",
+                    icon: "lock-closed-outline",
+                    route: "/Screens/Privacy"
                 }
-            ]
-        },
-        {
-            title: "General",
-            topics: [
-                { name: "Help" },
-                { name: "About" }
             ]
         }
     ], [theme.mode, isLoggedIn]);
@@ -113,38 +154,69 @@ const Settings = () => {
         switch (item.type) {
             case 'header':
                 return (
-                    <Text style={[styles.heading, { color: theme.text }]}>
-                        Settings
-                    </Text>
+                    <View style={[spacingUtils.px.lg, { paddingTop: 24, paddingBottom: 16 }]}>
+                        <Text style={[typography.h1, { color: theme.text }]}>
+                            Settings
+                        </Text>
+                        <Text style={[typography.bodyMedium, { color: theme.textSecondary, marginTop: 8 }]}>
+                            Customize your learning experience
+                        </Text>
+                    </View>
                 );
             case 'auth':
                 return (
-                    <View style={styles.authBox}>
-                        <Text style={[styles.authText, { color: theme.text }]}>
-                            Login Required
-                        </Text>
-
-                        <Text
-                            style={[styles.loginBtn, { color: theme.primary }]}
-                            onPress={() => router.push('/Registration/Login')}
+                    <View style={[spacingUtils.mx.lg, { marginBottom: 16 }]}>
+                        <Card
+                            theme={theme}
+                            variant="outlined"
+                            style={{ padding: 16, alignItems: 'center' }}
                         >
-                            Login / Sign Up
-                        </Text>
+                            <Ionicons
+                                name="lock-closed-outline"
+                                size={48}
+                                color={theme.textSecondary}
+                                style={{ marginBottom: 8 }}
+                            />
+                            <Text style={[typography.labelLarge, { color: theme.text }]}>
+                                Login Required
+                            </Text>
+                            <Text style={[typography.bodySmall, { color: theme.textSecondary, textAlign: 'center', marginTop: 8 }]}>
+                                Sign in to access personalized features and track your progress
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => router.push('/Registration/Login')}
+                                style={[styles.loginButton, { backgroundColor: theme.primary }]}
+                            >
+                                <Text style={[typography.labelMedium, { color: theme.textInverse }]}>
+                                    Login
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push('/Registration/Signup')}
+                                style={[styles.loginButton, { backgroundColor: theme.primary }]}
+                            >
+                                <Text style={[typography.labelMedium, { color: theme.textInverse }]}>
+                                    Sign Up
+                                </Text>
+                            </TouchableOpacity>
+                        </Card>
                     </View>
                 );
             case 'section':
                 return (
-                    <Expandables
-                        title={item.title!}
-                        theme={theme}
-                        topics={item.topics!}
-                        onSelected={handleNavigation}
-                    />
+                    <View style={[spacingUtils.mx.lg, { marginBottom: 16 }]}>
+                        <Expandables
+                            title={item.title!}
+                            theme={theme}
+                            topics={item.topics!}
+                            onSelected={handleNavigation}
+                        />
+                    </View>
                 );
             default:
                 return null;
         }
-    }, [theme, handleNavigation]);
+    }, [theme, handleNavigation, typography]);
 
     return (
         <FlatList
@@ -188,5 +260,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 6,
         fontWeight: '600'
+    },
+    loginButton: {
+        paddingHorizontal: 24,
+        paddingVertical: 12,
+        borderRadius: 8,
+        marginTop: 16,
+        alignItems: 'center',
     }
 });
