@@ -80,49 +80,49 @@ const Settings = () => {
 
             ]
         },
-        // {
-        //     title: "Learning",
-        //     topics: [
-        //         {
-        //             name: "Difficulty Level",
-        //             icon: "bar-chart-outline",
-        //             route: isLoggedIn
-        //                 ? "/Screens/Difficulty"
-        //                 : "/Screens/login"
-        //         },
-        //         {
-        //             name: "Daily Goal",
-        //             icon: "flag-outline",
-        //             route: isLoggedIn
-        //                 ? "/Screens/DailyGoal"
-        //                 : "/Screens/login"
-        //         },
-        //         {
-        //             name: "Progress Tracking",
-        //             icon: "analytics-outline",
-        //             route: isLoggedIn
-        //                 ? "/Screens/Progress"
-        //                 : "/Screens/login"
-        //         }
-        //     ]
-        // },
+        {
+            title: "Learning",
+            topics: [
+                {
+                    name: "Difficulty Level",
+                    icon: "bar-chart-outline",
+                    route: isLoggedIn
+                        ? "/Screens/Difficulty"
+                        : "/Screens/login"
+                },
+                {
+                    name: "Daily Goal",
+                    icon: "flag-outline",
+                    route: isLoggedIn
+                        ? "/Screens/DailyGoal"
+                        : "/Screens/login"
+                },
+                {
+                    name: "Progress Tracking",
+                    icon: "analytics-outline",
+                    route: isLoggedIn
+                        ? "/Screens/Progress"
+                        : "/Screens/login"
+                }
+            ]
+        },
         {
             title: "Support",
             topics: [
                 {
                     name: "Help Center",
                     icon: "help-circle-outline",
-                    route: "/Screens/Help"
+                    route: "/Support/Help"
                 },
                 {
                     name: "About",
                     icon: "information-circle-outline",
-                    route: "/Screens/About"
+                    route: "/Support/About"
                 },
                 {
                     name: "Privacy Policy",
                     icon: "lock-closed-outline",
-                    route: "/Screens/Privacy"
+                    route: "/Support/Privacy"
                 }
             ]
         }

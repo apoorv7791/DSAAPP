@@ -7,6 +7,7 @@ import { ThemeContext } from '../theme/ThemeContext';
 
 const Heaps = () => {
     const { theme } = React.useContext(ThemeContext);
+    const styles = getStyles(theme);
     const handleCopy = async (text: string) => {
         await Clipboard.setStringAsync(text);
         if (Platform.OS === 'android') ToastAndroid.show('Copied to clipboard', ToastAndroid.LONG);
@@ -249,7 +250,7 @@ Min Heap: 10 30 20 40 70 60 50
 }
 const getStyles = (theme: any) => {
 
-    StyleSheet.create({
+    return StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
@@ -295,7 +296,11 @@ const getStyles = (theme: any) => {
             marginTop: 12,
             marginBottom: 8,
         },
-
+        codeHeader: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
         code: {
             color: theme.mode === "dark" ? "#fff" : "#000",
             fontFamily: "monospace",
@@ -314,7 +319,11 @@ const getStyles = (theme: any) => {
             fontSize: 15,
             fontWeight: "600",
         },
-
+        buttonContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,

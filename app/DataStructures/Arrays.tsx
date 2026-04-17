@@ -243,13 +243,21 @@ const getStyles = (theme: any) => {
             fontSize: 16,
             color: theme.textSecondary,
         },
-
+        listRow: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginBottom: 8,
+        },
         bullet: {
             marginRight: 8,
             color: theme.textSecondary,
             fontSize: 16,
         },
-
+        codeHeader: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
         codeBox: {
             backgroundColor: theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
             padding: 14,
@@ -278,7 +286,12 @@ const getStyles = (theme: any) => {
             fontSize: 15,
             fontWeight: "600",
         },
-
+        buttonContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: 20,
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,

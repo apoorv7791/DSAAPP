@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
     StyleSheet,
     View,
@@ -9,106 +9,132 @@ import {
     ScrollView,
     ToastAndroid
 } from 'react-native';
-import { useTheme } from '../theme/ThemeContext';
+import { ThemeContext } from '../theme/ThemeContext';
 
 const ArrayVisual = () => {
-    const { theme } = useTheme();
+    const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
 
-    // 🔥 CHANGE 1: animated array
     const [animatedArray, setAnimatedArray] = useState<
-        { value: number; anim: Animated.Value }[]
+        { value: number; anim: Animated.Value; id: number }[]
     >([]);
 
     const [element, setElement] = useState("");
+    const [isAnimating, setIsAnimating] = useState(false);
 
-    // ➕ ADD ELEMENT WITH ANIMATION
+    const scrollRef = useRef<ScrollView>(null);
+
+    // 🔥 reusable animation
+    const animateIn = (anim: Animated.Value) => {
+        return Animated.timing(anim, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+        });
+    };
+
+    const animateOut = (anim: Animated.Value) => {
+        return Animated.timing(anim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        });
+    };
+
+    // ➕ ADD
     const addElement = () => {
+        if (isAnimating) return;
         if (element.trim() === '' || isNaN(Number(element))) return;
 
         const newItem = {
             value: Number(element),
             anim: new Animated.Value(0),
+            id: Date.now(),
         };
 
-        setAnimatedArray((prev) => [...prev, newItem]);
+        setAnimatedArray(prev => [...prev, newItem]);
         setElement("");
 
-        // 🔥 animation start
-        Animated.timing(newItem.anim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
+        setIsAnimating(true);
+        animateIn(newItem.anim).start(() => {
+            setIsAnimating(false);
+            scrollRef.current?.scrollToEnd({ animated: true });
+        });
     };
 
-    // ➖ REMOVE WITH ANIMATION
+    // ➖ REMOVE LAST
     const handleRemove = () => {
-        if (animatedArray.length === 0) return;
+        if (isAnimating || animatedArray.length === 0) return;
 
         const lastItem = animatedArray[animatedArray.length - 1];
 
-        Animated.timing(lastItem.anim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => {
-            setAnimatedArray((prev) => prev.slice(0, -1));
+        setIsAnimating(true);
+        animateOut(lastItem.anim).start(() => {
+            setAnimatedArray(prev => prev.slice(0, -1));
+            setIsAnimating(false);
         });
     };
 
+    // ➖ REMOVE FRONT
     const deletefromFront = () => {
-        if (animatedArray.length === 0) return;
+        if (isAnimating || animatedArray.length === 0) return;
 
         const firstItem = animatedArray[0];
 
-        Animated.timing(firstItem.anim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => {
-            setAnimatedArray((prev) => prev.slice(1));
+        setIsAnimating(true);
+        animateOut(firstItem.anim).start(() => {
+            setAnimatedArray(prev => prev.slice(1));
+            setIsAnimating(false);
         });
-    }
+    };
 
+    // 🔍 SEARCH
     const searchElement = () => {
-        const foundIndex = animatedArray.findIndex((item) => item.value === Number(element));
-        if (foundIndex === -1) {
+        if (isAnimating) return;
+
+        const index = animatedArray.findIndex(
+            item => item.value === Number(element)
+        );
+
+        if (index === -1) {
             ToastAndroid.show("Element not found", ToastAndroid.SHORT);
-        } else {
-            ToastAndroid.show("Element found at index " + foundIndex, ToastAndroid.SHORT);
-            Animated.sequence([
-                Animated.timing(animatedArray[foundIndex].anim, {
-                    toValue: 0,
-                    duration: 300,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(animatedArray[foundIndex].anim, {
-                    toValue: 1,
-                    duration: 300,
-                    useNativeDriver: true,
-                }),
-            ]).start();
+            return;
         }
-    }
+
+        ToastAndroid.show(`Found at index ${index}`, ToastAndroid.SHORT);
+
+        setIsAnimating(true);
+
+        Animated.sequence([
+            animateOut(animatedArray[index].anim),
+            animateIn(animatedArray[index].anim),
+        ]).start(() => setIsAnimating(false));
+    };
 
     const resetArray = () => {
+        if (isAnimating) return;
         setAnimatedArray([]);
-    }
+    };
 
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Array Visualizer</Text>
 
-            {/* ARRAY VISUAL */}
+            {/* ARRAY */}
             <View style={styles.wrapper}>
                 <Text style={styles.bracket}>[</Text>
 
-                <View style={{ flexDirection: 'row' }}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {animatedArray.map((item, index) => (
+                <ScrollView
+                    horizontal
+                    ref={scrollRef}
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {animatedArray.length === 0 ? (
+                        <Text style={styles.emptyText}>Empty</Text>
+                    ) : (
+                        animatedArray.map((item) => (
                             <Animated.View
-                                key={index}
+                                key={item.id}
                                 style={[
                                     styles.box,
                                     {
@@ -117,7 +143,7 @@ const ArrayVisual = () => {
                                             {
                                                 scale: item.anim.interpolate({
                                                     inputRange: [0, 1],
-                                                    outputRange: [0.5, 1],
+                                                    outputRange: [0.6, 1],
                                                 }),
                                             },
                                         ],
@@ -126,51 +152,47 @@ const ArrayVisual = () => {
                             >
                                 <Text style={styles.boxText}>{item.value}</Text>
                             </Animated.View>
-                        ))}
-                    </ScrollView>
-                </View>
+                        ))
+                    )}
+                </ScrollView>
 
                 <Text style={styles.bracket}>]</Text>
             </View>
 
-
             {/* INPUT */}
-            <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder="Enter element"
-                    value={element}
-                    onChangeText={setElement}
-                    style={styles.input}
-                    keyboardType='numeric'
-                />
-            </View>
+            <TextInput
+                placeholder="Enter number"
+                placeholderTextColor={theme.text + "80"}
+                value={element}
+                onChangeText={setElement}
+                style={styles.input}
+                keyboardType="decimal-pad"
+            />
 
             {/* BUTTONS */}
             <View style={styles.buttonGrid}>
-                <TouchableOpacity style={styles.button} onPress={addElement}>
-                    <Text style={styles.buttonText}>Add</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={handleRemove}>
-                    <Text style={styles.buttonText}>Remove</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={deletefromFront}>
-                    <Text style={styles.buttonText}>Remove from front</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={searchElement}>
-                    <Text style={styles.buttonText}>Search</Text>
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.button} onPress={resetArray}>
-                    <Text style={styles.buttonText}>Reset</Text>
-                </TouchableOpacity>
+                {[
+                    { label: "Add", fn: addElement },
+                    { label: "Remove", fn: handleRemove },
+                    { label: "Remove Front", fn: deletefromFront },
+                    { label: "Search", fn: searchElement },
+                    { label: "Reset", fn: resetArray },
+                ].map((btn, i) => (
+                    <TouchableOpacity
+                        key={i}
+                        style={styles.button}
+                        onPress={btn.fn}
+                        disabled={isAnimating}
+                        activeOpacity={0.7}
+                    >
+                        <Text style={styles.buttonText}>{btn.label}</Text>
+                    </TouchableOpacity>
+                ))}
             </View>
         </View>
     );
 };
+
 const getStyles = (theme: any) =>
     StyleSheet.create({
         container: {
@@ -190,8 +212,7 @@ const getStyles = (theme: any) =>
         input: {
             borderWidth: 1,
             borderColor: theme.border,
-            margin: 10,
-            padding: 10,
+            padding: 12,
             borderRadius: 8,
             color: theme.text,
             backgroundColor: theme.mode === 'dark' ? '#1e1e1e' : '#fff',
@@ -200,7 +221,6 @@ const getStyles = (theme: any) =>
         wrapper: {
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
             marginBottom: 20,
         },
 
@@ -212,12 +232,18 @@ const getStyles = (theme: any) =>
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 8,
+            elevation: 3,
         },
 
         boxText: {
             color: "#fff",
             fontSize: 18,
             fontWeight: "bold",
+        },
+
+        emptyText: {
+            color: theme.text,
+            padding: 10,
         },
 
         button: {
@@ -247,11 +273,6 @@ const getStyles = (theme: any) =>
             fontWeight: "bold",
             marginHorizontal: 5,
             color: theme.text,
-        },
-
-        inputContainer: {
-            justifyContent: "center",
-            alignItems: "center",
         },
     });
 

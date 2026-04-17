@@ -6,6 +6,7 @@ import { ThemeContext } from '../theme/ThemeContext';
 
 const Graphs = () => {
     const { theme } = React.useContext(ThemeContext);
+    const styles = getStyles(theme);
     const handleCopy = async (text: string) => {
         await Clipboard.setStringAsync(text);
         ToastAndroid.show("Code copied to clipboard!", ToastAndroid.LONG);
@@ -150,13 +151,18 @@ const Graphs = () => {
     );
 }
 const getStyles = (theme: any) => {
-    StyleSheet.create({
+    return StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
             backgroundColor: theme.bg,
         },
-
+        heading: {
+            fontSize: 24,
+            fontWeight: "700",
+            color: theme.text,
+            marginBottom: 12,
+        },
         section: {
             marginBottom: 16,
         },
@@ -203,7 +209,12 @@ const getStyles = (theme: any) => {
             fontSize: 13,
             lineHeight: 20,
         },
-
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+        },
         codeType: {
             color: theme.textSecondary,
             fontSize: 12,
@@ -215,7 +226,12 @@ const getStyles = (theme: any) => {
             fontSize: 15,
             fontWeight: "600",
         },
-
+        buttonContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginTop: 20,
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,

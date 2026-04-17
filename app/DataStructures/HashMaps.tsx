@@ -7,6 +7,7 @@ import { ThemeContext } from '../theme/ThemeContext';
 const HashMaps = () => {
     const router = useRouter();
     const { theme } = React.useContext(ThemeContext);
+    const styles = getStyles(theme);
     const data = [
         {
             id: "1",
@@ -234,7 +235,7 @@ The final output shows the remaining key-value pairs in the map.`
     );
 }
 const getStyles = (theme: any) => {
-    StyleSheet.create({
+    return StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
@@ -258,7 +259,11 @@ const getStyles = (theme: any) => {
             color: theme.textSecondary,
             lineHeight: 24,
         },
-
+        listRow: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginBottom: 8,
+        },
         listText: {
             flex: 1,
             fontSize: 16,
@@ -287,7 +292,11 @@ const getStyles = (theme: any) => {
             fontSize: 13,
             lineHeight: 20,
         },
-
+        codeHeader: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
         codeType: {
             color: theme.textSecondary,
             fontSize: 12,
@@ -299,7 +308,11 @@ const getStyles = (theme: any) => {
             fontSize: 15,
             fontWeight: "600",
         },
-
+        buttonContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,
