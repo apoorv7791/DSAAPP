@@ -14,6 +14,7 @@ type Topic = {
     name: string;
     icon: string;
     route: string;
+    right: any;
 }
 
 const Learn: React.FC = () => {
@@ -25,30 +26,30 @@ const Learn: React.FC = () => {
         {
             title: "Data Structures",
             topics: [
-                { name: "Arrays", icon: "grid-outline", route: "arrays" },
-                { name: "LinkedList", icon: "git-branch-outline", route: "linkedlist" },
-                { name: "Stacks", icon: "layers-outline", route: "stacks" },
-                { name: "Queues", icon: "menu-outline", route: "queues" },
-                { name: "HashMaps", icon: "key-outline", route: "hashmaps" },
-                { name: "Trees", icon: "leaf-outline", route: "trees" },
-                { name: "Graphs", icon: "share-social-outline", route: "graphs" },
-                { name: "Heaps", icon: "cube-outline", route: "heaps" },
+                { name: "Arrays", icon: "grid-outline", route: "arrays", right: null },
+                { name: "LinkedList", icon: "git-branch-outline", route: "linkedlist", right: null },
+                { name: "Stacks", icon: "layers-outline", route: "stacks", right: null },
+                { name: "Queues", icon: "menu-outline", route: "queues", right: null },
+                { name: "HashMaps", icon: "key-outline", route: "hashmaps", right: null },
+                { name: "Trees", icon: "leaf-outline", route: "trees", right: null },
+                { name: "Graphs", icon: "share-social-outline", route: "graphs", right: null },
+                { name: "Heaps", icon: "cube-outline", route: "heaps", right: null },
             ]
         },
         {
             title: "Algorithms",
             topics: [
-                { name: "Sorting", icon: "swap-vertical-outline", route: "sorting" },
-                { name: "Searching", icon: "search-outline", route: "searching" },
+                { name: "Sorting", icon: "swap-vertical-outline", route: "sorting", right: null },
+                { name: "Searching", icon: "search-outline", route: "searching", right: null },
             ]
         },
         {
             title: "Advanced Algorithms",
             topics: [
-                { name: "Greedy Algorithm", icon: "trending-up-outline", route: "greedy-algorithm" },
-                { name: "Dynamic Programming", icon: "code-outline", route: "dynamic-programming" },
-                { name: "Graph Algorithms", icon: "share-social-outline", route: "graph-algorithms" },
-                { name: "Recursion", icon: "refresh-outline", route: "recursion" },
+                { name: "Greedy Algorithm", icon: "trending-up-outline", route: "greedy-algorithm", right: null },
+                { name: "Dynamic Programming", icon: "code-outline", route: "dynamic-programming", right: null },
+                { name: "Graph Algorithms", icon: "share-social-outline", route: "graph-algorithms", right: null },
+                { name: "Recursion", icon: "refresh-outline", route: "recursion", right: null },
             ]
         }
     ];

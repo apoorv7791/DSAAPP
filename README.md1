@@ -1,56 +1,111 @@
-    # AlgoTrainer
+# AlgoTrainer
 
-    ## 🌟 What AlgoTrainer Is
-    AlgoTrainer is a mobile learning app to help beginners learn Data Structures and Algorithms step-by-step with easy explanations, visual examples, and quick practice.
+## 🌟 What AlgoTrainer Is
+AlgoTrainer is a mobile-first learning app that helps beginners learn Data Structures and Algorithms step-by-step using:
+- Simple explanations
+- Visual intuition
+- Hands-on practice
 
-    ## 🎯 Why This App Exists
-    Algorithm skills are essential for coding interviews and real-world software problems. This app gives you:
-    - Concept-focused lessons
-    - Visual intuition for algorithm behavior
-    - Practice sets to apply what you learn
+The goal is to make DSA feel **understandable, visual, and practice-driven**, not memorization-heavy.
 
-    ## 📚 What You Learn
-    ### Core foundations
-    - Arrays
-    - Linked Lists
-    - Stacks
-    - Queues
-    - Trees
-    - Graphs
-    - Hash Maps
+---
 
-    ### Algorithms
-    - Searching
-    - Sorting
-    - Graph traversal and basics
+## 🎯 Why This App Exists
+Most learners struggle with DSA because:
+- Concepts feel abstract
+- They don’t see how algorithms actually work
+- Practice feels disconnected from theory
 
-    ### Advanced concepts
-    - Dynamic Programming
-    - Greedy approaches
-    - Backtracking
+AlgoTrainer solves this by combining:
+✔ Concept clarity  
+✔ Visual learning  
+✔ Immediate practice  
 
-    ## 🚀 App Structure
-    - **Home**: Welcome + quick overview cards
-    - **Learn**: Lesson modules and topic pages
-    - **Settings**: App preferences and progress controls
-    - **Modules**: Data structures, algorithms, advanced topics with explanations
+---
 
-    ## 🧠 How to Use It
-    1. Start with basic topics (Arrays, Linked Lists).
-    2. Read the short explanation and examples.
-    3. Practice problems for each topic.
-    4. Move to advanced topics when ready.
+## 📚 Learning Path
 
-    ## 🔧 Future Enhancements
-    - Interactive algorithm visualizations
-    - Quizzes + scoring
-    - Goal tracking and streaks
-    - Daily challenge mode
+### 🧱 Core Data Structures
+- Arrays
+- Linked Lists
+- Stacks
+- Queues
+- Hash Maps
+- Trees
 
-    ## 💡 Developer Notes
-    - Built with Expo + React Native (TypeScript)
-    - Main UI files are in `app/(tabs)` and topic pages in `app/DataStructures`, `app/Algorithms`, `app/Advanced`
+### 🔍 Algorithms
+- Searching (Linear, Binary)
+- Sorting (Bubble → Quick Sort)
+- Graph Traversal (BFS / DFS basics)
 
-    ---
+### 🧠 Advanced Topics
+- Dynamic Programming (intro → patterns)
+- Greedy Algorithms
+- Backtracking
 
-    > Keep this note as your single source of truth. Update it whenever you add new topics, new screens, or new features.
+---
+
+## 🧭 App Architecture
+
+### 🏠 Home
+- Welcome screen
+- Quick access cards (Learn / Practice / Progress)
+
+### 📖 Learn
+- Topic-based learning modules
+- Step-by-step explanations
+- Visual breakdown of concepts
+
+### 🧪 Practice
+- Topic-wise coding problems
+- Beginner → Medium progression
+- Instant feedback (future scope)
+
+### ⚙️ Settings
+- Theme controls
+- Progress tracking
+- Learning preferences
+
+---
+
+## 🧠 Learning Flow (Core Idea)
+1. Select a topic (e.g., Arrays)
+2. Understand concept with simple explanation
+3. See visual behavior (how data changes)
+4. Solve guided practice problems
+5. Unlock next topic
+
+---
+
+## 🔧 Tech Stack
+- Expo + React Native
+- TypeScript
+- React Navigation / Expo Router
+- Backend (planned): Node.js + MongoDB / Supabase
+
+---
+
+## 🧪 Future Enhancements
+- Interactive algorithm visualizations (step-by-step animation)
+- Daily coding challenges
+- Streak + gamification system
+- AI-based hints for problems
+- Leaderboard / progress comparison
+
+---
+
+## 🧠 Developer Notes (IMPORTANT)
+- This repo is the **source of truth for app structure**
+- Any new feature must update this README first
+- UI structure lives in:
+  - `app/(tabs)` → main navigation screens
+  - `app/DataStructures` → learning modules
+  - `app/Algorithms` → algorithm topics
+  - `app/Advanced` → advanced concepts
+
+---
+
+## ⚡ Philosophy
+> “If you can visualize it, you can understand it.”
+
+AlgoTrainer is not about memorizing algorithms — it’s about *seeing how they behave*.

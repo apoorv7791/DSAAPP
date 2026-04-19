@@ -293,5 +293,15 @@ const getStyles = (theme: any) =>
             fontSize: 14,
             fontWeight: "600",
         },
+
+        buttonContainer: {
+            alignItems: "center",
+            marginTop: 16,
+        },
+
+        listRow: {
+            flexDirection: "row",
+            marginBottom: 8,
+        },
     });
 export default LinkedList;

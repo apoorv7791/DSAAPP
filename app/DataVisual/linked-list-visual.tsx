@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { ThemeContext } from '../theme/ThemeContext';
+
 
 
 interface ListNode {
@@ -11,8 +13,10 @@ interface ListNode {
 // Utility function to generate unique IDs
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
+
 // Arrow component for visual connections
-const Arrow = () => (
+const Arrow = ({ styles }: { styles: ReturnType<typeof getStyles> }) => (
+
     <View style={styles.arrowContainer}>
         <View style={styles.arrowLine} />
         <View style={styles.arrowHead} />
@@ -20,11 +24,13 @@ const Arrow = () => (
 );
 
 // Individual node component
-const NodeComponent = ({ node, isHead, isTail, isAnimating }: {
+const NodeComponent = ({ node, isHead, isTail, isAnimating, styles }: {
+
     node: ListNode;
     isHead: boolean;
     isTail: boolean;
     isAnimating: boolean;
+    styles: ReturnType<typeof getStyles>;
 }) => (
     <View style={styles.nodeWrapper}>
         <View style={[
@@ -35,17 +41,22 @@ const NodeComponent = ({ node, isHead, isTail, isAnimating }: {
         ]}>
             <Text style={styles.nodeValue}>{node.value}</Text>
         </View>
-        {node.next && <Arrow />}
+        {node.next && <Arrow styles={styles} />}
     </View>
 );
 
 const LinkedListVisual = () => {
 
     // State management
+    const { theme } = useContext(ThemeContext);
+
+    const styles = useMemo(() => getStyles(theme), [theme]);
+
     const [nodes, setNodes] = useState<ListNode[]>([]);
     const [headId, setHeadId] = useState<string | null>(null);
     const [tailId, setTailId] = useState<string | null>(null);
     const [animatingNode, setAnimatingNode] = useState<string | null>(null);
+
 
     // Core operations
     const insertAtHead = (value: number) => {
@@ -139,6 +150,7 @@ const LinkedListVisual = () => {
                                 isHead={node.id === headId}
                                 isTail={node.id === tailId}
                                 isAnimating={node.id === animatingNode}
+                                styles={styles}
                             />
                         ))
                     )}
@@ -177,137 +189,139 @@ const LinkedListVisual = () => {
         </View>
     );
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: '#f5f5f5'
-    },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 20,
-        color: '#333'
-    },
-    scrollView: {
-        maxHeight: 120,
-        marginBottom: 20
-    },
-    listContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        minHeight: 80
-    },
-    emptyText: {
-        fontSize: 16,
-        color: '#666',
-        fontStyle: 'italic'
-    },
-    nodeWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    nodeBox: {
-        width: 60,
-        height: 60,
-        backgroundColor: '#4A90E2',
-        borderRadius: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 5,
-        borderWidth: 2,
-        borderColor: '#2E5C8A'
-    },
-    nodeValue: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 16
-    },
-    headNode: {
-        backgroundColor: '#E74C3C',
-        borderColor: '#C0392B'
-    },
-    tailNode: {
-        backgroundColor: '#27AE60',
-        borderColor: '#229954'
-    },
-    animatingNode: {
-        transform: [{ scale: 1.1 }],
-        backgroundColor: '#F39C12'
-    },
-    arrowContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 2
-    },
-    arrowLine: {
-        width: 20,
-        height: 2,
-        backgroundColor: '#333'
-    },
-    arrowHead: {
-        width: 0,
-        height: 0,
-        borderLeftWidth: 8,
-        borderLeftColor: '#333',
-        borderTopWidth: 6,
-        borderTopColor: 'transparent',
-        borderBottomWidth: 6,
-        borderBottomColor: 'transparent'
-    },
-    controlPanel: {
-        backgroundColor: 'white',
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3
-    },
-    buttonRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 10
-    },
-    button: {
-        backgroundColor: '#4A90E2',
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-        borderRadius: 8,
-        minWidth: 100,
-        alignItems: 'center'
-    },
-    deleteButton: {
-        backgroundColor: '#E74C3C'
-    },
-    clearButton: {
-        backgroundColor: '#95A5A6',
-        width: '100%'
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 14
-    },
-    infoPanel: {
-        backgroundColor: 'white',
-        padding: 15,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3
-    },
-    infoText: {
-        fontSize: 14,
-        color: '#333',
-        marginBottom: 5
-    }
-});
+const getStyles = (theme: any) => {
+    return StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: '#f5f5f5'
+        },
+        heading: {
+            fontSize: 24,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: 20,
+            color: '#333'
+        },
+        scrollView: {
+            maxHeight: 120,
+            marginBottom: 20
+        },
+        listContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 10,
+            minHeight: 80
+        },
+        emptyText: {
+            fontSize: 16,
+            color: '#666',
+            fontStyle: 'italic'
+        },
+        nodeWrapper: {
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        nodeBox: {
+            width: 60,
+            height: 60,
+            backgroundColor: '#4A90E2',
+            borderRadius: 8,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 5,
+            borderWidth: 2,
+            borderColor: '#2E5C8A'
+        },
+        nodeValue: {
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: 16
+        },
+        headNode: {
+            backgroundColor: '#E74C3C',
+            borderColor: '#C0392B'
+        },
+        tailNode: {
+            backgroundColor: '#27AE60',
+            borderColor: '#229954'
+        },
+        animatingNode: {
+            transform: [{ scale: 1.1 }],
+            backgroundColor: '#F39C12'
+        },
+        arrowContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 2
+        },
+        arrowLine: {
+            width: 20,
+            height: 2,
+            backgroundColor: '#333'
+        },
+        arrowHead: {
+            width: 0,
+            height: 0,
+            borderLeftWidth: 8,
+            borderLeftColor: '#333',
+            borderTopWidth: 6,
+            borderTopColor: 'transparent',
+            borderBottomWidth: 6,
+            borderBottomColor: 'transparent'
+        },
+        controlPanel: {
+            backgroundColor: 'white',
+            padding: 15,
+            borderRadius: 10,
+            marginBottom: 20,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 3
+        },
+        buttonRow: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            marginBottom: 10
+        },
+        button: {
+            backgroundColor: '#4A90E2',
+            paddingHorizontal: 20,
+            paddingVertical: 12,
+            borderRadius: 8,
+            minWidth: 100,
+            alignItems: 'center'
+        },
+        deleteButton: {
+            backgroundColor: '#E74C3C'
+        },
+        clearButton: {
+            backgroundColor: '#95A5A6',
+            width: '100%'
+        },
+        buttonText: {
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: 14
+        },
+        infoPanel: {
+            backgroundColor: 'white',
+            padding: 15,
+            borderRadius: 10,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 3
+        },
+        infoText: {
+            fontSize: 14,
+            color: '#333',
+            marginBottom: 5
+        }
+    });
 
+}
 export default LinkedListVisual;

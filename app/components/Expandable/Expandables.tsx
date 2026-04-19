@@ -11,6 +11,7 @@ import { createTypography } from '../../theme/Typography';
 import { spacingUtils } from '../../theme/Spacing';
 
 interface Topic {
+    right: any;
     name: string;
     route?: string;
     icon?: string;

@@ -178,7 +178,11 @@ const getStyles = (theme: any) => {
             fontSize: 16,
             color: theme.textSecondary,
         },
-
+        listRow: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginBottom: 8,
+        },
         bullet: {
             marginRight: 8,
             color: theme.textSecondary,
@@ -194,7 +198,11 @@ const getStyles = (theme: any) => {
             marginTop: 12,
             marginBottom: 8,
         },
-
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+        },
         code: {
             color: theme.mode === "dark" ? "#fff" : "#000",
             fontFamily: "monospace",
@@ -226,6 +234,12 @@ const getStyles = (theme: any) => {
             fontSize: 14,
             fontWeight: "600",
         },
+        buttonContainer: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: 20,
+        }
     });
 }
 

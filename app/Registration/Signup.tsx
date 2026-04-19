@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     ToastAndroid
 } from 'react-native';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { ThemeContext } from '../theme/ThemeContext';
 
 const Signup = () => {

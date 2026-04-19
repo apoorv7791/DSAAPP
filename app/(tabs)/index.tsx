@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, ListRenderItem } from 'react-native';
 import { ThemeContext } from '../theme/ThemeContext';
 import { createTypography } from '../theme/Typography';
 import { spacingUtils } from '../theme/Spacing';
 import Card from '../components/Card/Card';
+import { supabase } from '../../lib/supabase';
 
 // INTERFACE TO DEFINE THE MODULE OBJECT
 type Module = {
@@ -81,7 +82,7 @@ const HomeScreen = () => {
             <Card
                 theme={theme}
                 variant={item.id === "1" ? "gradient" : "elevated"}
-                gradient={item.id === "1" ? theme.primaryGradient : undefined}
+                gradient={item.id === "1" ? (theme.primaryGradient as [string, string, ...string[]]) : undefined}
                 style={spacingUtils.my.md}
             >
                 <View style={styles.cardHeader}>

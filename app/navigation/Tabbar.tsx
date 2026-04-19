@@ -16,13 +16,14 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
 
     const translateX = useRef(new Animated.Value(0)).current;
     const tabWidth = width / state.routes.length;
+    const sliderWidth = tabWidth * 0.8;
 
     useEffect(() => {
         Animated.spring(translateX, {
-            toValue: state.index * tabWidth,
+            toValue: state.index * tabWidth + (tabWidth - sliderWidth) / 2,
             useNativeDriver: true,
         }).start();
-    }, [state.index, tabWidth]);
+    }, [state.index, tabWidth, sliderWidth]);
 
     return (
         <View
@@ -38,7 +39,7 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                 style={[
                     styles.slider,
                     {
-                        width: tabWidth,
+                        width: sliderWidth,
                         backgroundColor: theme.primary, // 🔥 FIXED
                         transform: [{ translateX }]
                     }
@@ -104,9 +105,10 @@ const styles = StyleSheet.create({
     },
     slider: {
         position: "absolute",
-        height: 3,
-        bottom: 0,
-        borderRadius: 2,
+        width: 60,
+        height: 5,
+        bottom: 9,
+        borderRadius: 8,
     },
 });
 

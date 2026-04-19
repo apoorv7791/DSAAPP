@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { ThemeContext } from '../theme/ThemeContext';
 import { useContext } from 'react';
 
@@ -32,12 +32,12 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+        <View style={[styles.container, { backgroundColor: theme.bg }]}>
+            <Text style={[styles.title, { color: theme.text }]}>Login</Text>
 
             <TextInput
                 placeholder="Email"
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.bgCard, borderColor: theme.border }]}
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
@@ -46,7 +46,7 @@ const Login = () => {
 
             <TextInput
                 placeholder="Password"
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.bgCard, borderColor: theme.border }]}
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
@@ -68,7 +68,7 @@ const getStyles = (theme: any) => {
         },
         title: {
             fontSize: 24,
-            fontWeight: 'bold',
+            fontWeight: theme.fontWeightBold,
             marginBottom: 20,
             textAlign: 'center',
         },
@@ -78,6 +78,9 @@ const getStyles = (theme: any) => {
             padding: 12,
             marginBottom: 10,
             borderRadius: 8,
+        },
+        inputBg: {
+            backgroundColor: '#fff',
         },
         button: {
             backgroundColor: '#000',
