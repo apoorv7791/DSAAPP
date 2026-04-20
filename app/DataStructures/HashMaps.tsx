@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Platform } from 'react-native';
+import { StyleSheet, View, Text, Pressable, ScrollView, FlatList, Platform } from 'react-native';
 import * as  Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -171,9 +171,9 @@ The final output shows the remaining key-value pairs in the map.`
                                 {item.language} • {item.dataType}
                             </Text>
 
-                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
+                            <Pressable onPress={() => handleCopy(item.text)}>
                                 <Text style={styles.copy}>COPY</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -202,9 +202,9 @@ The final output shows the remaining key-value pairs in the map.`
                                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                         <Text style={styles.code}>{code.text}</Text>
                                     </ScrollView>
-                                    <TouchableOpacity onPress={() => handleCopy(code.text)} style={{ position: "absolute", top: 8, right: 8 }}>
+                                    <Pressable onPress={() => handleCopy(code.text)} style={{ position: "absolute", top: 8, right: 8 }}>
                                         <Text style={styles.copy}>Copy</Text>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 </View>
                             </View>
                         ))}
@@ -224,9 +224,9 @@ The final output shows the remaining key-value pairs in the map.`
                 showsHorizontalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/hash-map-visual")}>
+                        <Pressable style={styles.btn} onPress={() => router.push("/DataVisual/hash-map-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

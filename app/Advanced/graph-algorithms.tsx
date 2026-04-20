@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable, ToastAndroid } from 'react-native';
 import { FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { ThemeContext } from '../theme/ThemeContext';
@@ -103,9 +103,9 @@ const GraphAlgorithms = () => {
                 return (
                     <View style={styles.codeBox}>
                         <View style={styles.codeHeader}>
-                            <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                            <Pressable onPress={() => handleCopy(item.code)}>
                                 <Text style={styles.copy}>Copy</Text>
-                            </TouchableOpacity>
+                            </Pressable>
 
                             <Text style={styles.codeType}>
                                 {item.language} • {item.dataType}
@@ -130,9 +130,9 @@ const GraphAlgorithms = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <Pressable style={styles.btn}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

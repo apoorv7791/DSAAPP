@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ToastAndroid, Platform, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, ToastAndroid, Platform, Pressable, ScrollView, FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { ThemeContext } from '../theme/ThemeContext';
@@ -7,6 +7,7 @@ import { useContext } from 'react';
 const Trees = () => {
     const router = useRouter();
     const { theme } = useContext(ThemeContext);
+    const styles = getStyles(theme);
     const data = [
         {
             id: "1",
@@ -149,9 +150,9 @@ void inorder() {
                                 {item.language} • {item.dataType}
                             </Text>
 
-                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
+                            <Pressable onPress={() => handleCopy(item.text)}>
                                 <Text style={styles.copy}>COPY</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -173,9 +174,9 @@ void inorder() {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/tree-visual")}>
+                        <Pressable style={styles.btn} onPress={() => router.push("/DataVisual/tree-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />
@@ -184,13 +185,17 @@ void inorder() {
 }
 const getStyles = (theme: any) => {
 
-    StyleSheet.create({
+    return StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
             backgroundColor: theme.bg,
         },
-
+        heading: {
+            fontSize: 22,
+            fontWeight: "700",
+            color: theme.text,
+        },
         section: {
             marginBottom: 16,
         },
@@ -237,7 +242,12 @@ const getStyles = (theme: any) => {
             fontSize: 13,
             lineHeight: 20,
         },
-
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+        },
         codeType: {
             color: theme.textSecondary,
             fontSize: 12,
@@ -249,7 +259,12 @@ const getStyles = (theme: any) => {
             fontSize: 15,
             fontWeight: "600",
         },
-
+        buttonContainer: {
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 20,
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,

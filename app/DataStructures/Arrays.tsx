@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Pressable, FlatList, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';;
 import { useRouter } from 'expo-router';
@@ -168,9 +168,9 @@ const Arrays = () => {
                                 {item.language} • {item.dataType}
                             </Text>
 
-                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
+                            <Pressable onPress={() => handleCopy(item.text)}>
                                 <Text style={styles.copy}>COPY</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -203,9 +203,9 @@ const Arrays = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/array-visual")}>
+                        <Pressable style={styles.btn} onPress={() => router.push("/DataVisual/array-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

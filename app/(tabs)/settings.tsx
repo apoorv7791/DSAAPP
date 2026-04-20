@@ -6,7 +6,7 @@ import {
     Text,
     Switch,
     ListRenderItem,
-    TouchableOpacity
+    Pressable
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ interface Topic {
     name: string;
     route?: string;
     icon?: string;
-    right?: React.ReactNode;
+    right: React.ReactNode | null;
 }
 
 interface Section {
@@ -88,21 +88,24 @@ const Settings = () => {
                     icon: "bar-chart-outline",
                     route: isLoggedIn
                         ? "/Screens/Difficulty"
-                        : "/Screens/login"
+                        : "/Screens/login",
+                    right: null
                 },
                 {
                     name: "Daily Goal",
                     icon: "flag-outline",
                     route: isLoggedIn
                         ? "/Screens/DailyGoal"
-                        : "/Screens/login"
+                        : "/Screens/login",
+                    right: null
                 },
                 {
                     name: "Progress Tracking",
                     icon: "analytics-outline",
                     route: isLoggedIn
                         ? "/Screens/Progress"
-                        : "/Screens/login"
+                        : "/Screens/login",
+                    right: null
                 }
             ]
         },
@@ -112,17 +115,20 @@ const Settings = () => {
                 {
                     name: "Help Center",
                     icon: "help-circle-outline",
-                    route: "/Support/Help"
+                    route: "/Support/Help",
+                    right: null
                 },
                 {
                     name: "About",
                     icon: "information-circle-outline",
-                    route: "/Support/About"
+                    route: "/Support/About",
+                    right: null
                 },
                 {
                     name: "Privacy Policy",
                     icon: "lock-closed-outline",
-                    route: "/Support/Privacy"
+                    route: "/Support/Privacy",
+                    right: null
                 }
             ]
         }
@@ -183,22 +189,22 @@ const Settings = () => {
                             <Text style={[typography.bodySmall, { color: theme.textSecondary, textAlign: 'center', marginTop: 8 }]}>
                                 Sign in to access personalized features and track your progress
                             </Text>
-                            <TouchableOpacity
+                            <Pressable
                                 onPress={() => router.push('/Registration/Login')}
                                 style={[styles.loginButton, { backgroundColor: theme.primary }]}
                             >
                                 <Text style={[typography.labelMedium, { color: theme.textInverse }]}>
                                     Login
                                 </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
+                            </Pressable>
+                            <Pressable
                                 onPress={() => router.push('/Registration/Signup')}
                                 style={[styles.loginButton, { backgroundColor: theme.primary }]}
                             >
                                 <Text style={[typography.labelMedium, { color: theme.textInverse }]}>
                                     Sign Up
                                 </Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </Card>
                     </View>
                 );

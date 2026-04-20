@@ -4,7 +4,7 @@ import {
     View,
     Text,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     Animated,
     ScrollView,
     ToastAndroid
@@ -178,15 +178,14 @@ const ArrayVisual = () => {
                     { label: "Search", fn: searchElement },
                     { label: "Reset", fn: resetArray },
                 ].map((btn, i) => (
-                    <TouchableOpacity
+                    <Pressable
                         key={i}
                         style={styles.button}
                         onPress={btn.fn}
                         disabled={isAnimating}
-                        activeOpacity={0.7}
                     >
                         <Text style={styles.buttonText}>{btn.label}</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 ))}
             </View>
         </View>

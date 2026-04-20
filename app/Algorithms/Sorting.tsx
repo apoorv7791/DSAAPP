@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, ToastAndroid, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ToastAndroid, FlatList, Pressable, ScrollView } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { ThemeContext } from '../theme/ThemeContext';
@@ -249,9 +249,9 @@ const Sorting = () => {
 
                         <View style={styles.codeBox}>
                             <View style={styles.codeHeader}>
-                                <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                <Pressable onPress={() => handleCopy(item.code)}>
                                     <Text style={styles.copy}>Copy</Text>
-                                </TouchableOpacity>
+                                </Pressable>
                             </View>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                 <Text style={styles.code}>{item.code}</Text>
@@ -273,9 +273,9 @@ const Sorting = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <Pressable style={styles.btn}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

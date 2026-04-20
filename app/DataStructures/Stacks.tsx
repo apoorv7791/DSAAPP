@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Platform, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Pressable, FlatList, Platform, ScrollView } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
@@ -137,9 +137,9 @@ if (top < 0) {
                                 {item.language} • {item.dataType}
                             </Text>
 
-                            <TouchableOpacity onPress={() => handleCopy(item.text)}>
+                            <Pressable onPress={() => handleCopy(item.text)}>
                                 <Text style={styles.copy}>COPY</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
 
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -160,9 +160,9 @@ if (top < 0) {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn} onPress={() => router.push("/DataVisual/stack-visual")}>
+                        <Pressable style={styles.btn} onPress={() => router.push("/DataVisual/stack-visual")}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />
@@ -170,8 +170,8 @@ if (top < 0) {
     );
 }
 
-const getStyles = (theme: any) =>
-    StyleSheet.create({
+const getStyles = (theme: any) => {
+    return StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
@@ -224,7 +224,12 @@ const getStyles = (theme: any) =>
             fontSize: 13,
             lineHeight: 20,
         },
-
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+        },
         codeType: {
             color: theme.textSecondary,
             fontSize: 12,
@@ -237,6 +242,12 @@ const getStyles = (theme: any) =>
             fontWeight: "600",
         },
 
+        buttonContainer: {
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 20,
+        },
         btn: {
             backgroundColor: theme.primary,
             paddingVertical: 10,
@@ -250,4 +261,5 @@ const getStyles = (theme: any) =>
             fontWeight: "600",
         },
     });
+}
 export default Stacks;

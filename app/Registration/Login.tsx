@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ToastAndroid } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { ThemeContext } from '../theme/ThemeContext';
 import { useContext } from 'react';
@@ -52,9 +52,9 @@ const Login = () => {
                 onChangeText={setPassword}
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Pressable style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 };

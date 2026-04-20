@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   View,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   ViewStyle,
   Animated,
@@ -114,12 +114,11 @@ const Card: React.FC<CardProps> = ({
 
   if (variant === 'gradient' && gradient) {
     return (
-      <TouchableOpacity
+      <Pressable
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
-        activeOpacity={disabled ? 1 : 0.8}
       >
         <Animated.View style={{ transform: [{ scale: animatedValue }] }}>
           <LinearGradient
@@ -131,23 +130,22 @@ const Card: React.FC<CardProps> = ({
             {cardContent}
           </LinearGradient>
         </Animated.View>
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 
   if (onPress) {
     return (
-      <TouchableOpacity
+      <Pressable
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
-        activeOpacity={disabled ? 1 : 0.8}
       >
         <Animated.View style={{ transform: [{ scale: animatedValue }] }}>
           {cardContent}
         </Animated.View>
-      </TouchableOpacity>
+      </Pressable>
     );
   }
 

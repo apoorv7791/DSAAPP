@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
+    Pressable,
     StyleSheet,
     Animated,
 } from 'react-native';
@@ -11,7 +11,7 @@ import { createTypography } from '../../theme/Typography';
 import { spacingUtils } from '../../theme/Spacing';
 
 interface Topic {
-    right: any;
+    right: any | null;
     name: string;
     route?: string;
     icon?: string;
@@ -82,11 +82,10 @@ const Expandables = ({
     // Memoized topics (performance boost)
     const renderedTopics = useMemo(() => {
         return topics.map((topic, index) => (
-            <TouchableOpacity
+            <Pressable
                 key={index}
                 style={[styles.topicItem, { backgroundColor: safeTheme.bgSurface }]}
                 onPress={() => onSelected(topic)}
-                activeOpacity={0.7}
             >
                 <View style={styles.topicContent}>
                     {topic.icon && (
@@ -105,14 +104,14 @@ const Expandables = ({
                     color={safeTheme.textTertiary}
                 />
                 {topic.right && topic.right}
-            </TouchableOpacity>
+            </Pressable>
         ));
     }, [topics, theme, typography]);
 
     return (
         <View style={[styles.container, { backgroundColor: safeTheme.bgCard, borderColor: safeTheme.border }]}>
             {/* Header */}
-            <TouchableOpacity style={styles.header} onPress={toggleExpand}>
+            <Pressable style={styles.header} onPress={toggleExpand}>
                 <Text style={[typography.labelLarge, { color: safeTheme.text }]}>{title}</Text>
 
                 <Animated.View style={{ transform: [{ rotate }] }}>
@@ -122,7 +121,7 @@ const Expandables = ({
                         color={safeTheme.primary}
                     />
                 </Animated.View>
-            </TouchableOpacity>
+            </Pressable>
 
             {/* Animated Content */}
             <Animated.View style={{ height, opacity, overflow: 'hidden' }}>

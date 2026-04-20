@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext } from "react";
-import { View, TouchableOpacity, Animated, StyleSheet, Dimensions, Text } from "react-native";
+import { View, Pressable, Animated, StyleSheet, Dimensions, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { ThemeContext } from "../theme/ThemeContext";
 
@@ -70,7 +70,7 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                 });
 
                 return (
-                    <TouchableOpacity key={route.key} onPress={onPress} style={styles.tabButton}>
+                    <Pressable key={route.key} onPress={onPress} style={styles.tabButton}>
                         {icon}
 
                         <Text
@@ -82,7 +82,7 @@ const CustomTabBar: React.FC<TabBarProps> = ({ state, descriptors, navigation })
                         >
                             {options.title ?? route.name}
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 );
             })}
         </View>

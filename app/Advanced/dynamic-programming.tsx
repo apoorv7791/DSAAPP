@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Pressable, ScrollView, FlatList } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { ToastAndroid } from 'react-native';
 import { ThemeContext } from '../theme/ThemeContext';
@@ -146,9 +146,9 @@ function fibonacci(n) {
                         <View style={styles.codeHeader}>
                             <View style={styles.codeBox}>
                                 <View style={styles.codeHeader}>
-                                    <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                                    <Pressable onPress={() => handleCopy(item.code)}>
                                         <Text style={styles.copy}>Copy</Text>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 </View>
                                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                     <Text style={styles.code}>{item.code}</Text>
@@ -173,9 +173,9 @@ function fibonacci(n) {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <Pressable style={styles.btn}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

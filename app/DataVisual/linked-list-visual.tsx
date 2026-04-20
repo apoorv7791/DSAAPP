@@ -1,5 +1,5 @@
 import React, { useState, useContext, useMemo } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
 import { ThemeContext } from '../theme/ThemeContext';
 
 
@@ -160,24 +160,24 @@ const LinkedListVisual = () => {
             {/* Control Panel */}
             <View style={styles.controlPanel}>
                 <View style={styles.buttonRow}>
-                    <TouchableOpacity style={styles.button} onPress={() => insertAtHead(Math.floor(Math.random() * 100))}>
+                    <Pressable style={styles.button} onPress={() => insertAtHead(Math.floor(Math.random() * 100))}>
                         <Text style={styles.buttonText}>Add Head</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => insertAtTail(Math.floor(Math.random() * 100))}>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={() => insertAtTail(Math.floor(Math.random() * 100))}>
                         <Text style={styles.buttonText}>Add Tail</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
                 <View style={styles.buttonRow}>
-                    <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={deleteAtHead}>
+                    <Pressable style={[styles.button, styles.deleteButton]} onPress={deleteAtHead}>
                         <Text style={styles.buttonText}>Delete Head</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={deleteAtTail}>
+                    </Pressable>
+                    <Pressable style={[styles.button, styles.deleteButton]} onPress={deleteAtTail}>
                         <Text style={styles.buttonText}>Delete Tail</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
-                <TouchableOpacity style={[styles.button, styles.clearButton]} onPress={clearList}>
+                <Pressable style={[styles.button, styles.clearButton]} onPress={clearList}>
                     <Text style={styles.buttonText}>Clear List</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
 
             {/* Info Panel */}

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, ToastAndroid, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, ToastAndroid, Pressable, ScrollView, FlatList } from 'react-native';
 import * as ClipBoard from 'expo-clipboard';
 import { ThemeContext } from '../theme/ThemeContext';
 
@@ -89,9 +89,9 @@ const Recursion = () => {
                 return (
                     <View style={styles.codeBox}>
                         <View style={styles.codeHeader}>
-                            <TouchableOpacity onPress={() => handleCopy(item.code)}>
+                            <Pressable onPress={() => handleCopy(item.code)}>
                                 <Text style={styles.copy}>Copy</Text>
-                            </TouchableOpacity>
+                            </Pressable>
 
                             <Text style={styles.codeType}>
                                 {item.language} • {item.dataType}
@@ -120,9 +120,9 @@ const Recursion = () => {
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.btn}>
+                        <Pressable style={styles.btn}>
                             <Text style={styles.btnText}>Visualize</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 }
             />

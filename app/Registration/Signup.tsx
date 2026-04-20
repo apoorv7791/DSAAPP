@@ -4,7 +4,7 @@ import {
     Text,
     StyleSheet,
     TextInput,
-    TouchableOpacity,
+    Pressable,
     ToastAndroid
 } from 'react-native';
 import { supabase } from '../../lib/supabase';
@@ -59,9 +59,9 @@ const Signup = () => {
                 onChangeText={setPassword}
             />
 
-            <TouchableOpacity style={styles.button} onPress={handleSignup}>
+            <Pressable style={styles.button} onPress={handleSignup}>
                 <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
+            </Pressable>
         </View>
     );
 };
