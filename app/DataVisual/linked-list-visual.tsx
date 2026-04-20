@@ -92,13 +92,18 @@ const LinkedListVisual = () => {
     };
 
     const deleteAtHead = () => {
-        if (headId) {
-            const newHead = nodes.find(n => n.id === headId)?.next;
-            setNodes(nodes.filter(n => n.id !== headId));
-            setHeadId(newHead || null);
-            if (nodes.length as number === 1) {
-                setTailId(null);
-            }
+        if (!headId) return;
+
+        const currentHead = nodes.find(n => n.id === headId);
+        const newHead = currentHead?.next || null;
+
+        const updatedNodes = nodes.filter(n => n.id !== headId);
+
+        setNodes(updatedNodes);
+        setHeadId(newHead);
+
+        if (updatedNodes.length === 0) {
+            setTailId(null);
         }
     };
 
@@ -121,6 +126,29 @@ const LinkedListVisual = () => {
     };
 
 
+    const reverseList = () => {
+        let prev: string | null = null;
+        let current = headId;
+
+        const newNodes = nodes.map(n => ({ ...n })); // clone
+
+        while (current) {
+            const currentNode = newNodes.find(n => n.id === current);
+            if (!currentNode) break;
+
+            const next = currentNode.next;
+            currentNode.next = prev;
+
+            prev = current;
+            current = next;
+        }
+
+        setNodes(newNodes);
+        setHeadId(tailId);
+        setTailId(headId);
+    };
+
+
 
     const clearList = () => {
         setNodes([]);
@@ -128,6 +156,19 @@ const LinkedListVisual = () => {
         setTailId(null);
     };
 
+    const getOrderedNodes = () => {
+        const ordered: ListNode[] = [];
+        let current = headId;
+
+        while (current) {
+            const node = nodes.find(n => n.id === current);
+            if (!node) break;
+            ordered.push(node);
+            current = node.next;
+        }
+
+        return ordered;
+    };
     const animateOperation = (nodeId: string) => {
         setAnimatingNode(nodeId);
         setTimeout(() => setAnimatingNode(null), 500);
@@ -141,9 +182,14 @@ const LinkedListVisual = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
                 <View style={styles.listContainer}>
                     {(nodes.length as number) === 0 ? (
-                        <Text style={styles.emptyText}>Empty List</Text>
+                        <View>
+                            <Text style={styles.emptyText}>Empty List</Text>
+                            <Text style={styles.helperText}>
+                                First node will be both Head and Tail
+                            </Text>
+                        </View>
                     ) : (
-                        nodes.map(node => (
+                        getOrderedNodes().map(node => (
                             <NodeComponent
                                 key={node.id}
                                 node={node}
@@ -175,6 +221,12 @@ const LinkedListVisual = () => {
                         <Text style={styles.buttonText}>Delete Tail</Text>
                     </Pressable>
                 </View>
+                <View style={styles.buttonRow}>
+                    <Pressable style={[styles.button, styles.reverseButton]} onPress={reverseList}>
+                        <Text style={styles.buttonText}>Reverse List</Text>
+                    </Pressable>
+                </View>
+
                 <Pressable style={[styles.button, styles.clearButton]} onPress={clearList}>
                     <Text style={styles.buttonText}>Clear List</Text>
                 </Pressable>
@@ -304,6 +356,9 @@ const getStyles = (theme: any) => {
             backgroundColor: theme.borderLight,
             width: '100%',
         },
+        reverseButton: {
+            backgroundColor: theme.accent,
+        },
         buttonText: {
             color: theme.textInverse,
             fontWeight: 'bold',
@@ -326,6 +381,12 @@ const getStyles = (theme: any) => {
             color: theme.text,
             marginBottom: 5,
         },
+        helperText: {
+            fontSize: 12,
+            color: theme.textSecondary,
+            marginTop: 4,
+            fontStyle: 'italic',
+        }
     });
 }
 export default LinkedListVisual;
