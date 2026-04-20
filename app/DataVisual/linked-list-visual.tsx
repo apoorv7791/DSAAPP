@@ -194,134 +194,138 @@ const getStyles = (theme: any) => {
         container: {
             flex: 1,
             padding: 20,
-            backgroundColor: '#f5f5f5'
+            backgroundColor: theme.bg,
         },
         heading: {
             fontSize: 24,
             fontWeight: 'bold',
             textAlign: 'center',
             marginBottom: 20,
-            color: '#333'
+            color: theme.text,
         },
         scrollView: {
             maxHeight: 120,
-            marginBottom: 20
+            marginBottom: 20,
         },
         listContainer: {
             flexDirection: 'row',
             alignItems: 'center',
             paddingHorizontal: 10,
-            minHeight: 80
+            minHeight: 80,
         },
         emptyText: {
             fontSize: 16,
-            color: '#666',
-            fontStyle: 'italic'
+            color: theme.textSecondary,
+            fontStyle: 'italic',
         },
         nodeWrapper: {
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         nodeBox: {
             width: 60,
             height: 60,
-            backgroundColor: '#4A90E2',
+            backgroundColor: theme.primary,
             borderRadius: 8,
             justifyContent: 'center',
             alignItems: 'center',
             marginHorizontal: 5,
             borderWidth: 2,
-            borderColor: '#2E5C8A'
+            borderColor: theme.border,
         },
         nodeValue: {
-            color: 'white',
+            color: theme.textInverse,
             fontWeight: 'bold',
-            fontSize: 16
+            fontSize: 16,
         },
         headNode: {
-            backgroundColor: '#E74C3C',
-            borderColor: '#C0392B'
+            backgroundColor: theme.error,
+            borderColor: theme.error,
         },
         tailNode: {
-            backgroundColor: '#27AE60',
-            borderColor: '#229954'
+            backgroundColor: theme.success,
+            borderColor: theme.success,
         },
         animatingNode: {
             transform: [{ scale: 1.1 }],
-            backgroundColor: '#F39C12'
+            backgroundColor: theme.accent,
+            borderColor: theme.accent,
         },
         arrowContainer: {
             flexDirection: 'row',
             alignItems: 'center',
-            marginLeft: 2
+            marginLeft: 2,
         },
         arrowLine: {
             width: 20,
             height: 2,
-            backgroundColor: '#333'
+            backgroundColor: theme.textSecondary,
         },
         arrowHead: {
             width: 0,
             height: 0,
             borderLeftWidth: 8,
-            borderLeftColor: '#333',
+            borderLeftColor: theme.textSecondary,
             borderTopWidth: 6,
             borderTopColor: 'transparent',
             borderBottomWidth: 6,
-            borderBottomColor: 'transparent'
+            borderBottomColor: 'transparent',
         },
         controlPanel: {
-            backgroundColor: 'white',
+            backgroundColor: theme.bgCard,
             padding: 15,
             borderRadius: 10,
             marginBottom: 20,
-            shadowColor: '#000',
+            shadowColor: theme.shadow,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
             shadowRadius: 4,
-            elevation: 3
+            elevation: 3,
+            borderWidth: 1,
+            borderColor: theme.border,
         },
         buttonRow: {
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginBottom: 10
+            marginBottom: 10,
         },
         button: {
-            backgroundColor: '#4A90E2',
+            backgroundColor: theme.primary,
             paddingHorizontal: 20,
             paddingVertical: 12,
             borderRadius: 8,
             minWidth: 100,
-            alignItems: 'center'
+            alignItems: 'center',
         },
         deleteButton: {
-            backgroundColor: '#E74C3C'
+            backgroundColor: theme.error,
         },
         clearButton: {
-            backgroundColor: '#95A5A6',
-            width: '100%'
+            backgroundColor: theme.borderLight,
+            width: '100%',
         },
         buttonText: {
-            color: 'white',
+            color: theme.textInverse,
             fontWeight: 'bold',
-            fontSize: 14
+            fontSize: 14,
         },
         infoPanel: {
-            backgroundColor: 'white',
+            backgroundColor: theme.bgCard,
             padding: 15,
             borderRadius: 10,
-            shadowColor: '#000',
+            shadowColor: theme.shadow,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
             shadowRadius: 4,
-            elevation: 3
+            elevation: 3,
+            borderWidth: 1,
+            borderColor: theme.border,
         },
         infoText: {
             fontSize: 14,
-            color: '#333',
-            marginBottom: 5
-        }
+            color: theme.text,
+            marginBottom: 5,
+        },
     });
-
 }
 export default LinkedListVisual;
