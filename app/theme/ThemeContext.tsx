@@ -2,6 +2,7 @@ import { createContext, useState } from "react"
 import { ColorValue } from "react-native/Libraries/StyleSheet/StyleSheet";
 
 export interface ThemeType {
+    colors: any;
     card: ColorValue | undefined;
     subText: ColorValue | undefined;
     mode: 'light' | 'dark' | 'custom';
@@ -84,7 +85,8 @@ const defaultLightTheme: ThemeType = {
     secondaryGradient: ['#8b5cf6', '#ec4899'],
     surfaceGradient: ['#ffffff', '#f8fafc'],
     card: undefined,
-    subText: undefined
+    subText: undefined,
+    colors: undefined
 };
 
 // Default dark theme
@@ -118,7 +120,8 @@ const defaultDarkTheme: ThemeType = {
     secondaryGradient: ['#a78bfa', '#f472b6'],
     surfaceGradient: ['#1e293b', '#0f172a'],
     card: undefined,
-    subText: undefined
+    subText: undefined,
+    colors: undefined
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
