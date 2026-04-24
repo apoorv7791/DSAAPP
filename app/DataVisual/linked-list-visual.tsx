@@ -1,392 +1,407 @@
-import React, { useState, useContext, useMemo } from 'react';
-import { StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
+import React, { useState, useMemo, useContext, useRef, useEffect } from 'react';
+import { View, Text, Pressable, ScrollView, TextInput, StyleSheet, Animated } from 'react-native';
 import { ThemeContext } from '../theme/ThemeContext';
 
-
-
-interface ListNode {
+interface NodeType {
     id: string;
     value: number;
-    next: string | null; // ID of next node
+    next: string | null;
 }
 
-// Utility function to generate unique IDs
-const generateId = () => Math.random().toString(36).substr(2, 9);
+// ---------------- LOGIC LAYER ----------------
+const useLinkedList = () => {
+    const [nodes, setNodes] = useState<NodeType[]>([]);
+    const [currentId, setCurrentId] = useState<string | null>(null);
+    const [prevId, setPrevId] = useState<string | null>(null);
+    const [isReversing, setIsReversing] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
+    const idCounter = useRef(0);
+    const generateId = () => (++idCounter.current).toString();
 
-// Arrow component for visual connections
-const Arrow = ({ styles }: { styles: ReturnType<typeof getStyles> }) => (
-
-    <View style={styles.arrowContainer}>
-        <View style={styles.arrowLine} />
-        <View style={styles.arrowHead} />
-    </View>
-);
-
-// Individual node component
-const NodeComponent = ({ node, isHead, isTail, isAnimating, styles }: {
-
-    node: ListNode;
-    isHead: boolean;
-    isTail: boolean;
-    isAnimating: boolean;
-    styles: ReturnType<typeof getStyles>;
-}) => (
-    <View style={styles.nodeWrapper}>
-        <View style={[
-            styles.nodeBox,
-            isHead && styles.headNode,
-            isTail && styles.tailNode,
-            isAnimating && styles.animatingNode
-        ]}>
-            <Text style={styles.nodeValue}>{node.value}</Text>
-        </View>
-        {node.next && <Arrow styles={styles} />}
-    </View>
-);
-
-const LinkedListVisual = () => {
-
-    // State management
-    const { theme } = useContext(ThemeContext);
-
-    const styles = useMemo(() => getStyles(theme), [theme]);
-
-    const [nodes, setNodes] = useState<ListNode[]>([]);
-    const [headId, setHeadId] = useState<string | null>(null);
-    const [tailId, setTailId] = useState<string | null>(null);
-    const [animatingNode, setAnimatingNode] = useState<string | null>(null);
-
-
-    // Core operations
-    const insertAtHead = (value: number) => {
-        const newNode: ListNode = {
-            id: generateId(),
-            value,
-            next: headId
-        };
-        setNodes([newNode, ...nodes]);
-        setHeadId(newNode.id);
-        if (!tailId) setTailId(newNode.id);
-        animateOperation(newNode.id);
+    const getHeadId = () => {
+        const pointed = new Set(nodes.map(n => n.next).filter(Boolean));
+        return nodes.find(n => !pointed.has(n.id))?.id || null;
     };
 
-    const insertAtTail = (value: number) => {
-        const newNode: ListNode = {
-            id: generateId(),
-            value,
-            next: null
-        };
+    const getTailId = () => nodes.find(n => n.next === null)?.id || null;
 
-        if (tailId && nodes.length > 0) {
-            const updatedNodes = nodes.map(node =>
-                node.id === tailId ? { ...node, next: newNode.id } : node
-            );
-            setNodes([...updatedNodes, newNode]);
-        } else {
-            setNodes([newNode]);
-            setHeadId(newNode.id);
-        }
-        setTailId(newNode.id);
-        animateOperation(newNode.id);
+    const append = (value: number) => {
+        const newNode: NodeType = { id: generateId(), value, next: null };
+        const tail = getTailId();
+
+        if (!tail) return setNodes([newNode]);
+
+        setNodes(prev =>
+            prev.map(n => (n.id === tail ? { ...n, next: newNode.id } : n)).concat(newNode)
+        );
     };
 
-    const deleteAtHead = () => {
-        if (!headId) return;
+    const deleteHead = () => {
+        const head = getHeadId();
+        if (!head) return;
 
-        const currentHead = nodes.find(n => n.id === headId);
-        const newHead = currentHead?.next || null;
-
-        const updatedNodes = nodes.filter(n => n.id !== headId);
-
-        setNodes(updatedNodes);
-        setHeadId(newHead);
-
-        if (updatedNodes.length === 0) {
-            setTailId(null);
-        }
+        setDeletingId(head);
+        setTimeout(() => {
+            setNodes(prev => prev.filter(n => n.id !== head));
+            setDeletingId(null);
+        }, 300);
     };
 
-    const deleteAtTail = () => {
-        if (tailId && nodes.length > 0) {
-            const newTail = nodes.find(n => n.next === tailId);
-            if (newTail) {
-                const updatedNodes = nodes.map(node =>
-                    node.id === newTail.id ? { ...node, next: null } : node
-                );
-                setNodes(updatedNodes.filter(n => n.id !== tailId));
-                setTailId(newTail.id);
-            } else {
-                // Only one node in list
-                setNodes([]);
-                setHeadId(null);
-                setTailId(null);
-            }
-        }
+    const deleteTail = () => {
+        const tail = getTailId();
+        if (!tail) return;
+
+        setDeletingId(tail);
+        setTimeout(() => {
+            setNodes(prev => {
+                const newTail = prev.find(n => n.next === tail);
+                if (!newTail) return [];
+
+                return prev
+                    .map(n => (n.id === newTail.id ? { ...n, next: null } : n))
+                    .filter(n => n.id !== tail);
+            });
+            setDeletingId(null);
+        }, 300);
     };
 
+    const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-    const reverseList = () => {
+    const reverse = async () => {
+        if (isReversing) return;
+
+        setIsReversing(true);
+
+        const map = new Map(nodes.map(n => [n.id, { ...n }]));
+
         let prev: string | null = null;
-        let current = headId;
+        let curr: string | null = getHeadId();
 
-        const newNodes = nodes.map(n => ({ ...n })); // clone
+        while (curr) {
+            setCurrentId(curr);
+            setPrevId(prev);
 
-        while (current) {
-            const currentNode = newNodes.find(n => n.id === current);
-            if (!currentNode) break;
+            await sleep(400);
 
-            const next = currentNode.next;
-            currentNode.next = prev;
+            const node = map.get(curr);
+            if (!node) break;
 
-            prev = current;
-            current = next;
+            const next = node.next;
+            node.next = prev;
+
+            prev = curr;
+            curr = next;
+
+            setNodes(Array.from(map.values()));
+
+            await sleep(400);
         }
 
-        setNodes(newNodes);
-        setHeadId(tailId);
-        setTailId(headId);
+        setCurrentId(null);
+        setPrevId(null);
+        setIsReversing(false);
     };
 
+    const getOrdered = () => {
+        const ordered: NodeType[] = [];
+        let curr = getHeadId();
 
-
-    const clearList = () => {
-        setNodes([]);
-        setHeadId(null);
-        setTailId(null);
-    };
-
-    const getOrderedNodes = () => {
-        const ordered: ListNode[] = [];
-        let current = headId;
-
-        while (current) {
-            const node = nodes.find(n => n.id === current);
+        while (curr) {
+            const node = nodes.find(n => n.id === curr);
             if (!node) break;
             ordered.push(node);
-            current = node.next;
+            curr = node.next;
         }
 
         return ordered;
     };
-    const animateOperation = (nodeId: string) => {
-        setAnimatingNode(nodeId);
-        setTimeout(() => setAnimatingNode(null), 500);
+
+    return {
+        nodes,
+        currentId,
+        prevId,
+        isReversing,
+        deletingId,
+        append,
+        deleteHead,
+        deleteTail,
+        reverse,
+        getOrdered,
+        getHeadId,
+        getTailId,
     };
+};
+
+// ---------------- NODE COMPONENT ----------------
+const Node = React.memo(({ value, isHead, isTail, isCurrent, isPrev, hasNext, isDeleting, styles }: any) => {
+    const scale = useRef(new Animated.Value(0)).current;
+    const bgAnim = useRef(new Animated.Value(0)).current;
+    const deleteAnim = useRef(new Animated.Value(1)).current;
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        if (!mounted.current) {
+            Animated.spring(scale, {
+                toValue: 1,
+                friction: 6,
+                useNativeDriver: true,
+            }).start();
+            mounted.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+        Animated.timing(bgAnim, {
+            toValue: isCurrent ? 1 : isPrev ? 2 : 0,
+            duration: 300,
+            useNativeDriver: false,
+        }).start();
+    }, [isCurrent, isPrev]);
+
+    useEffect(() => {
+        if (isDeleting) {
+            Animated.parallel([
+                Animated.timing(deleteAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+                Animated.spring(scale, {
+                    toValue: 0,
+                    friction: 6,
+                    useNativeDriver: true,
+                }),
+            ]).start();
+        }
+    }, [isDeleting]);
+
+    const bgColor = bgAnim.interpolate({
+        inputRange: [0, 1, 2],
+        outputRange: [styles.node.backgroundColor, 'orange', 'green'],
+    });
+
+    return (
+        <Animated.View style={[styles.nodeWrapper, { opacity: deleteAnim }]}>
+
+            {/* 👇 vertical stack (node + label) */}
+            <Animated.View
+                style={[
+                    styles.nodeContainer,
+                    { transform: [{ scale }], opacity: scale },
+                ]}
+            >
+                <Animated.View
+                    style={[
+                        styles.node,
+                        isHead && styles.head,
+                        isTail && styles.tail,
+                        { backgroundColor: bgColor },
+                    ]}
+                >
+                    <Text style={styles.text}>{value}</Text>
+                </Animated.View>
+
+                {/* 👇 LABEL BELOW NODE */}
+                <View style={styles.labelContainer}>
+                    {isHead && <Text style={styles.headLabel}>HEAD</Text>}
+                    {isTail && <Text style={styles.tailLabel}>TAIL</Text>}
+                </View>
+            </Animated.View>
+
+            {/* 👇 arrow stays separate */}
+            {hasNext && (
+                <View style={styles.arrowContainer}>
+                    <View style={styles.line} />
+                    <View style={styles.arrowHead} />
+                </View>
+            )}
+
+        </Animated.View>
+    );
+});
+
+// ---------------- MAIN COMPONENT ----------------
+export default function LinkedListVisual() {
+    const { theme } = useContext(ThemeContext);
+    const styles = useMemo(() => createStyles(theme), [theme]);
+
+    const {
+        append,
+        deleteHead,
+        deleteTail,
+        reverse,
+        getOrdered,
+        getHeadId,
+        getTailId,
+        currentId,
+        prevId,
+        deletingId,
+    } = useLinkedList();
+
+    const [input, setInput] = useState('');
+
+    const ordered = getOrdered();
+    const headId = getHeadId();
+    const tailId = getTailId();
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Linked List Visualizer</Text>
 
-            {/* Linked List Display */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
-                <View style={styles.listContainer}>
-                    {(nodes.length as number) === 0 ? (
-                        <View>
-                            <Text style={styles.emptyText}>Empty List</Text>
-                            <Text style={styles.helperText}>
-                                First node will be both Head and Tail
-                            </Text>
-                        </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={styles.row}>
+                    {ordered.length === 0 ? (
+                        <Text style={styles.text}>Empty</Text>
                     ) : (
-                        getOrderedNodes().map(node => (
-                            <NodeComponent
-                                key={node.id}
-                                node={node}
-                                isHead={node.id === headId}
-                                isTail={node.id === tailId}
-                                isAnimating={node.id === animatingNode}
-                                styles={styles}
-                            />
-                        ))
+                        <>
+                            {ordered.map(node => (
+                                <Node
+                                    key={node.id}
+                                    value={node.value}
+                                    isHead={node.id === headId}
+                                    isTail={node.id === tailId}
+                                    isCurrent={node.id === currentId}
+                                    isPrev={node.id === prevId}
+                                    hasNext={node.next !== null}
+                                    isDeleting={node.id === deletingId}
+                                    styles={styles}
+                                />
+                            ))}
+                            {tailId && <Text style={[styles.nullText]}>NULL</Text>}
+                        </>
                     )}
                 </View>
             </ScrollView>
 
-            {/* Control Panel */}
-            <View style={styles.controlPanel}>
-                <View style={styles.buttonRow}>
-                    <Pressable style={styles.button} onPress={() => insertAtHead(Math.floor(Math.random() * 100))}>
-                        <Text style={styles.buttonText}>Add Head</Text>
-                    </Pressable>
-                    <Pressable style={styles.button} onPress={() => insertAtTail(Math.floor(Math.random() * 100))}>
-                        <Text style={styles.buttonText}>Add Tail</Text>
-                    </Pressable>
-                </View>
-                <View style={styles.buttonRow}>
-                    <Pressable style={[styles.button, styles.deleteButton]} onPress={deleteAtHead}>
-                        <Text style={styles.buttonText}>Delete Head</Text>
-                    </Pressable>
-                    <Pressable style={[styles.button, styles.deleteButton]} onPress={deleteAtTail}>
-                        <Text style={styles.buttonText}>Delete Tail</Text>
-                    </Pressable>
-                </View>
-                <View style={styles.buttonRow}>
-                    <Pressable style={[styles.button, styles.reverseButton]} onPress={reverseList}>
-                        <Text style={styles.buttonText}>Reverse List</Text>
-                    </Pressable>
-                </View>
+            <TextInput
+                style={styles.input}
+                value={input}
+                onChangeText={setInput}
+                keyboardType="numeric"
+                placeholder="Enter value"
+                placeholderTextColor="#888"
+            />
 
-                <Pressable style={[styles.button, styles.clearButton]} onPress={clearList}>
-                    <Text style={styles.buttonText}>Clear List</Text>
-                </Pressable>
-            </View>
+            <Pressable
+                style={styles.btn}
+                onPress={() => {
+                    const val = parseInt(input);
+                    if (!isNaN(val)) {
+                        append(val);
+                        setInput('');
+                    }
+                }}
+            >
+                <Text style={styles.btnText}>Add</Text>
+            </Pressable>
 
-            {/* Info Panel */}
-            <View style={styles.infoPanel}>
-                <Text style={styles.infoText}>Nodes: {nodes.length}</Text>
-                <Text style={styles.infoText}>Head: {headId ? nodes.find(n => n.id === headId)?.value : 'null'}</Text>
-                <Text style={styles.infoText}>Tail: {tailId ? nodes.find(n => n.id === tailId)?.value : 'null'}</Text>
-            </View>
+            <Pressable style={styles.btn} onPress={deleteHead}>
+                <Text style={styles.btnText}>Delete Head</Text>
+            </Pressable>
+
+            <Pressable style={styles.btn} onPress={deleteTail}>
+                <Text style={styles.btnText}>Delete Tail</Text>
+            </Pressable>
+
+            <Pressable style={[styles.btn, styles.reverseBtn]} onPress={reverse}>
+                <Text style={styles.btnText}>Reverse</Text>
+            </Pressable>
         </View>
     );
 }
-const getStyles = (theme: any) => {
-    return StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 20,
-            backgroundColor: theme.bg,
-        },
-        heading: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            marginBottom: 20,
-            color: theme.text,
-        },
-        scrollView: {
-            maxHeight: 120,
-            marginBottom: 20,
-        },
-        listContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 10,
-            minHeight: 80,
-        },
-        emptyText: {
-            fontSize: 16,
-            color: theme.textSecondary,
-            fontStyle: 'italic',
-        },
+
+// ---------------- STYLES ----------------
+const createStyles = (theme: any) =>
+    StyleSheet.create({
+        container: { flex: 1, padding: 20, backgroundColor: theme.bg },
+        title: { fontSize: 22, textAlign: 'center', color: theme.text, marginBottom: 10 },
+        row: { flexDirection: 'row', alignItems: 'center', marginVertical: 20 },
         nodeWrapper: {
             flexDirection: 'row',
             alignItems: 'center',
         },
-        nodeBox: {
+
+        nodeContainer: {
+            alignItems: 'center', // center label under node
+        },
+
+        labelContainer: {
+            marginTop: 4,
+        },
+
+        headLabel: {
+            fontSize: 10,
+            color: 'green',
+            fontWeight: 'bold',
+        },
+
+        tailLabel: {
+            fontSize: 10,
+            color: 'red',
+            fontWeight: 'bold',
+        },
+        node: {
             width: 60,
             height: 60,
-            backgroundColor: theme.primary,
-            borderRadius: 8,
             justifyContent: 'center',
             alignItems: 'center',
-            marginHorizontal: 5,
-            borderWidth: 2,
-            borderColor: theme.border,
+            marginTop: 5,
+            marginBottom: 4,
+            backgroundColor: theme.primary,
+            borderRadius: 10,
         },
-        nodeValue: {
-            color: theme.textInverse,
+        text: { color: '#fff', fontWeight: 'bold' },
+        arrow: { width: 30, height: 3, backgroundColor: '#666' },  // Increased thickness
+        input: {
+            borderWidth: 1,
+            borderColor: '#ccc',
+            marginVertical: 10,
+            padding: 12,
+            borderRadius: 8,
+            color: theme.text,
+        },
+        btn: {
+            padding: 12,
+            backgroundColor: '#444',
+            marginVertical: 5,
+            borderRadius: 8,
+            alignItems: 'center',
+        },
+        nullText: {
+            marginLeft: 10,
+            color: '#999',
             fontWeight: 'bold',
-            fontSize: 16,
         },
-        headNode: {
-            backgroundColor: theme.error,
-            borderColor: theme.error,
+        lable: {
+            position: 'absolute',
+            top: -18,
+            fontSize: 10,
+            color: '#fff',
         },
-        tailNode: {
-            backgroundColor: theme.success,
-            borderColor: theme.success,
-        },
-        animatingNode: {
-            transform: [{ scale: 1.1 }],
-            backgroundColor: theme.accent,
-            borderColor: theme.accent,
-        },
+        btnText: { color: '#fff', fontWeight: '600' },
+        reverseBtn: { backgroundColor: '#6a5acd' },
+        head: { borderWidth: 2, borderColor: 'yellow' },
+        tail: { borderWidth: 2, borderColor: 'red' },
         arrowContainer: {
             flexDirection: 'row',
             alignItems: 'center',
-            marginLeft: 2,
+            marginHorizontal: 6,
         },
-        arrowLine: {
+
+        line: {
             width: 20,
             height: 2,
-            backgroundColor: theme.textSecondary,
+            backgroundColor: 'white',
         },
+
         arrowHead: {
             width: 0,
             height: 0,
+            borderTopWidth: 5,
+            borderBottomWidth: 5,
             borderLeftWidth: 8,
-            borderLeftColor: theme.textSecondary,
-            borderTopWidth: 6,
             borderTopColor: 'transparent',
-            borderBottomWidth: 6,
             borderBottomColor: 'transparent',
+            borderLeftColor: 'white',
         },
-        controlPanel: {
-            backgroundColor: theme.bgCard,
-            padding: 15,
-            borderRadius: 10,
-            marginBottom: 20,
-            shadowColor: theme.shadow,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 3,
-            borderWidth: 1,
-            borderColor: theme.border,
-        },
-        buttonRow: {
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginBottom: 10,
-        },
-        button: {
-            backgroundColor: theme.primary,
-            paddingHorizontal: 20,
-            paddingVertical: 12,
-            borderRadius: 8,
-            minWidth: 100,
-            alignItems: 'center',
-        },
-        deleteButton: {
-            backgroundColor: theme.error,
-        },
-        clearButton: {
-            backgroundColor: theme.borderLight,
-            width: '100%',
-        },
-        reverseButton: {
-            backgroundColor: theme.accent,
-        },
-        buttonText: {
-            color: theme.textInverse,
-            fontWeight: 'bold',
-            fontSize: 14,
-        },
-        infoPanel: {
-            backgroundColor: theme.bgCard,
-            padding: 15,
-            borderRadius: 10,
-            shadowColor: theme.shadow,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 3,
-            borderWidth: 1,
-            borderColor: theme.border,
-        },
-        infoText: {
-            fontSize: 14,
-            color: theme.text,
-            marginBottom: 5,
-        },
-        helperText: {
-            fontSize: 12,
-            color: theme.textSecondary,
-            marginTop: 4,
-            fontStyle: 'italic',
-        }
     });
-}
-export default LinkedListVisual;
