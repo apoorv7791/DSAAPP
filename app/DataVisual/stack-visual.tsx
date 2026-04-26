@@ -1,52 +1,113 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Pressable } from 'react-native';
+import React, { useState, useContext, useRef } from 'react';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TextInput,
+    Pressable,
+    Animated,
+} from 'react-native';
 import { ThemeContext } from '../theme/ThemeContext';
 
-const StackVisual = () => {
-    const [stack, setStack] = useState<number[]>([]);
-    const [input, setInput] = useState('');
-    const { theme } = React.useContext(ThemeContext);
-    const [peekValue, setPeekValue] = useState<number | null>(null);
-    const styles = getStyles(theme);
+interface StackNode {
+    id: string;
+    value: number;
+}
 
+const StackVisual = () => {
+    const [stack, setStack] = useState<StackNode[]>([]);
+    const [input, setInput] = useState('');
+    const MAX_SIZE = 6;
+    const [message, setMessage] = useState('');
+    const { theme } = useContext(ThemeContext);
+
+    const styles = React.useMemo(() => getStyles(theme), [theme]);
+
+    const animValues = useRef<{ [key: string]: Animated.Value }>({}).current;
+
+    const createAnim = (id: string) => {
+        animValues[id] = new Animated.Value(0);
+
+        Animated.spring(animValues[id], {
+            toValue: 1,
+            useNativeDriver: true,
+            friction: 5,
+        }).start();
+    };
 
     const handlePush = () => {
-        if (input === '') return;
+        const trimmed = input.trim();
+        const value = Number(trimmed);
+        if (!trimmed || isNaN(value)) return;
 
-        const value = Number(input);
-        if (isNaN(value)) return;
+        if (stack.length >= MAX_SIZE) {
+            setMessage("Stack is OverFlow 😵‍💫");
+            return;
+        }
 
-        setStack(prev => [...prev, value]);
+        const newNode: StackNode = {
+            id: Date.now().toString(),
+            value,
+        };
+
+        setStack(prev => [...prev, newNode]);
+        createAnim(newNode.id);
         setInput('');
+        setMessage('');
     };
 
     const handlePop = () => {
-        if (stack.length === 0) return;
+        if (stack.length === 0) {
+            setMessage("Stack Underflow");
+            return;
+        }
 
-        setStack(prev => prev.slice(0, -1));
+        const last = stack[stack.length - 1];
+
+        if (last && animValues[last.id]) {
+            Animated.timing(animValues[last.id], {
+                toValue: 0,
+                duration: 200,
+                useNativeDriver: true,
+            }).start(() => {
+                setStack(prev => prev.slice(0, -1));
+                delete animValues[last.id];
+            });
+        }
+
+        setMessage("");
     };
 
     const handlePeek = () => {
         if (stack.length === 0) {
-            setPeekValue(null);
+            setMessage("Stack is Empty");
             return;
         }
+        setMessage("Peeked top element");
+    }
 
-        setPeekValue(stack[stack.length - 1]);
-    };
+
+    const topNode = stack.at(-1) ?? null;
 
     return (
         <View style={styles.container}>
+            {message !== '' && (
+                <View style={styles.messageBox}>
+                    <Text style={styles.messageText}>{message}</Text>
 
-            {/* Input + Buttons */}
+                </View>
+            )}
+
+            {/* INPUT CONTROLS */}
             <View style={styles.controls}>
+
                 <TextInput
                     style={styles.input}
-
                     placeholder="Enter number"
                     keyboardType="numeric"
                     value={input}
                     onChangeText={setInput}
+                    placeholderTextColor="#201f1f"
                 />
 
                 <Pressable style={styles.button} onPress={handlePush}>
@@ -59,111 +120,172 @@ const StackVisual = () => {
                 <Pressable style={styles.button} onPress={handlePeek}>
                     <Text style={styles.buttonText}>PEEK</Text>
                 </Pressable>
-            </View>
-            {/* Peek Button */}
-            {peekValue !== null && (
-                <Text style={{ color: 'red', fontWeight: 'bold', marginBottom: 10 }}>
-                    TOP VALUE: {peekValue}
-                </Text>
-            )}
 
-            {/* Stack Container */}
+
+            </View>
+
+            {/* TOP DISPLAY */}
+            <View style={styles.topPanel}>
+
+                <Text style={styles.topText}>
+                    TOP: {topNode ? topNode.value : 'NULL'}
+                </Text>
+            </View>
+
+            {/* STACK */}
             <View style={styles.stackContainer}>
                 {stack.length === 0 && (
                     <Text style={styles.emptyText}>Stack is Empty</Text>
                 )}
 
-                {stack.map((item, index) => {
-                    const isTop = index === stack.length - 1;
+                {[...stack].reverse().map((item, index) => {
+                    const isTop = index === 0;
+                    const getScale = (id: string) => {
+                        if (!animValues[id]) {
+                            animValues[id] = new Animated.Value(1);
+                        }
+                        return animValues[id];
+                    };
+                    const scale = getScale(item.id);
+
 
                     return (
-                        <View key={index} style={styles.node}>
-                            <Text style={styles.nodeText}>{item}</Text>
-
+                        <Animated.View
+                            key={item.id}
+                            style={[
+                                styles.node,
+                                {
+                                    transform: [{ scale }],
+                                },
+                            ]}
+                        >
+                            <Text style={styles.nodeText}>
+                                {item.value}
+                            </Text>
                             {isTop && (
                                 <Text style={styles.topLabel}>TOP</Text>
                             )}
-                        </View>
+                        </Animated.View>
                     );
                 })}
             </View>
-
         </View>
     );
 };
-const getStyles = (theme: any) => {
-    return StyleSheet.create({
+
+const getStyles = (theme: any) =>
+    StyleSheet.create({
         container: {
             flex: 1,
             padding: 20,
-            justifyContent: 'flex-start',
+            backgroundColor: theme.background,
         },
 
         controls: {
             flexDirection: 'row',
-            gap: 10,
-            marginBottom: 20,
             alignItems: 'center',
+            gap: 10,
+            marginBottom: 15,
         },
 
         input: {
-            borderWidth: 5,
+            flex: 1,
+            borderWidth: 1,
+            borderColor: theme.border,
+            backgroundColor: theme.card,
             padding: 10,
-            width: 120,
             borderRadius: 10,
+            color: theme.text,
         },
 
         button: {
-            backgroundColor: '#333',
-            padding: 10,
-            borderRadius: 8,
+            backgroundColor: theme.primary,
+            paddingVertical: 10,
+            paddingHorizontal: 14,
+            borderRadius: 10,
         },
 
         buttonText: {
+            color: theme.mode === 'dark' ? 'white' : '#0b1220',
+            fontWeight: '700',
+            fontSize: 12,
+        },
+        peekBox: {
+            padding: 10,
+            marginBottom: 10,
+            borderRadius: 8,
+            backgroundColor: '#3b82f6',
+            alignItems: 'center',
+        },
+
+        peekText: {
             color: 'white',
-            fontWeight: 'bold',
+            fontWeight: '700',
+        },
+        topPanel: {
+            marginBottom: 15,
+            padding: 10,
+            backgroundColor: theme.card,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: theme.border,
+        },
+
+        topText: {
+            color: theme.text,
+            fontWeight: '700',
+            fontSize: 16,
         },
 
         stackContainer: {
-            height: 300,
-            borderWidth: 2,
-            borderColor: '#999',
-            borderRadius: 10,
+            flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'center',
+            borderWidth: 1,
+            borderColor: theme.border,
+            borderRadius: 12,
             padding: 10,
-            overflow: 'visible',
+            backgroundColor: theme.background,
+        },
+        messageBox: {
+            padding: 10,
+            marginBottom: 10,
+            borderRadius: 8,
+            backgroundColor: '#ef4444',
+            alignItems: 'center',
         },
 
+        messageText: {
+            color: 'white',
+            fontWeight: '700',
+        },
         node: {
-            width: 80,
-            height: 40,
-            backgroundColor: '#4CAF50',
-            marginVertical: 5,
+            width: 90,
+            height: 45,
+            backgroundColor: theme.primary,
+            marginVertical: 6,
             justifyContent: 'center',
             alignItems: 'center',
-            borderRadius: 6,
-            position: 'relative',
+            borderRadius: 8,
         },
 
         nodeText: {
-            color: 'white',
-            fontWeight: 'bold',
+            color: theme.mode === 'dark' ? '#0b1220' : 'white',
+            fontWeight: '800',
         },
-
         topLabel: {
             position: 'absolute',
-            top: -20,      // Position above the node instead of right
-            fontSize: 12,
-            color: 'red',
-            fontWeight: 'bold',
+            right: -35,
+            top: '50%',
+            transform: [{ translateY: -6 }],
+            fontSize: 11,
+            color: theme.mode === 'dark' ? '#facc15' : '#d97706',
+            fontWeight: '800',
         },
-
         emptyText: {
-            color: '#777',
+            color: theme.text,
+            opacity: 0.6,
+            marginTop: 20,
         },
     });
-
-}
-
 export default StackVisual;
