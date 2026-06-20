@@ -1,0 +1,276 @@
+# 🚀 AlgoTrainer
+
+> **⚠️ Development Status**: This app is currently in active development. Features and UI may change frequently.
+
+## 🌟 What is AlgoTrainer?
+
+AlgoTrainer is a mobile-first learning app that helps beginners master **Data Structures and Algorithms** through:
+- 📝 Simple, beginner-friendly explanations
+- 🎨 Interactive visual learning
+- 💪 Hands-on practice problems
+
+Our mission: Make DSA feel **intuitive, visual, and achievable**—not intimidating or memorization-heavy.
+
+---
+
+## ❓ Why AlgoTrainer?
+
+Most learners struggle with DSA because:
+- Concepts feel too abstract and disconnected from reality
+- They don't see *how* algorithms actually work step-by-step
+- Practice problems feel disconnected from the theory
+
+**AlgoTrainer solves this** by combining all three:
+- ✅ Clear concept explanations
+- ✅ Visual breakdowns of algorithms
+- ✅ Immediate, guided practice
+
+---
+
+## 📚 What You'll Learn
+
+### 🧱 Core Data Structures
+- Arrays
+- Linked Lists
+- Stacks & Queues
+- Hash Maps
+- Trees & Graphs
+- Heaps
+
+### 🔍 Algorithms
+- **Searching**: Linear Search, Binary Search
+- **Sorting**: Bubble Sort → Quick Sort progression
+- **Graph Traversal**: BFS & DFS fundamentals
+
+### 🧠 Advanced Topics
+- Dynamic Programming (intro to patterns)
+- Greedy Algorithms
+- Backtracking & Recursion
+
+---
+
+## 📲 Installation & Setup
+
+### Prerequisites
+- Node.js (v16 or later)
+- npm or yarn
+- Expo CLI: `npm install -g expo-cli`
+
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd AlgoTrainer
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npx expo start
+   ```
+
+4. **Open the app**
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Scan QR code with Expo Go app (iOS/Android)
+
+---
+
+## 🎯 How to Use AlgoTrainer
+
+### 1. **Home Screen**
+   - Quick access to Learn, Practice, and Progress tracking
+   - Visual welcome and orientation
+
+### 2. **Learn Mode** 📖
+   - Browse data structures and algorithms by category
+   - Read step-by-step explanations
+   - View visual demonstrations of how concepts work
+
+### 3. **Practice Mode** 🧪
+   - Solve problems organized by difficulty (Beginner → Medium → Advanced)
+   - Get instant feedback on solutions
+   - Track your progress and unlock new topics
+
+### 4. **Visualizations** 🎨
+   - Watch algorithms execute in real-time
+   - Pause and step through each operation
+   - See data structure changes visually
+
+### 5. **Settings** ⚙️
+   - Toggle dark/light theme
+   - View learning progress
+   - Customize learning preferences
+
+---
+
+## 🏗️ Project Structure
+
+```
+AlgoTrainer/
+├── app/
+│   ├── (tabs)/              # Main tab navigation (Home, Learn, Settings)
+│   ├── Algorithms/          # Sorting, searching algorithm content screens
+│   ├── Advanced/            # DP, greedy, graph algorithms, recursion
+│   ├── AlgoVisual/          # Interactive algorithm visualizers
+│   ├── AdvanceVisual/       # Advanced algorithm visualizers (planned)
+│   ├── DataStructures/      # Core DS explanation screens
+│   ├── DataVisual/          # Interactive DS visualizers
+│   ├── Registration/        # Auth flows (login, signup)
+│   ├── Screens/             # Profile, settings sub-screens
+│   ├── Support/             # About, Help Center
+│   ├── components/          # Reusable UI components (Card, Expandables)
+│   ├── auth/                # Authentication context
+│   ├── navigation/          # Custom tab bar
+│   ├── theme/               # ThemeContext, Typography, Spacing
+│   └── utils/               # Theme storage utilities
+├── backend/                 # Backend (planned)
+├── lib/                     # Supabase client
+└── package.json
+```
+
+---
+
+## 🔧 Tech Stack
+
+- **Frontend**: Expo, React Native, TypeScript
+- **Navigation**: Expo Router (file-based routing)
+- **Styling**: React Native StyleSheet with dynamic theming
+- **Backend** (in progress): Supabase (auth + database)
+- **State Management**: React Context API
+
+---
+
+## ✅ What's Been Built
+
+### App Foundation
+- Expo Router project with TypeScript
+- Root layout with `ThemeProvider`, `AuthProvider`, and React Navigation theme sync
+- Full light/dark theme system with token set (colors, gradients, semantic colors)
+- Typography system and spacing utilities
+- Supabase client configured
+
+### Navigation & Tabs
+- Bottom tab navigator: Home, Learn, Settings
+- All section layouts wired: DataStructures, Algorithms, Advanced, AlgoVisual, DataVisual, Registration, Screens, Support
+
+### Reusable Components
+- `Card` — variants: default, elevated, outlined, gradient (with press animation)
+- `Expandables` — animated accordion with icon and right-slot support
+
+### Screens
+- **Home**: Welcome hero card + feature overview cards
+- **Learn**: Expandable sections for all topic categories with routing
+- **Settings**: Dark mode toggle, language, learning preferences (auth-gated), support links, login/signup prompt
+
+### Authentication
+- Login screen with Supabase email/password, error handling, loading state
+- Signup screen with Supabase account creation
+
+### Data Structure Content Screens
+All screens include explanations, code examples (with copy), and a "Visualize" button:
+- Arrays, LinkedList, Stacks, Queues, HashMaps, Trees, Graphs, Heaps
+
+### Algorithm Content Screens
+- Sorting, Searching
+
+### Advanced Algorithm Content Screens
+- Greedy Algorithm, Dynamic Programming, Graph Algorithms, Recursion
+
+### Data Structure Visualizers (`DataVisual/`)
+All visualizers use React Native `Animated`, `ThemeContext`, and a consistent Control Panel + Status Message + Canvas layout:
+- **Array** — insert, delete, search with animations
+- **Linked List** — push, pop, search with animations
+- **Stack** — push, pop with animations
+- **Queue** — enqueue, dequeue with animations
+- **BST (Tree)** — insert, search, delete; animated nodes + edge lines; scrollable canvas
+- **Graph** — add/remove nodes, add edges; circular layout; animated nodes
+- **Heap (Min-Heap)** — insert, extract-min; swap highlight animations; tree layout
+- **HashMap** — 8 buckets, insert, delete, search; collision labels; entry animations
+
+### Algorithm Visualizers (`AlgoVisual/`)
+- Sorting visualizer
+- Searching visualizer
+
+### Support & Utility Screens
+- About screen, Help Center screen
+- Profile, Daily Goal, Difficulty, Email, Language, Password screens (stubs)
+
+---
+
+## 🔮 Planned / Incomplete
+
+- [ ] Property-based tests for BST, Graph, Heap, HashMap logic
+- [ ] Progress Tracking screen (stub exists)
+- [ ] Privacy Policy screen
+- [ ] Signup redirect after account creation
+- [ ] Wire `isLoggedIn` in Settings to `AuthContext` (currently hardcoded `false`)
+- [ ] Advanced algorithm visualizers (`AdvanceVisual/`)
+- [ ] Backend implementation
+- [ ] Daily coding challenges
+- [ ] Streak system & gamification
+- [ ] AI-powered hints
+- [ ] Leaderboards & analytics
+
+---
+
+## 👨‍💻 For Developers
+
+### File-Based Routing
+This project uses Expo Router with file-based routing. Routes are automatically generated from the `app/` directory structure.
+
+### Adding New Topics
+1. Create a new file in `app/DataStructures/` or `app/Algorithms/`
+2. Add explanations and code examples
+3. Create a corresponding visualizer in `app/DataVisual/`
+4. Update the Learn screen topic list in `app/(tabs)/learn.tsx`
+
+### Authentication
+User authentication context is in `app/auth/AuthContext.tsx`. Supabase is configured in `lib/supabase.ts`.
+
+### Theming
+Dynamic theming is managed in `app/theme/ThemeContext.tsx`. Both light and dark themes are defined there with a full token set.
+
+### Component Library
+Reusable components live in `app/components/`:
+- `Card` — flexible card with multiple variants and press animations
+- `Expandables` — animated collapsible section used in Learn and Settings
+
+---
+
+## 🤝 Contributing
+
+> More details coming soon!
+
+---
+
+## 📝 License
+
+[To be determined]
+
+---
+
+## 🚨 Known Limitations (Current Development Phase)
+
+- Backend is not fully integrated yet
+- Some screens are placeholder stubs
+- `isLoggedIn` is hardcoded — auth state not fully wired through the app
+- Advanced visualizers not yet implemented
+- Performance optimization pending
+
+---
+
+## ⚡ Philosophy
+> "If you can visualize it, you can understand it."
+
+AlgoTrainer is not about memorizing algorithms — it's about *seeing how they behave*.
+
+---
+
+**Last Updated**: May 2026  
+**Status**: Active Development 🔨

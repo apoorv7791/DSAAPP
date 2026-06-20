@@ -1,0 +1,318 @@
+import React, { useMemo } from 'react';
+import { StyleSheet, View, Text, FlatList, Pressable, ScrollView } from 'react-native';
+import { ToastAndroid } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
+import { useRouter } from 'expo-router';
+import { ThemeContext } from '@/theme/ThemeContext';
+import { useTranslation } from '@/context/LanguageContext';
+
+const LinkedList = () => {
+    const router = useRouter();
+    const { theme } = React.useContext(ThemeContext);
+    const styles = getStyles(theme);
+    const { t } = useTranslation();
+
+    const content = useMemo(() => [
+        {
+            id: "1",
+            type: "subheading",
+            text: t('topicContent.linkedList.whatIs'),
+        },
+        {
+            id: "2",
+            type: "text",
+            text: t('topicContent.linkedList.whatIsDesc'),
+        },
+        {
+            id: "3",
+            type: "subheading",
+            text: t('topicContent.linkedList.whyUse'),
+        },
+        {
+            id: "4",
+            type: "text",
+            text: t('topicContent.linkedList.whyUseDesc'),
+        },
+        {
+            id: "5",
+            type: "list",
+            items: [
+                t('topicContent.linkedList.dynamicSize'),
+                t('topicContent.linkedList.efficientInsertDelete'),
+                t('topicContent.linkedList.noShifting'),
+            ],
+        },
+        {
+            id: "6",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.nodeClass'),
+            text: `Class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}`
+        },
+        {
+            id: "7",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.linkedListClass'),
+            text: `Class LinkedList {
+    Node head;
+
+    LinkedList() {
+        this.head = null;
+    }
+}`
+        },
+        {
+            id: "8",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.insertNode'),
+            text: `public void insert(int data) {
+    Node newNode = new Node(data);
+    if (head == null) {
+        head = newNode;
+    } else {
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+}`
+        },
+        {
+            id: "10",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.displayNode'),
+            text: `public void display() {
+    Node current = head;
+    while (current != null) {
+        System.out.print(current.data + " ");
+        current = current.next;
+    }
+}`
+        },
+        {
+
+            id: "11",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.deleteNode'),
+            text: `void delete(int key) {
+    Node temp = head, prev = null;
+
+    if (temp != null && temp.data == key) {
+        head = temp.next;
+        return;
+    }
+
+    while (temp != null && temp.data != key) {
+        prev = temp;
+        temp = temp.next;
+    }
+
+    if (temp == null) return;
+
+    prev.next = temp.next;
+}`
+
+        },
+        {
+            id: "12",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.mainMethod'),
+            text: `
+    void main(){
+        var list = new LinkedList();
+            list.insert(10);
+            list.insert(20);
+            list.insert(30);
+            list.insert(40);
+            list.insert(50);
+            list.display();
+
+    }
+`
+        },
+        {
+            id: "13",
+            type: "code",
+            language: t('common.java'),
+            dataType: t('common.output'),
+            text: `Linked List: 10 -> 20 -> 30 -> 40 -> 50 -> null`
+        }
+    ], [t]);
+
+
+    const handleCopy = async (code: string) => {
+        await Clipboard.setStringAsync(code);
+        ToastAndroid.show(t('common.copied'), ToastAndroid.LONG);
+    }
+
+    const rendetItem = ({ item }: { item: any }) => {
+        switch (item.type) {
+            case "subheading":
+                return <Text style={styles.subHeading}>{item.text}</Text>
+            case "text":
+                return <Text style={styles.text}>{item.text}</Text>
+            case "code":
+                return (
+                    <View style={styles.codeBox}>
+                        <View style={styles.codeHeader}>
+                            <Text style={styles.codeType}>
+                                {item.language} • {item.dataType}
+                            </Text>
+
+                            <Pressable onPress={() => handleCopy(item.text)}>
+                                <Text style={styles.copy}>{t('common.copy')}</Text>
+                            </Pressable>
+                        </View>
+
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <Text style={styles.code}>{item.text}</Text>
+                        </ScrollView>
+                    </View>
+                );
+            case "list":
+                return (
+                    <View>
+                        {item.items.map((point: string, index: number) => (
+                            <View key={index} style={styles.listRow}>
+                                <Text style={styles.bullet}>•</Text>
+                                <Text style={styles.listText}>{point}</Text>
+                            </View>
+                        ))}
+                    </View>
+                );
+
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                data={content}
+                renderItem={rendetItem}
+                keyExtractor={(item) => item.id.toString()}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={
+                    <View style={styles.buttonContainer}>
+                        <Pressable style={styles.btn} onPress={() => router.push("/DataVisual/linked-list-visual")}>
+                            <Text style={styles.btnText}>{t('common.visualize')}</Text>
+                        </Pressable>
+                    </View>
+                }
+            />
+        </View>
+    );
+}
+const getStyles = (theme: any) =>
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: theme.bg,
+        },
+
+        section: {
+            marginBottom: 16,
+        },
+
+        subHeading: {
+            fontSize: 20,
+            fontWeight: "700",
+            color: theme.text,
+            marginBottom: 6,
+            marginTop: 10,
+        },
+
+        text: {
+            fontSize: 16,
+            color: theme.textSecondary,
+            lineHeight: 24,
+        },
+
+        listText: {
+            flex: 1,
+            fontSize: 16,
+            color: theme.textSecondary,
+        },
+
+        bullet: {
+            marginRight: 8,
+            color: theme.textSecondary,
+            fontSize: 16,
+        },
+
+        codeBox: {
+            backgroundColor: theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+            padding: 14,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: theme.border,
+            marginTop: 12,
+            marginBottom: 8,
+        },
+
+        codeHeader: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+        },
+
+        code: {
+            color: theme.mode === "dark" ? "#fff" : "#000",
+            fontFamily: "monospace",
+            fontSize: 13,
+            lineHeight: 20,
+        },
+
+        codeType: {
+            color: theme.textSecondary,
+            fontSize: 12,
+            flex: 1,
+        },
+
+        copy: {
+            color: theme.primary,
+            fontSize: 15,
+            fontWeight: "600",
+        },
+
+        btn: {
+            backgroundColor: theme.primary,
+            paddingVertical: 10,
+            paddingHorizontal: 16,
+            borderRadius: 8,
+        },
+
+        btnText: {
+            color: "#fff",
+            fontSize: 14,
+            fontWeight: "600",
+        },
+
+        buttonContainer: {
+            alignItems: "center",
+            marginTop: 16,
+        },
+
+        listRow: {
+            flexDirection: "row",
+            marginBottom: 8,
+        },
+    });
+export default LinkedList;
