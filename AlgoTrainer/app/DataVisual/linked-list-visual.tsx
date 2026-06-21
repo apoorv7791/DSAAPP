@@ -9,6 +9,50 @@ interface NodeType {
     next: string | null;
 }
 
+interface ArrowProps {
+    isNew: boolean;
+    styles: any;
+}
+
+// ---------------- ANIMATED ARROW ----------------
+const AnimatedArrow = React.memo(({ isNew, styles }: ArrowProps) => {
+    const colorAnim = useRef(new Animated.Value(0)).current;
+    const didAnimate = useRef(false);
+
+    useEffect(() => {
+        if (isNew && !didAnimate.current) {
+            didAnimate.current = true;
+            // Flash yellow then settle back to white
+            Animated.sequence([
+                Animated.timing(colorAnim, { toValue: 1, duration: 200, useNativeDriver: false }),
+                Animated.delay(400),
+                Animated.timing(colorAnim, { toValue: 0, duration: 300, useNativeDriver: false }),
+            ]).start();
+        }
+        if (!isNew) {
+            didAnimate.current = false;
+            colorAnim.setValue(0);
+        }
+    }, [isNew]);
+
+    const arrowColor = colorAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['#aaaaaa', '#FFD700'],
+    });
+
+    return (
+        <View style={styles.arrowContainer}>
+            <Animated.View style={[styles.line, { backgroundColor: arrowColor }]} />
+            <Animated.View
+                style={[
+                    styles.arrowHead,
+                    { borderLeftColor: arrowColor },
+                ]}
+            />
+        </View>
+    );
+});
+
 // ---------------- LOGIC LAYER ----------------
 const useLinkedList = () => {
     const [nodes, setNodes] = useState<NodeType[]>([]);
@@ -16,6 +60,7 @@ const useLinkedList = () => {
     const [prevId, setPrevId] = useState<string | null>(null);
     const [isReversing, setIsReversing] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [newConnectionId, setNewConnectionId] = useState<string | null>(null); // id of node whose "next" just got set
 
     const idCounter = useRef(0);
     const generateId = () => (++idCounter.current).toString();
@@ -32,6 +77,10 @@ const useLinkedList = () => {
         const tail = getTailId();
 
         if (!tail) return setNodes([newNode]);
+
+        // Mark old tail as new connection so its arrow animates
+        setNewConnectionId(tail);
+        setTimeout(() => setNewConnectionId(null), 1000);
 
         setNodes(prev =>
             prev.map(n => (n.id === tail ? { ...n, next: newNode.id } : n)).concat(newNode)
@@ -124,6 +173,7 @@ const useLinkedList = () => {
         prevId,
         isReversing,
         deletingId,
+        newConnectionId,
         append,
         deleteHead,
         deleteTail,
@@ -135,7 +185,7 @@ const useLinkedList = () => {
 };
 
 // ---------------- NODE COMPONENT ----------------
-const Node = React.memo(({ value, isHead, isTail, isCurrent, isPrev, hasNext, isDeleting, styles, t }: any) => {
+const Node = React.memo(({ value, isHead, isTail, isCurrent, isPrev, hasNext, isDeleting, isNewConnection, styles, t }: any) => {
     const scale = useRef(new Animated.Value(0)).current;
     const bgAnim = useRef(new Animated.Value(0)).current;
     const deleteAnim = useRef(new Animated.Value(1)).current;
@@ -212,10 +262,7 @@ const Node = React.memo(({ value, isHead, isTail, isCurrent, isPrev, hasNext, is
 
             {/* 👇 arrow stays separate */}
             {hasNext && (
-                <View style={styles.arrowContainer}>
-                    <View style={styles.line} />
-                    <View style={styles.arrowHead} />
-                </View>
+                <AnimatedArrow isNew={isNewConnection} styles={styles} />
             )}
 
         </Animated.View>
@@ -239,6 +286,7 @@ export default function LinkedListVisual() {
         currentId,
         prevId,
         deletingId,
+        newConnectionId,
     } = useLinkedList();
 
     const [input, setInput] = useState('');
@@ -266,6 +314,7 @@ export default function LinkedListVisual() {
                                     isPrev={node.id === prevId}
                                     hasNext={node.next !== null}
                                     isDeleting={node.id === deletingId}
+                                    isNewConnection={node.id === newConnectionId}
                                     styles={styles}
                                     t={t}
                                 />
@@ -394,7 +443,7 @@ const createStyles = (theme: any) =>
         line: {
             width: 20,
             height: 2,
-            backgroundColor: 'white',
+            backgroundColor: '#aaaaaa',
         },
 
         arrowHead: {
@@ -405,6 +454,6 @@ const createStyles = (theme: any) =>
             borderLeftWidth: 8,
             borderTopColor: 'transparent',
             borderBottomColor: 'transparent',
-            borderLeftColor: 'white',
+            borderLeftColor: '#aaaaaa',
         },
     });
