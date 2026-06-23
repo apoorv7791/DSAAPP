@@ -1,14 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     Pressable,
     ScrollView,
-    ToastAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
+import { supabase } from '@/lib/supabase';
+import { showToast } from '@/lib/toast';
 
 const LEVELS = [
     {
@@ -38,14 +40,69 @@ const Difficulty = () => {
     const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
     const [selected, setSelected] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
 
-    const handleSave = () => {
+    // Load saved difficulty on mount
+    useEffect(() => {
+        const loadDifficulty = async () => {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                const { data } = await supabase
+                    .from('profiles')
+                    .select('difficulty')
+                    .eq('id', user.id)
+                    .single();
+
+                if (data?.difficulty) setSelected(data.difficulty);
+            } catch (e) {
+                // silently fail
+            } finally {
+                setFetching(false);
+            }
+        };
+        void loadDifficulty();
+    }, []);
+
+    const handleSave = async () => {
         if (!selected) {
-            ToastAndroid.show('Please select a difficulty level', ToastAndroid.SHORT);
+            showToast('Please select a difficulty level');
             return;
         }
-        ToastAndroid.show(`Difficulty set to ${selected} 🚀`, ToastAndroid.SHORT);
+
+        try {
+            setLoading(true);
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                showToast('Please log in to save your difficulty');
+                return;
+            }
+
+            const { error } = await supabase
+                .from('profiles')
+                .update({ difficulty: selected })
+                .eq('id', user.id);
+
+            if (error) throw error;
+
+            showToast(`Difficulty set to ${selected} 🚀`);
+        } catch (e) {
+            showToast('Failed to save difficulty. Try again.');
+        } finally {
+            setLoading(false);
+        }
     };
+
+    if (fetching) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator color={theme.primary} />
+            </View>
+        );
+    }
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -60,10 +117,7 @@ const Difficulty = () => {
                     return (
                         <Pressable
                             key={level.value}
-                            style={[
-                                styles.option,
-                                isSelected && { borderColor: level.color },
-                            ]}
+                            style={[styles.option, isSelected && { borderColor: level.color }]}
                             onPress={() => setSelected(level.value)}
                         >
                             <View style={[styles.iconBox, { backgroundColor: level.color + '22' }]}>
@@ -83,8 +137,14 @@ const Difficulty = () => {
                 })}
             </View>
 
-            <Pressable style={styles.saveBtn} onPress={handleSave}>
-                <Text style={styles.saveBtnText}>Save Difficulty</Text>
+            <Pressable
+                style={[styles.saveBtn, loading && { opacity: 0.6 }]}
+                onPress={handleSave}
+                disabled={loading}
+            >
+                <Text style={styles.saveBtnText}>
+                    {loading ? 'Saving...' : 'Save Difficulty'}
+                </Text>
             </Pressable>
         </ScrollView>
     );
@@ -92,72 +152,25 @@ const Difficulty = () => {
 
 const getStyles = (theme: any) =>
     StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: theme.bg,
-        },
-        content: {
-            padding: 20,
-            paddingBottom: 40,
-        },
-        heading: {
-            fontSize: 24,
-            fontWeight: '700',
-            color: theme.text,
-            marginBottom: 8,
-        },
-        subheading: {
-            fontSize: 15,
-            color: theme.textSecondary,
-            marginBottom: 28,
-            lineHeight: 22,
-        },
-        optionsContainer: {
-            gap: 14,
-        },
+        container: { flex: 1, backgroundColor: theme.bg },
+        content: { padding: 20, paddingBottom: 40 },
+        heading: { fontSize: 24, fontWeight: '700', color: theme.text, marginBottom: 8 },
+        subheading: { fontSize: 15, color: theme.textSecondary, marginBottom: 28, lineHeight: 22 },
+        optionsContainer: { gap: 14 },
         option: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 14,
-            padding: 16,
-            borderRadius: 14,
-            borderWidth: 1.5,
-            borderColor: theme.border,
-            backgroundColor: theme.bgCard,
+            flexDirection: 'row', alignItems: 'center', gap: 14,
+            padding: 16, borderRadius: 14, borderWidth: 1.5,
+            borderColor: theme.border, backgroundColor: theme.bgCard,
         },
-        iconBox: {
-            width: 48,
-            height: 48,
-            borderRadius: 12,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        optionText: {
-            flex: 1,
-            gap: 4,
-        },
-        optionLabel: {
-            fontSize: 16,
-            fontWeight: '700',
-            color: theme.text,
-        },
-        optionDesc: {
-            fontSize: 13,
-            color: theme.textSecondary,
-            lineHeight: 18,
-        },
+        iconBox: { width: 48, height: 48, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+        optionText: { flex: 1, gap: 4 },
+        optionLabel: { fontSize: 16, fontWeight: '700', color: theme.text },
+        optionDesc: { fontSize: 13, color: theme.textSecondary, lineHeight: 18 },
         saveBtn: {
-            marginTop: 32,
-            backgroundColor: theme.primary,
-            paddingVertical: 14,
-            borderRadius: 12,
-            alignItems: 'center',
+            marginTop: 32, backgroundColor: theme.primary,
+            paddingVertical: 14, borderRadius: 12, alignItems: 'center',
         },
-        saveBtnText: {
-            color: theme.textInverse,
-            fontSize: 16,
-            fontWeight: '700',
-        },
+        saveBtnText: { color: theme.textInverse, fontSize: 16, fontWeight: '700' },
     });
 
 export default Difficulty;

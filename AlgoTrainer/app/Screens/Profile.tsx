@@ -5,10 +5,8 @@ import {
     StyleSheet,
     ScrollView,
     Pressable,
-    ToastAndroid,
     ActivityIndicator,
     Alert,
-    Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
@@ -19,6 +17,7 @@ import { deleteAccountViaEdgeFunction } from '@/lib/deleteAccount';
 import { clearLearningProgress } from '@/lib/learningProgressStorage';
 import { useLearningProgress } from '@/context/LearningProgressContext';
 import { LEARNING_TOPICS } from '@/lib/learningTopics';
+import { showToast } from '@/lib/toast';
 
 type ProfileType = {
     id: string;
@@ -40,23 +39,24 @@ const Profile = () => {
     const [profile, setProfile] = useState<ProfileType | null>(null);
     const [loading, setLoading] = useState(true);
     const [deletingAccount, setDeletingAccount] = useState(false);
+    const [streak, setStreak] = useState(0);
+
+    const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL ?? 'http://localhost:4000';
 
     // Calculate real stats
     const completedCount = Object.keys(completedById).length;
-    
+
     const stats = [
         { label: 'Topics Completed', value: completedCount.toString(), icon: 'checkmark-circle-outline' as const },
-        { label: 'Day Streak', value: '1', icon: 'flame-outline' as const }, // Streak would need a separate table/logic
+        { label: 'Day Streak', value: streak.toString(), icon: 'flame-outline' as const },
         { label: 'Total Topics', value: LEARNING_TOPICS.length.toString(), icon: 'list-outline' as const },
     ];
 
-    // Fetch profile
+    // Fetch profile + streak
     useEffect(() => {
         const loadProfile = async () => {
             if (!user?.id) return;
-
             setLoading(true);
-
             const { data, error } = await supabase
                 .from('profiles')
                 .select('id, username')
@@ -65,6 +65,23 @@ const Profile = () => {
 
             if (!error && data) {
                 setProfile(data);
+            }
+
+            // Fetch streak from backend
+            try {
+                const { data: sessionData } = await supabase.auth.getSession();
+                const token = sessionData.session?.access_token;
+                if (token) {
+                    const res = await fetch(`${BACKEND_URL}/api/user/streak`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (res.ok) {
+                        const body = await res.json();
+                        setStreak(body.current_streak ?? 0);
+                    }
+                }
+            } catch (e) {
+                // streak fetch failure is non-critical
             }
 
             setLoading(false);
@@ -82,11 +99,7 @@ const Profile = () => {
     const handleLogout = async () => {
         await supabase.auth.signOut();
         logout();
-        if (Platform.OS === 'android') {
-            ToastAndroid.show('Logged out', ToastAndroid.SHORT);
-        } else {
-            Alert.alert('Logged out');
-        }
+        showToast('Logged out');
         router.replace('/(tabs)');
     };
 
@@ -110,22 +123,14 @@ const Profile = () => {
         try {
             const result = await deleteAccountViaEdgeFunction();
             if (!result.ok) {
-                if (Platform.OS === 'android') {
-                    ToastAndroid.show(result.message, ToastAndroid.LONG);
-                } else {
-                    Alert.alert('Could not delete account', result.message);
-                }
+                showToast(result.message, 'long');
                 return;
             }
 
             await clearLearningProgress();
             await supabase.auth.signOut();
             logout();
-            if (Platform.OS === 'android') {
-                ToastAndroid.show('Account deleted', ToastAndroid.SHORT);
-            } else {
-                Alert.alert('Account deleted');
-            }
+            showToast('Account deleted');
             router.replace('/(tabs)');
         } finally {
             setDeletingAccount(false);

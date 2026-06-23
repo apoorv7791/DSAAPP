@@ -5,6 +5,7 @@ import {
     StyleSheet,
     ScrollView,
     Pressable,
+    Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
@@ -89,9 +90,11 @@ const HelpCenter = () => {
                 <Ionicons name="mail-outline" size={22} color={theme.primary} />
                 <View style={styles.contactText}>
                     <Text style={styles.contactTitle}>Still need help?</Text>
-                    <Text style={styles.contactSub}>
-                        Reach out at support@algotrainer.app
-                    </Text>
+                    <Pressable onPress={() => Linking.openURL('mailto:singhapoorv7791@gmail.com?subject=AlgoTrainer%20Support%20Query')}>
+                        <Text style={[styles.contactSub, { color: theme.primary }]}>
+                            Reach out at singhapoorv7791@gmail.com
+                        </Text>
+                    </Pressable>
                 </View>
             </View>
         </ScrollView>

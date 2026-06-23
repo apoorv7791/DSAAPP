@@ -1,13 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     Pressable,
     ScrollView,
-    ToastAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
+import { supabase } from '@/lib/supabase';
+import { showToast } from '@/lib/toast';
+
+const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL ?? 'http://localhost:4000';
 
 const GOALS = [
     { label: '5 min / day', value: 5, desc: 'Just getting started' },
@@ -21,14 +25,75 @@ const DailyGoal = () => {
     const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
     const [selected, setSelected] = useState<number | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
 
-    const handleSave = () => {
+    // Load saved goal on mount
+    useEffect(() => {
+        const loadGoal = async () => {
+            try {
+                const { data: sessionData } = await supabase.auth.getSession();
+                const token = sessionData.session?.access_token;
+                if (!token) return;
+
+                const res = await fetch(`${BACKEND_URL}/api/user/goal`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                if (res.ok) {
+                    const body = await res.json();
+                    if (body.daily_minutes) setSelected(body.daily_minutes);
+                }
+            } catch (e) {
+                // silently fail — user can still pick a new goal
+            } finally {
+                setFetching(false);
+            }
+        };
+        void loadGoal();
+    }, []);
+
+    const handleSave = async () => {
         if (selected === null) {
-            ToastAndroid.show('Please select a goal first', ToastAndroid.SHORT);
+            showToast('Please select a goal first');
             return;
         }
-        ToastAndroid.show(`Daily goal set to ${selected} min/day 🎯`, ToastAndroid.SHORT);
+
+        try {
+            setLoading(true);
+            const { data: sessionData } = await supabase.auth.getSession();
+            const token = sessionData.session?.access_token;
+
+            if (!token) {
+                showToast('Please log in to save your goal');
+                return;
+            }
+
+            const res = await fetch(`${BACKEND_URL}/api/user/goal`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ daily_minutes: selected }),
+            });
+
+            if (!res.ok) throw new Error('Failed to save');
+
+            showToast(`Daily goal set to ${selected} min/day 🎯`);
+        } catch (e) {
+            showToast('Failed to save goal. Try again.');
+        } finally {
+            setLoading(false);
+        }
     };
+
+    if (fetching) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator color={theme.primary} />
+            </View>
+        );
+    }
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -43,10 +108,7 @@ const DailyGoal = () => {
                     return (
                         <Pressable
                             key={goal.value}
-                            style={[
-                                styles.option,
-                                isSelected && styles.optionSelected,
-                            ]}
+                            style={[styles.option, isSelected && styles.optionSelected]}
                             onPress={() => setSelected(goal.value)}
                         >
                             <View style={styles.optionLeft}>
@@ -65,8 +127,14 @@ const DailyGoal = () => {
                 })}
             </View>
 
-            <Pressable style={styles.saveBtn} onPress={handleSave}>
-                <Text style={styles.saveBtnText}>Save Goal</Text>
+            <Pressable
+                style={[styles.saveBtn, loading && { opacity: 0.6 }]}
+                onPress={handleSave}
+                disabled={loading}
+            >
+                <Text style={styles.saveBtnText}>
+                    {loading ? 'Saving...' : 'Save Goal'}
+                </Text>
             </Pressable>
         </ScrollView>
     );
@@ -74,91 +142,33 @@ const DailyGoal = () => {
 
 const getStyles = (theme: any) =>
     StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: theme.bg,
-        },
-        content: {
-            padding: 20,
-            paddingBottom: 40,
-        },
-        heading: {
-            fontSize: 24,
-            fontWeight: '700',
-            color: theme.text,
-            marginBottom: 8,
-        },
-        subheading: {
-            fontSize: 15,
-            color: theme.textSecondary,
-            marginBottom: 28,
-            lineHeight: 22,
-        },
-        optionsContainer: {
-            gap: 12,
-        },
+        container: { flex: 1, backgroundColor: theme.bg },
+        content: { padding: 20, paddingBottom: 40 },
+        heading: { fontSize: 24, fontWeight: '700', color: theme.text, marginBottom: 8 },
+        subheading: { fontSize: 15, color: theme.textSecondary, marginBottom: 28, lineHeight: 22 },
+        optionsContainer: { gap: 12 },
         option: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 16,
-            borderRadius: 14,
-            borderWidth: 1.5,
-            borderColor: theme.border,
-            backgroundColor: theme.bgCard,
+            flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+            padding: 16, borderRadius: 14, borderWidth: 1.5,
+            borderColor: theme.border, backgroundColor: theme.bgCard,
         },
-        optionSelected: {
-            borderColor: theme.primary,
-            backgroundColor: theme.bgSecondary,
-        },
-        optionLeft: {
-            gap: 4,
-        },
-        optionLabel: {
-            fontSize: 16,
-            fontWeight: '600',
-            color: theme.text,
-        },
-        optionLabelSelected: {
-            color: theme.primary,
-        },
-        optionDesc: {
-            fontSize: 13,
-            color: theme.textSecondary,
-        },
-        optionDescSelected: {
-            color: theme.textSecondary,
-        },
+        optionSelected: { borderColor: theme.primary, backgroundColor: theme.bgSecondary },
+        optionLeft: { gap: 4 },
+        optionLabel: { fontSize: 16, fontWeight: '600', color: theme.text },
+        optionLabelSelected: { color: theme.primary },
+        optionDesc: { fontSize: 13, color: theme.textSecondary },
+        optionDescSelected: { color: theme.textSecondary },
         radio: {
-            width: 22,
-            height: 22,
-            borderRadius: 11,
-            borderWidth: 2,
-            borderColor: theme.border,
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: 22, height: 22, borderRadius: 11, borderWidth: 2,
+            borderColor: theme.border, justifyContent: 'center', alignItems: 'center',
         },
-        radioSelected: {
-            borderColor: theme.primary,
-        },
-        radioDot: {
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            backgroundColor: theme.primary,
-        },
+        radioSelected: { borderColor: theme.primary },
+        radioDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: theme.primary },
         saveBtn: {
-            marginTop: 32,
-            backgroundColor: theme.primary,
-            paddingVertical: 14,
-            borderRadius: 12,
-            alignItems: 'center',
+            marginTop: 32, backgroundColor: theme.primary,
+            paddingVertical: 14, borderRadius: 12, alignItems: 'center',
         },
-        saveBtnText: {
-            color: theme.textInverse,
-            fontSize: 16,
-            fontWeight: '700',
-        },
+        saveBtnText: { color: theme.textInverse, fontSize: 16, fontWeight: '700' },
     });
 
 export default DailyGoal;

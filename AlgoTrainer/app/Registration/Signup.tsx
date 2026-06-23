@@ -36,6 +36,9 @@ const Signup = () => {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: { username }
+                }
             });
 
             if (error) {
@@ -43,18 +46,7 @@ const Signup = () => {
                 return;
             }
 
-            const user = data.user;
-
-            if (user) {
-                const { error: profileError } = await supabase.from('profiles').insert({
-                    id: user.id,
-                    username: username,
-                });
-                if (profileError) {
-                    ToastAndroid.show(profileError.message, ToastAndroid.LONG);
-                    return;
-                }
-            }
+            // Profile is auto-created by DB trigger using username from metadata
 
             ToastAndroid.show(
                 t('auth.signupSuccess'),
