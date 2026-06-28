@@ -6,8 +6,8 @@ const RegLayout = () => {
 
 
         <Stack>
-            <Stack.Screen name="register" options={{ title: "Register" }} />
-            <Stack.Screen name="login" options={{ title: "Login" }} />
+            <Stack.Screen name="Signup" options={{ title: "Register" }} />
+            <Stack.Screen name="Login" options={{ title: "Login" }} />
         </Stack>
 
 

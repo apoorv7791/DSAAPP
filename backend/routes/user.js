@@ -1,4 +1,4 @@
-// routes/user.js — user profile, goal, streak routes
+// routes/user.js — user profile, goal, streak, difficulty routes
 import express from 'express';
 import {
     getProfile,
@@ -7,6 +7,8 @@ import {
     setGoal,
     getStreak,
 } from '../controller/userController.js';
+import { getDifficulty, setDifficulty } from '../controller/difficultyController.js';
+import { updateStreak } from '../controller/streakController.js';
 
 const router = express.Router();
 
@@ -15,5 +17,8 @@ router.put('/user/profile', updateProfile);
 router.get('/user/goal', getGoal);
 router.post('/user/goal', setGoal);
 router.get('/user/streak', getStreak);
+router.post('/user/streak', updateStreak);       // new — updates streak on activity
+router.get('/user/difficulty', getDifficulty);   // new
+router.put('/user/difficulty', setDifficulty);   // new
 
 export default router;
