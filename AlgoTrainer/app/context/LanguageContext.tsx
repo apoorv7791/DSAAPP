@@ -1,5 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { Platform, NativeModules } from 'react-native';
+import React, { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { Language, t } from '@/lib/i18n';
 import { storage } from '@/lib/storage';
 
@@ -29,21 +28,26 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         loadLanguage();
     }, []);
 
-    const setLanguage = async (newLang: Language) => {
+    const setLanguage = useCallback(async (newLang: Language) => {
         try {
             setLanguageState(newLang);
             await storage.set(LANGUAGE_STORAGE_KEY, newLang);
         } catch (error) {
             console.error('Failed to save language:', error);
         }
-    };
+    }, []);
 
-    const translate = (path: string) => {
+    const translate = useCallback((path: string) => {
         return t(language, path);
-    };
+    }, [language]);
+
+    const value = useMemo(
+        () => ({ language, setLanguage, t: translate }),
+        [language, setLanguage, translate]
+    );
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t: translate }}>
+        <LanguageContext.Provider value={value}>
             {children}
         </LanguageContext.Provider>
     );

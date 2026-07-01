@@ -1570,25 +1570,39 @@ export const translations: Record<Language, any> = {
     },
 };
 
+// Cache lookup results so repeated calls with the same lang+path skip traversal.
+const _cache = new Map<string, string>();
+
 export const t = (
     lang: Language,
     path: string
-) => {
+): string => {
+    const cacheKey = `${lang}:${path}`;
+    const cached = _cache.get(cacheKey);
+    if (cached !== undefined) return cached;
+
     const keys = path.split('.');
-    let result = translations[lang] || translations.en;
+    let result: any = translations[lang] || translations.en;
 
     for (const key of keys) {
         if (result[key] === undefined) {
             // Fallback to English if key not found in current language
-            let fallback = translations.en;
+            let fallback: any = translations.en;
             for (const fallbackKey of keys) {
-                if (fallback[fallbackKey] === undefined) return path;
+                if (fallback[fallbackKey] === undefined) {
+                    _cache.set(cacheKey, path);
+                    return path;
+                }
                 fallback = fallback[fallbackKey];
             }
-            return fallback;
+            const fallbackStr = String(fallback);
+            _cache.set(cacheKey, fallbackStr);
+            return fallbackStr;
         }
         result = result[key];
     }
 
-    return result;
+    const resultStr = String(result);
+    _cache.set(cacheKey, resultStr);
+    return resultStr;
 };
