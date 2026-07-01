@@ -10,6 +10,7 @@ import {
 import { ThemeContext } from '@/theme/ThemeContext';
 import { supabase } from '@/lib/supabase';
 import { showToast } from '@/lib/toast';
+import { guestProgress } from '@/lib/guestProgress';
 
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL ?? 'http://localhost:4000';
 
@@ -34,7 +35,13 @@ const DailyGoal = () => {
             try {
                 const { data: sessionData } = await supabase.auth.getSession();
                 const token = sessionData.session?.access_token;
-                if (!token) return;
+
+                if (!token) {
+                    // Guest: load from local storage
+                    const localGoal = await guestProgress.getGoal();
+                    if (localGoal) setSelected(localGoal);
+                    return;
+                }
 
                 const res = await fetch(`${BACKEND_URL}/api/user/goal`, {
                     headers: { Authorization: `Bearer ${token}` },
@@ -64,7 +71,9 @@ const DailyGoal = () => {
             const token = sessionData.session?.access_token;
 
             if (!token) {
-                showToast('Please log in to save your goal');
+                // Guest: save to local storage
+                await guestProgress.setGoal(selected);
+                showToast(`Daily goal saved locally 🎯`);
                 return;
             }
 
