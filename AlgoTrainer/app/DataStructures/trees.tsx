@@ -9,7 +9,7 @@ const Trees = () => {
     const router = useRouter();
     const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
-    const { t } = useTranslation();
+    const { t, tArray } = useTranslation();
 
     const data = useMemo(() => [
         {
@@ -40,7 +40,7 @@ const Trees = () => {
         {
             id: "6",
             type: "list",
-            items: t('topicContent.trees.keyOpsItems')
+            items: tArray('topicContent.trees.keyOpsItems')
         },
         {
             id: "7",

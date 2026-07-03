@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { Platform, NativeModules } from 'react-native';
-import { Language, t } from '@/lib/i18n';
+import { Language, t, tArray } from '@/lib/i18n';
 
 // Safe AsyncStorage handling to prevent crash when native module is missing
 let AsyncStorage: any;
@@ -14,6 +14,7 @@ interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => Promise<void>;
     t: (path: string) => string;
+    tArray: (path: string) => string[];
 }
 
 export const LanguageContext = createContext<LanguageContextType | null>(null);
@@ -77,8 +78,12 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         return t(language, path);
     };
 
+    const translateArray = (path: string): string[] => {
+        return tArray(language, path);
+    };
+
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t: translate }}>
+        <LanguageContext.Provider value={{ language, setLanguage, t: translate, tArray: translateArray }}>
             {children}
         </LanguageContext.Provider>
     );

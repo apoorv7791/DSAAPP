@@ -143,6 +143,12 @@ const Login = () => {
                 </Text>
             </Pressable>
 
+            <Pressable onPress={() => router.push('/Screens/ForgotPassword')}>
+                <Text style={[styles.linkText, { color: theme.textSecondary, fontSize: 14, marginTop: 12 }]}>
+                    Forgot password?
+                </Text>
+            </Pressable>
+
             <Pressable onPress={() => router.push('/Registration/Signup')}>
                 <Text style={[styles.linkText, { color: theme.primary }]}>
                     {t('auth.dontHaveAccount')}

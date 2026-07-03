@@ -8,7 +8,7 @@ import { useTranslation } from '@/context/LanguageContext';
 const Graphs = () => {
     const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
-    const { t } = useTranslation();
+    const { t, tArray } = useTranslation();
     const router = useRouter();
 
     const handleCopy = useCallback(async (text: string) => {
@@ -45,7 +45,7 @@ const Graphs = () => {
         {
             id: "6",
             type: "list",
-            items: (t('topicContent.graphs.types') as any).map((text: string, index: number) => ({ id: `6.${index}`, text }))
+            items: tArray('topicContent.graphs.types')
         },
         {
             id: "7",
@@ -109,8 +109,8 @@ const Graphs = () => {
                 return <Text style={styles.text}>{item.text}</Text>;
             case "list":
                 return <View>
-                    {item.items.map((listItem: any) => (
-                        <Text key={listItem.id} style={styles.text}>- {listItem.text}</Text>
+                    {item.items.map((listItem: string, index: number) => (
+                        <Text key={index} style={styles.text}>- {listItem}</Text>
                     ))}
                 </View>
             case "code":

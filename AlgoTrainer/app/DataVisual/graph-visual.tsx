@@ -1,291 +1,598 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useState, useContext, useRef } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    ScrollView,
+    Alert,
+    TextInput,
+} from 'react-native';
 import { ThemeContext, ThemeType } from '@/theme/ThemeContext';
 
-const graph: Record<number, number[]> = {
-    1: [2, 3],
-    2: [1, 3],
-    3: [1, 2],
-};
+/* ─── Types ─────────────────────────────────────────────────── */
 
-type NodeCircleProps = {
+type NodePos = { x: number; y: number };
+
+type GraphNode = {
+    id: number;
     label: string;
-    active: boolean;
-    selected: boolean;
-    onPress: () => void;
-    theme: ThemeType;
+    pos: NodePos;
 };
 
-const NodeCircle = ({ label, active, selected, onPress, theme }: NodeCircleProps) => {
-    const styles = getStyles(theme);
+type Edge = { from: number; to: number };
 
-    let bgColor = theme.primary;
-    if (active) bgColor = '#FF6B6B';
-    else if (selected) bgColor = theme.success;
+/* ─── Constants ──────────────────────────────────────────────── */
 
-    return (
-        <Pressable
-            onPress={onPress}
-            style={[styles.node, { backgroundColor: bgColor }]}
-        >
-            <Text style={styles.nodeText}>{label}</Text>
-        </Pressable>
-    );
-};
+const NODE_RADIUS = 26;
+const MAX_NODES = 7;
+const CANVAS_W = 320;
+const CANVAS_H = 320;
+
+// Preset positions for up to 7 nodes laid out in a circle
+const PRESET_POSITIONS: NodePos[] = [
+    { x: 160, y: 50 },
+    { x: 270, y: 130 },
+    { x: 240, y: 260 },
+    { x: 100, y: 270 },
+    { x: 50, y: 135 },
+    { x: 160, y: 165 },
+    { x: 210, y: 200 },
+];
+
+const delay = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
+
+/* ─── Helpers ────────────────────────────────────────────────── */
+
+function buildAdjacency(
+    nodes: GraphNode[],
+    edges: Edge[],
+): Record<number, number[]> {
+    const adj: Record<number, number[]> = {};
+    for (const n of nodes) adj[n.id] = [];
+    for (const e of edges) {
+        adj[e.from].push(e.to);
+        adj[e.to].push(e.from);
+    }
+    return adj;
+}
+
+/* ─── Main component ─────────────────────────────────────────── */
 
 const GraphsVisual = () => {
     const { theme } = useContext(ThemeContext);
-
-    const [activeNode, setActiveNode] = useState<number | null>(null);
-    const [startNode, setStartNode] = useState<number | null>(null);
-    const [isRunning, setIsRunning] = useState(false);
     const styles = getStyles(theme);
 
-    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+    // Graph state
+    const [nodes, setNodes] = useState<GraphNode[]>([]);
+    const [edges, setEdges] = useState<Edge[]>([]);
+    const nextId = useRef(1);
 
-    // 🔥 BFS
-    const BFS = async (start: number) => {
+    // Interaction state
+    const [mode, setMode] = useState<'add' | 'edge' | 'delete'>('add');
+    const [pendingEdge, setPendingEdge] = useState<number | null>(null); // first node selected for edge
+
+    // Traversal state
+    const [visitedSet, setVisitedSet] = useState<Set<number>>(new Set());
+    const [activeNode, setActiveNode] = useState<number | null>(null);
+    const [traversalLog, setTraversalLog] = useState<string>('');
+    const [isRunning, setIsRunning] = useState(false);
+
+    /* ── Add node ──────────────────────────────────────────── */
+
+    const addNode = () => {
+        if (nodes.length >= MAX_NODES) {
+            Alert.alert('Limit reached', `Maximum ${MAX_NODES} nodes allowed.`);
+            return;
+        }
+        const pos = PRESET_POSITIONS[nodes.length];
+        const id = nextId.current++;
+        setNodes(prev => [...prev, { id, label: String(id), pos }]);
+    };
+
+    /* ── Delete node & its edges ───────────────────────────── */
+
+    const deleteNode = (id: number) => {
+        setNodes(prev => prev.filter(n => n.id !== id));
+        setEdges(prev => prev.filter(e => e.from !== id && e.to !== id));
+        if (pendingEdge === id) setPendingEdge(null);
+    };
+
+    /* ── Handle node press (depends on mode) ───────────────── */
+
+    const handleNodePress = (id: number) => {
         if (isRunning) return;
-        setIsRunning(true);
 
+        if (mode === 'delete') {
+            deleteNode(id);
+            return;
+        }
+
+        if (mode === 'edge') {
+            if (pendingEdge === null) {
+                setPendingEdge(id);
+                setTraversalLog(`Select second node to connect to node ${id}`);
+                return;
+            }
+            if (pendingEdge === id) {
+                setPendingEdge(null);
+                setTraversalLog('');
+                return;
+            }
+            // Check for duplicate edge
+            const duplicate = edges.some(
+                e =>
+                    (e.from === pendingEdge && e.to === id) ||
+                    (e.from === id && e.to === pendingEdge),
+            );
+            if (duplicate) {
+                // Remove the edge
+                setEdges(prev =>
+                    prev.filter(
+                        e =>
+                            !(
+                                (e.from === pendingEdge && e.to === id) ||
+                                (e.from === id && e.to === pendingEdge)
+                            ),
+                    ),
+                );
+                setTraversalLog(`Edge removed between ${pendingEdge} and ${id}`);
+            } else {
+                setEdges(prev => [...prev, { from: pendingEdge, to: id }]);
+                setTraversalLog(`Edge added between ${pendingEdge} and ${id}`);
+            }
+            setPendingEdge(null);
+            return;
+        }
+    };
+
+    /* ── BFS ───────────────────────────────────────────────── */
+
+    const runBFS = async (startId: number) => {
+        if (isRunning || nodes.length === 0) return;
+        setIsRunning(true);
+        setVisitedSet(new Set());
+        setActiveNode(null);
+
+        const adj = buildAdjacency(nodes, edges);
         const visited = new Set<number>();
-        const queue: number[] = [start];
+        const queue: number[] = [startId];
+        const order: number[] = [];
+
+        setTraversalLog('BFS started…');
 
         while (queue.length) {
-            const node = queue.shift();
-            if (node === undefined || visited.has(node)) continue;
+            const cur = queue.shift()!;
+            if (visited.has(cur)) continue;
+            visited.add(cur);
+            order.push(cur);
 
-            visited.add(node);
-            setActiveNode(node);
-            await delay(700);
+            setActiveNode(cur);
+            setVisitedSet(new Set(visited));
+            setTraversalLog(`BFS — visiting node ${cur}`);
+            await delay(750);
 
-            for (const neighbor of graph[node]) {
-                if (!visited.has(neighbor)) queue.push(neighbor);
+            for (const nb of adj[cur] ?? []) {
+                if (!visited.has(nb)) queue.push(nb);
             }
         }
 
         setActiveNode(null);
+        setTraversalLog(`BFS complete — order: ${order.join(' → ')}`);
         setIsRunning(false);
     };
 
-    // 🔥 DFS - visits forward then backtracks
-    const DFS = async (start: number) => {
-        if (isRunning) return;
+    /* ── DFS ───────────────────────────────────────────────── */
+
+    const runDFS = async (startId: number) => {
+        if (isRunning || nodes.length === 0) return;
         setIsRunning(true);
+        setVisitedSet(new Set());
+        setActiveNode(null);
 
+        const adj = buildAdjacency(nodes, edges);
         const visited = new Set<number>();
-        const path: number[] = [];
+        const order: number[] = [];
 
-        // Build the DFS path
-        const dfs = (node: number) => {
-            if (visited.has(node)) return;
-            visited.add(node);
-            path.push(node);
-            for (const neighbor of graph[node]) {
-                dfs(neighbor);
+        setTraversalLog('DFS started…');
+
+        const dfsStep = async (id: number) => {
+            if (visited.has(id)) return;
+            visited.add(id);
+            order.push(id);
+
+            setActiveNode(id);
+            setVisitedSet(new Set(visited));
+            setTraversalLog(`DFS — visiting node ${id}`);
+            await delay(750);
+
+            for (const nb of adj[id] ?? []) {
+                if (!visited.has(nb)) await dfsStep(nb);
             }
+
+            setTraversalLog(`DFS — backtracking from node ${id}`);
+            await delay(350);
         };
 
-        dfs(start);
+        await dfsStep(startId);
 
-        // Animate forward: 1 -> 2 -> 3
-        // Then backward: 3 -> 2 -> 1
-        const fullSequence = [...path, ...[...path].reverse()];
+        setActiveNode(null);
+        setTraversalLog(`DFS complete — order: ${order.join(' → ')}`);
+        setIsRunning(false);
+    };
 
-        for (const node of fullSequence) {
-            setActiveNode(node);
-            await delay(700);
+    /* ── Reset ─────────────────────────────────────────────── */
+
+    const reset = () => {
+        if (isRunning) return;
+        setNodes([]);
+        setEdges([]);
+        nextId.current = 1;
+        setPendingEdge(null);
+        setVisitedSet(new Set());
+        setActiveNode(null);
+        setTraversalLog('');
+    };
+
+    /* ── Node colour ────────────────────────────────────────── */
+
+    const nodeColor = (id: number) => {
+        if (activeNode === id) return '#FF6B6B';
+        if (visitedSet.has(id)) return theme.success;
+        if (pendingEdge === id) return theme.warning;
+        return theme.primary;
+    };
+
+    /* ── Pick start node for traversal ────────────────────── */
+
+    const promptTraversal = (algo: 'BFS' | 'DFS') => {
+        if (nodes.length === 0) {
+            setTraversalLog('Add some nodes first.');
+            return;
         }
-
-        setActiveNode(null);
-        setIsRunning(false);
+        if (nodes.length === 1) {
+            algo === 'BFS' ? runBFS(nodes[0].id) : runDFS(nodes[0].id);
+            return;
+        }
+        // Use first node as default start; user can tap a node in 'add' mode to set start
+        const startId = nodes[0].id;
+        algo === 'BFS' ? runBFS(startId) : runDFS(startId);
     };
 
-    // ♻ RESET
-    const Reset = () => {
-        setActiveNode(null);
-        setStartNode(null);
-        setIsRunning(false);
-    };
+    /* ── Render ─────────────────────────────────────────────── */
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Graph Visualizer</Text>
+        <ScrollView contentContainerStyle={styles.scroll}>
+            <View style={styles.container}>
+                <Text style={styles.title}>Graph Visualizer</Text>
 
-            {/* GRAPH */}
-            <View style={styles.graphContainer}>
-
-                {/* TOP NODE */}
-                <NodeCircle
-                    label="1"
-                    active={activeNode === 1}
-                    selected={startNode === 1}
-                    onPress={() => setStartNode(1)}
-                    theme={theme}
-                />
-
-                {/* EDGES */}
-                <View style={styles.edgeWrapper}>
-                    <View style={styles.edgeLeft} />
-                    <View style={styles.edgeRight} />
+                {/* ── Mode selector ── */}
+                <View style={styles.modeRow}>
+                    {(['add', 'edge', 'delete'] as const).map(m => (
+                        <Pressable
+                            key={m}
+                            style={[
+                                styles.modeBtn,
+                                mode === m && styles.modeBtnActive,
+                            ]}
+                            onPress={() => {
+                                setMode(m);
+                                setPendingEdge(null);
+                                setTraversalLog('');
+                            }}
+                            disabled={isRunning}
+                        >
+                            <Text
+                                style={[
+                                    styles.modeBtnText,
+                                    mode === m && styles.modeBtnTextActive,
+                                ]}
+                            >
+                                {m === 'add'
+                                    ? '+ Node'
+                                    : m === 'edge'
+                                        ? '↔ Edge'
+                                        : '✕ Delete'}
+                            </Text>
+                        </Pressable>
+                    ))}
                 </View>
 
-                {/* BOTTOM ROW */}
-                <View style={styles.bottomRow}>
-                    <NodeCircle
-                        label="2"
-                        active={activeNode === 2}
-                        selected={startNode === 2}
-                        onPress={() => setStartNode(2)}
-                        theme={theme}
-                    />
+                {/* ── Add node button (shown in add mode) ── */}
+                {mode === 'add' && (
+                    <Pressable
+                        style={[styles.actionBtn, isRunning && styles.disabledBtn]}
+                        onPress={addNode}
+                        disabled={isRunning}
+                    >
+                        <Text style={styles.actionBtnText}>
+                            Add Node ({nodes.length}/{MAX_NODES})
+                        </Text>
+                    </Pressable>
+                )}
 
-                    <View style={styles.edgeHorizontal} />
+                {/* ── Canvas ── */}
+                <View style={styles.canvas}>
+                    {/* Draw edges as lines using SVG-ish absolute boxes */}
+                    {edges.map((e, i) => {
+                        const from = nodes.find(n => n.id === e.from);
+                        const to = nodes.find(n => n.id === e.to);
+                        if (!from || !to) return null;
 
-                    <NodeCircle
-                        label="3"
-                        active={activeNode === 3}
-                        selected={startNode === 3}
-                        onPress={() => setStartNode(3)}
-                        theme={theme}
-                    />
+                        const dx = to.pos.x - from.pos.x;
+                        const dy = to.pos.y - from.pos.y;
+                        const length = Math.sqrt(dx * dx + dy * dy);
+                        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                        const midX = (from.pos.x + to.pos.x) / 2 - length / 2;
+                        const midY = (from.pos.y + to.pos.y) / 2;
+
+                        return (
+                            <View
+                                key={i}
+                                style={[
+                                    styles.edge,
+                                    {
+                                        width: length,
+                                        left: midX,
+                                        top: midY,
+                                        transform: [{ rotate: `${angle}deg` }],
+                                    },
+                                ]}
+                            />
+                        );
+                    })}
+
+                    {/* Draw nodes */}
+                    {nodes.map(n => (
+                        <Pressable
+                            key={n.id}
+                            style={[
+                                styles.node,
+                                {
+                                    left: n.pos.x - NODE_RADIUS,
+                                    top: n.pos.y - NODE_RADIUS,
+                                    backgroundColor: nodeColor(n.id),
+                                },
+                            ]}
+                            onPress={() => handleNodePress(n.id)}
+                        >
+                            <Text style={styles.nodeText}>{n.label}</Text>
+                        </Pressable>
+                    ))}
+
+                    {nodes.length === 0 && (
+                        <Text style={styles.emptyCanvas}>
+                            Tap "Add Node" to start building your graph
+                        </Text>
+                    )}
                 </View>
+
+                {/* ── Mode hint ── */}
+                <Text style={styles.hint}>
+                    {mode === 'add'
+                        ? 'Press "Add Node" to place a node on the canvas'
+                        : mode === 'edge'
+                            ? pendingEdge
+                                ? `Node ${pendingEdge} selected — tap another node to connect (tap same to cancel)`
+                                : 'Tap two nodes to add/remove an edge between them'
+                            : 'Tap a node to remove it (edges auto-removed)'}
+                </Text>
+
+                {/* ── Traversal buttons ── */}
+                <View style={styles.buttonRow}>
+                    <Pressable
+                        style={[styles.button, isRunning && styles.disabledBtn]}
+                        onPress={() => promptTraversal('BFS')}
+                        disabled={isRunning}
+                    >
+                        <Text style={styles.buttonText}>BFS</Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.button, isRunning && styles.disabledBtn]}
+                        onPress={() => promptTraversal('DFS')}
+                        disabled={isRunning}
+                    >
+                        <Text style={styles.buttonText}>DFS</Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.button, styles.resetBtn, isRunning && styles.disabledBtn]}
+                        onPress={reset}
+                        disabled={isRunning}
+                    >
+                        <Text style={styles.buttonText}>Reset</Text>
+                    </Pressable>
+                </View>
+
+                {/* ── Legend ── */}
+                <View style={styles.legend}>
+                    <LegendDot color={theme.primary} label="Unvisited" />
+                    <LegendDot color="#FF6B6B" label="Current" />
+                    <LegendDot color={theme.success} label="Visited" />
+                    <LegendDot color={theme.warning} label="Selected" />
+                </View>
+
+                {/* ── Log ── */}
+                {traversalLog !== '' && (
+                    <View style={styles.logBox}>
+                        <Text style={styles.logText}>{traversalLog}</Text>
+                    </View>
+                )}
             </View>
-
-            {/* BUTTONS */}
-            <View style={styles.buttonRow}>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => BFS(startNode ?? 1)}
-                >
-                    <Text style={styles.buttonText}>BFS</Text>
-                </Pressable>
-
-                <Pressable
-                    style={styles.button}
-                    onPress={() => DFS(startNode ?? 1)}
-                >
-                    <Text style={styles.buttonText}>DFS</Text>
-                </Pressable>
-
-                <Pressable style={styles.button} onPress={Reset}>
-                    <Text style={styles.buttonText}>Reset</Text>
-                </Pressable>
-            </View>
-
-            {/* STATUS */}
-            <Text style={styles.info}>
-                {isRunning
-                    ? `Running... Node: ${activeNode}`
-                    : startNode
-                        ? `Start Node: ${startNode} — press BFS or DFS`
-                        : 'Tap a node to select start'}
-            </Text>
-
-            <Text style={styles.infoSmall}>
-                {activeNode ? `Current Node: ${activeNode}` : 'Idle'}
-            </Text>
-        </View>
+        </ScrollView>
     );
 };
 
+/* ─── Legend dot ─────────────────────────────────────────────── */
+
+const LegendDot = ({ color, label }: { color: string; label: string }) => (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+        <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: color }} />
+        <Text style={{ fontSize: 12, color: '#888' }}>{label}</Text>
+    </View>
+);
+
+/* ─── Styles ─────────────────────────────────────────────────── */
+
 const getStyles = (theme: ThemeType) =>
     StyleSheet.create({
+        scroll: { flexGrow: 1 },
         container: {
             flex: 1,
-            paddingTop: 50,
             alignItems: 'center',
+            paddingTop: 30,
+            paddingBottom: 40,
             backgroundColor: theme.bg,
         },
-
         title: {
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: 'bold',
-            marginBottom: 25,
             color: theme.text,
+            marginBottom: 18,
         },
 
-        graphContainer: {
-            alignItems: 'center',
-            marginTop: 20,
+        /* Mode row */
+        modeRow: {
+            flexDirection: 'row',
+            gap: 10,
+            marginBottom: 14,
+        },
+        modeBtn: {
+            paddingHorizontal: 14,
+            paddingVertical: 8,
+            borderRadius: 20,
+            borderWidth: 1.5,
+            borderColor: theme.border,
+            backgroundColor: theme.bgCard,
+        },
+        modeBtnActive: {
+            backgroundColor: theme.primary,
+            borderColor: theme.primary,
+        },
+        modeBtnText: {
+            fontSize: 13,
+            fontWeight: '600',
+            color: theme.textSecondary,
+        },
+        modeBtnTextActive: {
+            color: '#fff',
         },
 
+        /* Action button */
+        actionBtn: {
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 10,
+            backgroundColor: theme.primary,
+            marginBottom: 14,
+        },
+        actionBtnText: {
+            color: '#fff',
+            fontWeight: '700',
+            fontSize: 14,
+        },
+        disabledBtn: { opacity: 0.4 },
+
+        /* Canvas */
+        canvas: {
+            width: CANVAS_W,
+            height: CANVAS_H,
+            borderRadius: 16,
+            borderWidth: 1.5,
+            borderColor: theme.border,
+            backgroundColor: theme.bgCard,
+            marginBottom: 12,
+        },
+        emptyCanvas: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            color: theme.textTertiary,
+            fontSize: 14,
+            paddingHorizontal: 30,
+            paddingTop: 120,
+        },
+
+        /* Nodes */
         node: {
-            width: 55,
-            height: 55,
-            borderRadius: 30,
+            position: 'absolute',
+            width: NODE_RADIUS * 2,
+            height: NODE_RADIUS * 2,
+            borderRadius: NODE_RADIUS,
             justifyContent: 'center',
             alignItems: 'center',
-            margin: 10,
         },
-
         nodeText: {
             color: '#fff',
             fontWeight: 'bold',
+            fontSize: 14,
         },
 
-        edgeWrapper: {
-            width: 180,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 5,
-        },
-
-        edgeLeft: {
-            width: 70,
-            height: 2,
-            backgroundColor: theme.border,
-            transform: [{ rotate: '-45deg' }],
-        },
-
-        edgeRight: {
-            width: 70,
-            height: 2,
-            backgroundColor: theme.border,
-            transform: [{ rotate: '45deg' }],
-        },
-
-        bottomRow: {
-            width: 220,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-        },
-
-        edgeHorizontal: {
-            width: 70,
+        /* Edges */
+        edge: {
+            position: 'absolute',
             height: 2,
             backgroundColor: theme.border,
         },
 
+        /* Hint */
+        hint: {
+            fontSize: 12,
+            color: theme.textTertiary,
+            textAlign: 'center',
+            paddingHorizontal: 20,
+            marginBottom: 16,
+        },
+
+        /* Traversal buttons */
         buttonRow: {
             flexDirection: 'row',
             gap: 12,
-            marginTop: 30,
+            marginBottom: 14,
         },
-
         button: {
-            paddingHorizontal: 16,
+            paddingHorizontal: 20,
             paddingVertical: 10,
             borderRadius: 8,
             backgroundColor: theme.primary,
         },
-
+        resetBtn: {
+            backgroundColor: theme.error,
+        },
         buttonText: {
             color: '#fff',
             fontWeight: '600',
         },
 
-        info: {
-            marginTop: 20,
-            fontSize: 16,
-            color: theme.text,
+        /* Legend */
+        legend: {
+            flexDirection: 'row',
+            gap: 14,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            marginBottom: 12,
         },
 
-        infoSmall: {
-            marginTop: 5,
+        /* Log */
+        logBox: {
+            marginTop: 8,
+            paddingHorizontal: 20,
+            paddingVertical: 12,
+            borderRadius: 12,
+            backgroundColor: theme.bgCard,
+            borderWidth: 1,
+            borderColor: theme.border,
+            width: '90%',
+        },
+        logText: {
+            color: theme.text,
             fontSize: 14,
-            color: theme.textSecondary,
+            textAlign: 'center',
         },
     });
 

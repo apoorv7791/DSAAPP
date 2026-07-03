@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { authenticate } from './middleware/authenticate.js';
 import progressRouter from './routes/progress.js';
 import userRouter from './routes/user.js';
+import { supabase } from './db/supabase.js';
 
 dotenv.config();
 
@@ -22,6 +23,13 @@ app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/api', authenticate, progressRouter);
 app.use('/api', authenticate, userRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`AlgoTrainer backend listening on port ${PORT}`);
+
+    const { error } = await supabase.from('profiles').select('id').limit(1);
+    if (error) {
+        console.log("[DB] connection failed: ", error.message);
+    } else {
+        console.log("[DB] connected successfully");
+    }
 });

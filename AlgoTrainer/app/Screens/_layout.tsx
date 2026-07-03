@@ -8,6 +8,7 @@ const ScreensLayout = () => {
             <Stack.Screen name="Password" options={{ title: "Password" }} />
             <Stack.Screen name="Language" options={{ title: "Language" }} />
             <Stack.Screen name="Profile" options={{ title: "Profile" }} />
+            <Stack.Screen name="ForgotPassword" options={{ title: "Forgot-Password" }} />
         </Stack>
     );
 }

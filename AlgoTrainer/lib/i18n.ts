@@ -1606,3 +1606,45 @@ export const t = (
     _cache.set(cacheKey, resultStr);
     return resultStr;
 };
+
+// Cache for array lookups (separate from string cache)
+const _arrayCache = new Map<string, string[]>();
+
+/**
+ * Like t(), but returns a string array instead of a string.
+ * Use this for translation keys whose value is an array (e.g. list items).
+ * Falls back to an empty array if the key is missing or is not an array.
+ */
+export const tArray = (
+    lang: Language,
+    path: string
+): string[] => {
+    const cacheKey = `${lang}:${path}`;
+    const cached = _arrayCache.get(cacheKey);
+    if (cached !== undefined) return cached;
+
+    const keys = path.split('.');
+    let result: any = translations[lang] || translations.en;
+
+    for (const key of keys) {
+        if (result == null || result[key] === undefined) {
+            // Fallback to English
+            let fallback: any = translations.en;
+            for (const fbKey of keys) {
+                if (fallback == null || fallback[fbKey] === undefined) {
+                    _arrayCache.set(cacheKey, []);
+                    return [];
+                }
+                fallback = fallback[fbKey];
+            }
+            const arr = Array.isArray(fallback) ? (fallback as string[]) : [];
+            _arrayCache.set(cacheKey, arr);
+            return arr;
+        }
+        result = result[key];
+    }
+
+    const arr = Array.isArray(result) ? (result as string[]) : [];
+    _arrayCache.set(cacheKey, arr);
+    return arr;
+};

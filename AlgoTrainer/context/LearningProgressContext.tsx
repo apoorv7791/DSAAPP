@@ -56,6 +56,21 @@ async function sendRemoteProgress(token: string, progress: LearningProgressMap):
     }
 }
 
+async function updateStreak(token: string): Promise<void> {
+    try {
+        await fetch(`${BACKEND_URL}/api/user/streak`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        // Silently succeed or fail — streak is not critical enough to block user actions
+    } catch (e) {
+        console.log('Streak update failed:', e);
+    }
+}
+
 type LearningProgressContextValue = {
     /** Topic ids marked complete (true only; missing = not done) */
     completedById: LearningProgressMap;
@@ -91,25 +106,31 @@ function TopicProgressRouteSync() {
 export function LearningProgressProvider({ children }: { children: ReactNode }) {
     const [completedById, setCompletedById] = useState<LearningProgressMap>({});
     const [loaded, setLoaded] = useState(false);
-    const { user, isLoggedIn } = useAuth();
+    const { isLoggedIn } = useAuth();
 
     const refresh = useCallback(async () => {
+        // If logged out, clear local progress and show empty state
+        if (!isLoggedIn) {
+            await saveLearningProgress({});
+            setCompletedById({});
+            setLoaded(true);
+            return;
+        }
+
         // 1. Load from local storage first for speed
         const local = await loadLearningProgress();
         let next = { ...local };
 
-        // 2. If logged in, sync with backend
-        if (isLoggedIn) {
-            try {
-                const token = await getAccessToken();
-                if (token) {
-                    const remoteProgress = await fetchRemoteProgress(token);
-                    next = { ...local, ...remoteProgress };
-                    await saveLearningProgress(next);
-                }
-            } catch (e) {
-                console.error('Failed to sync progress with backend', e);
+        // 2. Sync with backend
+        try {
+            const token = await getAccessToken();
+            if (token) {
+                const remoteProgress = await fetchRemoteProgress(token);
+                next = { ...local, ...remoteProgress };
+                await saveLearningProgress(next);
             }
+        } catch (e) {
+            console.error('Failed to sync progress with backend', e);
         }
 
         setCompletedById(next);
@@ -130,6 +151,11 @@ export function LearningProgressProvider({ children }: { children: ReactNode }) 
                 const token = await getAccessToken();
                 if (token) {
                     await sendRemoteProgress(token, { [updatedId]: !!next[updatedId] });
+
+                    // Update streak when a topic is marked complete (not on toggle-off)
+                    if (next[updatedId] === true) {
+                        void updateStreak(token);
+                    }
                 }
             } catch (e) {
                 console.error('Failed to save progress to backend', e);
