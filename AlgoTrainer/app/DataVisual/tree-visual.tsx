@@ -122,23 +122,63 @@ const TreesVisual = () => {
 
     /* ---------------- UI ---------------- */
 
+    // Node centers (relative to the 320×260 canvas)
+    // Root: (160, 40) | Level2: (95, 140), (225, 140) | Level3: (50, 240), (140, 240), (180, 240), (270, 240)
+    const edges = [
+        { x1: 160, y1: 40, x2: 95, y2: 140 },  // 1 → 2
+        { x1: 160, y1: 40, x2: 225, y2: 140 },  // 1 → 3
+        { x1: 95, y1: 140, x2: 50, y2: 240 }, // 2 → 4
+        { x1: 95, y1: 140, x2: 140, y2: 240 }, // 2 → 5
+        { x1: 225, y1: 140, x2: 180, y2: 240 }, // 3 → 6
+        { x1: 225, y1: 140, x2: 270, y2: 240 }, // 3 → 7
+    ];
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 <Text style={styles.title}>Tree Visualizer</Text>
 
-                <View style={styles.rootWrapper}>
-                    <Node label="1" active={activeNode === "1"} theme={theme} />
-                </View>
+                {/* ── Canvas with edges + nodes ── */}
+                <View style={{ width: 320, height: 280, position: 'relative', marginBottom: 10 }}>
 
-                <View style={styles.levelRow}>
-                    <Node label="2" active={activeNode === "2"} theme={theme} />
-                    <Node label="3" active={activeNode === "3"} theme={theme} />
-                </View>
+                    {/* Edges drawn first so they sit behind nodes */}
+                    {edges.map((e, i) => {
+                        const dx = e.x2 - e.x1;
+                        const dy = e.y2 - e.y1;
+                        const length = Math.sqrt(dx * dx + dy * dy);
+                        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                        return (
+                            <View
+                                key={i}
+                                style={{
+                                    position: 'absolute',
+                                    left: e.x1,
+                                    top: e.y1,
+                                    width: length,
+                                    height: 2,
+                                    backgroundColor: theme.border,
+                                    transform: [{ translateY: -1 }, { rotate: `${angle}deg` }],
+                                }}
+                            />
+                        );
+                    })}
 
-                <View style={styles.levelRowGrand}>
-                    {["4", "5", "6", "7"].map(v => (
-                        <Node key={v} label={v} active={activeNode === v} theme={theme} />
+                    {/* Nodes absolutely positioned at their centers */}
+                    {[
+                        { label: "1", x: 160, y: 40 },
+                        { label: "2", x: 95, y: 140 },
+                        { label: "3", x: 225, y: 140 },
+                        { label: "4", x: 50, y: 240 },
+                        { label: "5", x: 140, y: 240 },
+                        { label: "6", x: 180, y: 240 },
+                        { label: "7", x: 270, y: 240 },
+                    ].map(({ label, x, y }) => (
+                        <View
+                            key={label}
+                            style={{ position: 'absolute', left: x - 27, top: y - 27 }}
+                        >
+                            <Node label={label} active={activeNode === label} theme={theme} />
+                        </View>
                     ))}
                 </View>
 
@@ -214,20 +254,20 @@ const getStyles = (theme: any) =>
             backgroundColor: '#FF6B6B'
         },
 
-        rootWrapper: { marginBottom: 40 },
+        rootWrapper: { marginBottom: 10 },
 
         levelRow: {
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 30,
-            marginBottom: 40
+            marginBottom: 10
         },
 
         levelRowGrand: {
             flexDirection: 'row',
             justifyContent: 'center',
             gap: 15,
-            marginBottom: 20
+            marginBottom: 10
         },
 
         buttonRow: {

@@ -6,7 +6,6 @@ import {
     Pressable,
     ScrollView,
     Alert,
-    TextInput,
 } from 'react-native';
 import { ThemeContext, ThemeType } from '@/theme/ThemeContext';
 
@@ -77,6 +76,7 @@ const GraphsVisual = () => {
     const [activeNode, setActiveNode] = useState<number | null>(null);
     const [traversalLog, setTraversalLog] = useState<string>('');
     const [isRunning, setIsRunning] = useState(false);
+    const [startNodeId, setStartNodeId] = useState<number | null>(null);
 
     /* ── Add node ──────────────────────────────────────────── */
 
@@ -102,6 +102,12 @@ const GraphsVisual = () => {
 
     const handleNodePress = (id: number) => {
         if (isRunning) return;
+
+        if (mode === 'add') {
+            setStartNodeId(prev => prev === id ? null : id);
+            setTraversalLog(startNodeId === id ? '' : `Node ${id} set as start`);
+            return;
+        }
 
         if (mode === 'delete') {
             deleteNode(id);
@@ -231,6 +237,7 @@ const GraphsVisual = () => {
         setPendingEdge(null);
         setVisitedSet(new Set());
         setActiveNode(null);
+        setStartNodeId(null);   // ← clear start node selection too
         setTraversalLog('');
     };
 
@@ -240,8 +247,10 @@ const GraphsVisual = () => {
         if (activeNode === id) return '#FF6B6B';
         if (visitedSet.has(id)) return theme.success;
         if (pendingEdge === id) return theme.warning;
+        if (startNodeId === id) return '#A78BFA'; // purple = start node
         return theme.primary;
     };
+
 
     /* ── Pick start node for traversal ────────────────────── */
 
@@ -250,14 +259,10 @@ const GraphsVisual = () => {
             setTraversalLog('Add some nodes first.');
             return;
         }
-        if (nodes.length === 1) {
-            algo === 'BFS' ? runBFS(nodes[0].id) : runDFS(nodes[0].id);
-            return;
-        }
-        // Use first node as default start; user can tap a node in 'add' mode to set start
-        const startId = nodes[0].id;
+        const startId = startNodeId ?? nodes[0].id;
         algo === 'BFS' ? runBFS(startId) : runDFS(startId);
     };
+
 
     /* ── Render ─────────────────────────────────────────────── */
 
@@ -411,6 +416,7 @@ const GraphsVisual = () => {
                     <LegendDot color="#FF6B6B" label="Current" />
                     <LegendDot color={theme.success} label="Visited" />
                     <LegendDot color={theme.warning} label="Selected" />
+                    <LegendDot color="#A78BFA" label="Start" />
                 </View>
 
                 {/* ── Log ── */}
