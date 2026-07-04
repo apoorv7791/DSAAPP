@@ -125,12 +125,12 @@ const TreesVisual = () => {
     // Node centers (relative to the 320×260 canvas)
     // Root: (160, 40) | Level2: (95, 140), (225, 140) | Level3: (50, 240), (140, 240), (180, 240), (270, 240)
     const edges = [
-        { x1: 160, y1: 40, x2: 95, y2: 140 },  // 1 → 2
-        { x1: 160, y1: 40, x2: 225, y2: 140 },  // 1 → 3
-        { x1: 95, y1: 140, x2: 50, y2: 240 }, // 2 → 4
-        { x1: 95, y1: 140, x2: 140, y2: 240 }, // 2 → 5
-        { x1: 225, y1: 140, x2: 180, y2: 240 }, // 3 → 6
-        { x1: 225, y1: 140, x2: 270, y2: 240 }, // 3 → 7
+        { x1: 160, y1: 50, x2: 90, y2: 150 },  // 1 → 2
+        { x1: 160, y1: 50, x2: 230, y2: 150 },  // 1 → 3
+        { x1: 90, y1: 150, x2: 50, y2: 250 },  // 2 → 4
+        { x1: 90, y1: 150, x2: 130, y2: 250 },  // 2 → 5
+        { x1: 230, y1: 150, x2: 190, y2: 250 },  // 3 → 6
+        { x1: 230, y1: 150, x2: 270, y2: 250 },  // 3 → 7
     ];
 
     return (
@@ -139,7 +139,7 @@ const TreesVisual = () => {
                 <Text style={styles.title}>Tree Visualizer</Text>
 
                 {/* ── Canvas with edges + nodes ── */}
-                <View style={{ width: 320, height: 280, position: 'relative', marginBottom: 10 }}>
+                <View style={{ width: 320, height: 300, position: 'relative', marginBottom: 10 }}>
 
                     {/* Edges drawn first so they sit behind nodes */}
                     {edges.map((e, i) => {
@@ -147,17 +147,20 @@ const TreesVisual = () => {
                         const dy = e.y2 - e.y1;
                         const length = Math.sqrt(dx * dx + dy * dy);
                         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                        // Position at midpoint, center the line there — rotation then works correctly
+                        const midX = (e.x1 + e.x2) / 2;
+                        const midY = (e.y1 + e.y2) / 2;
                         return (
                             <View
                                 key={i}
                                 style={{
                                     position: 'absolute',
-                                    left: e.x1,
-                                    top: e.y1,
+                                    left: midX - length / 2,
+                                    top: midY - 1,
                                     width: length,
                                     height: 2,
                                     backgroundColor: theme.border,
-                                    transform: [{ translateY: -1 }, { rotate: `${angle}deg` }],
+                                    transform: [{ rotate: `${angle}deg` }],
                                 }}
                             />
                         );
@@ -165,13 +168,13 @@ const TreesVisual = () => {
 
                     {/* Nodes absolutely positioned at their centers */}
                     {[
-                        { label: "1", x: 160, y: 40 },
-                        { label: "2", x: 95, y: 140 },
-                        { label: "3", x: 225, y: 140 },
-                        { label: "4", x: 50, y: 240 },
-                        { label: "5", x: 140, y: 240 },
-                        { label: "6", x: 180, y: 240 },
-                        { label: "7", x: 270, y: 240 },
+                        { label: "1", x: 160, y: 50 },
+                        { label: "2", x: 90, y: 150 },
+                        { label: "3", x: 230, y: 150 },
+                        { label: "4", x: 50, y: 250 },
+                        { label: "5", x: 130, y: 250 },
+                        { label: "6", x: 190, y: 250 },
+                        { label: "7", x: 270, y: 250 },
                     ].map(({ label, x, y }) => (
                         <View
                             key={label}
