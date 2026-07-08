@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Pressable,
   StyleSheet,
   ViewStyle,
+  StyleProp,
   Animated,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StyleProp } from 'react-native';
-import { ThemeType } from '@/theme/ThemeContext';
-import { spacingUtils } from '@/theme/Spacing';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { ThemeType } from "@/theme/ThemeContext";
+import { spacingUtils } from "@/theme/Spacing";
 
 interface CardProps {
   children: React.ReactNode;
   theme: ThemeType;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
-  variant?: 'default' | 'elevated' | 'outlined' | 'gradient';
+  variant?: "default" | "elevated" | "outlined" | "gradient";
   gradient?: [string, string, ...string[]];
   disabled?: boolean;
 }
@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({
   theme,
   style,
   onPress,
-  variant = 'default',
+  variant = "default",
   gradient,
   disabled = false,
 }) => {
@@ -57,11 +57,11 @@ const Card: React.FC<CardProps> = ({
   const getCardStyle = (): ViewStyle => {
     const baseStyle: ViewStyle = {
       borderRadius: 16,
-      overflow: 'hidden',
+      overflow: "hidden",
     };
 
     switch (variant) {
-      case 'elevated':
+      case "elevated":
         return {
           ...baseStyle,
           backgroundColor: theme.bgCard,
@@ -71,14 +71,14 @@ const Card: React.FC<CardProps> = ({
           shadowRadius: 12,
           elevation: 8,
         };
-      case 'outlined':
+      case "outlined":
         return {
           ...baseStyle,
           backgroundColor: theme.bgCard,
           borderWidth: 1,
           borderColor: theme.border,
         };
-      case 'gradient':
+      case "gradient":
         return {
           ...baseStyle,
           shadowColor: theme.shadow,
@@ -102,18 +102,13 @@ const Card: React.FC<CardProps> = ({
 
   const cardContent = (
     <View
-      style={[
-        styles.cardContent,
-        spacingUtils.p.md,
-        getCardStyle(),
-        style,
-      ]}
+      style={[styles.cardContent, spacingUtils.p.md, getCardStyle(), style]}
     >
       {children}
     </View>
   );
 
-  if (variant === 'gradient' && gradient) {
+  if (variant === "gradient" && gradient) {
     return (
       <Pressable
         onPress={onPress}

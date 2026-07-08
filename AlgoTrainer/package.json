@@ -51,14 +51,12 @@
   "devDependencies": {
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.72.8",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
-    "eslint-plugin-expo": "^1.0.1-canary-20260424-7bedc9d",
     "expo-module-scripts": "^3.0.5",
     "typescript": "~5.9.2"
   },
   "overrides": {
-    "ajv": "8.20.0",
     "@types/react": "~19.1.10"
   },
   "private": true

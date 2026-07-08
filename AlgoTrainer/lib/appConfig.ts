@@ -1,16 +1,29 @@
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
-function readExtra(key: 'privacyPolicyUrl' | 'termsOfServiceUrl'): string | undefined {
+type ExtraUrlKey = "backendUrl" | "privacyPolicyUrl" | "termsOfServiceUrl";
+
+function readExtra(key: ExtraUrlKey): string | undefined {
   const raw = Constants.expoConfig?.extra?.[key];
-  if (typeof raw !== 'string') return undefined;
-  const t = raw.trim();
-  return t.length > 0 ? t : undefined;
+  if (typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function normalizeUrl(value: string): string {
+  return value.replace(/\/$/, "");
+}
+
+export function getBackendUrl(): string | undefined {
+  const value = readExtra("backendUrl");
+  return value ? normalizeUrl(value) : undefined;
 }
 
 export function getPrivacyPolicyUrl(): string | undefined {
-  return readExtra('privacyPolicyUrl');
+  const value = readExtra("privacyPolicyUrl");
+  return value ? normalizeUrl(value) : undefined;
 }
 
 export function getTermsOfServiceUrl(): string | undefined {
-  return readExtra('termsOfServiceUrl');
+  const value = readExtra("termsOfServiceUrl");
+  return value ? normalizeUrl(value) : undefined;
 }
