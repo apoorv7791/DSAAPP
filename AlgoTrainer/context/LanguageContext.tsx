@@ -1,14 +1,13 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { Platform, NativeModules } from 'react-native';
+import React, {
+    createContext,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+} from 'react';
 import { Language, t, tArray } from '@/lib/i18n';
-
-// Safe AsyncStorage handling to prevent crash when native module is missing
-let AsyncStorage: any;
-try {
-    AsyncStorage = require('@react-native-async-storage/async-storage').default;
-} catch (e) {
-    console.warn('AsyncStorage could not be loaded:', e);
-}
+import { storage } from '@/lib/storage';
 
 interface LanguageContextType {
     language: Language;
@@ -21,69 +20,61 @@ export const LanguageContext = createContext<LanguageContextType | null>(null);
 
 const LANGUAGE_STORAGE_KEY = '@app_language';
 
-// In-memory fallback if AsyncStorage is unavailable
-const memoryStorage = new Map<string, string>();
-
-const safeGetItem = async (key: string): Promise<string | null> => {
-    if (AsyncStorage) {
-        try {
-            return await AsyncStorage.getItem(key);
-        } catch (e) {
-            console.warn('AsyncStorage.getItem failed:', e);
-        }
-    }
-    return memoryStorage.get(key) || null;
-};
-
-const safeSetItem = async (key: string, value: string): Promise<void> => {
-    if (AsyncStorage) {
-        try {
-            await AsyncStorage.setItem(key, value);
-            return;
-        } catch (e) {
-            console.warn('AsyncStorage.setItem failed:', e);
-        }
-    }
-    memoryStorage.set(key, value);
-};
-
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
     const [language, setLanguageState] = useState<Language>('en');
 
     useEffect(() => {
-        // Load persisted language on mount
         const loadLanguage = async () => {
             try {
-                const savedLanguage = await safeGetItem(LANGUAGE_STORAGE_KEY);
+                const savedLanguage = await storage.get<Language | null>(
+                    LANGUAGE_STORAGE_KEY,
+                    null,
+                );
                 if (savedLanguage) {
-                    setLanguageState(savedLanguage as Language);
+                    setLanguageState(savedLanguage);
                 }
             } catch (error) {
                 console.error('Failed to load language:', error);
             }
         };
-        loadLanguage();
+        void loadLanguage();
     }, []);
 
-    const setLanguage = async (newLang: Language) => {
+    const setLanguage = useCallback(async (newLang: Language) => {
         try {
             setLanguageState(newLang);
-            await safeSetItem(LANGUAGE_STORAGE_KEY, newLang);
+            await storage.set(LANGUAGE_STORAGE_KEY, newLang);
         } catch (error) {
             console.error('Failed to save language:', error);
         }
-    };
+    }, []);
 
-    const translate = (path: string) => {
-        return t(language, path);
-    };
+    const translate = useCallback(
+        (path: string) => {
+            return t(language, path);
+        },
+        [language],
+    );
 
-    const translateArray = (path: string): string[] => {
-        return tArray(language, path);
-    };
+    const translateArray = useCallback(
+        (path: string): string[] => {
+            return tArray(language, path);
+        },
+        [language],
+    );
+
+    const value = useMemo(
+        () => ({
+            language,
+            setLanguage,
+            t: translate,
+            tArray: translateArray,
+        }),
+        [language, setLanguage, translate, translateArray],
+    );
 
     return (
-        <LanguageContext.Provider value={{ language, setLanguage, t: translate, tArray: translateArray }}>
+        <LanguageContext.Provider value={value}>
             {children}
         </LanguageContext.Provider>
     );
