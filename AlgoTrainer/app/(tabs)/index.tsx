@@ -103,7 +103,7 @@ const HomeScreen = () => {
             theme={theme}
             variant="elevated"
             style={[
-              styles.card,
+             styles.card,
               { borderLeftColor: color, borderLeftWidth: 4 },
             ]}
           >
