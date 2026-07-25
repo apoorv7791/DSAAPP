@@ -9,7 +9,7 @@ import {
   Animated,
 } from "react-native";
 import { ThemeContext } from "@/theme/ThemeContext";
-import { useTranslation } from "@/context/LanguageContext";
+import { useTranslation } from "@/app/context/LanguageContext";
 
 interface NodeType {
   id: string;

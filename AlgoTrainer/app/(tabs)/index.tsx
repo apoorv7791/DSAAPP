@@ -5,7 +5,7 @@ import { ThemeContext } from "@/theme/ThemeContext";
 import { createTypography } from "@/theme/Typography";
 import spacing from "@/theme/Spacing";
 import Card from "@/components/Card/Card";
-import { useTranslation } from "@/context/LanguageContext";
+import { useTranslation } from "@/app/context/LanguageContext";
 import { useRouter } from "expo-router";
 import { useLearningProgress } from "@/context/LearningProgressContext";
 import { LEARNING_TOPICS } from "@/lib/learningTopics";
@@ -103,7 +103,7 @@ const HomeScreen = () => {
             theme={theme}
             variant="elevated"
             style={[
-             styles.card,
+              styles.card,
               { borderLeftColor: color, borderLeftWidth: 4 },
             ]}
           >

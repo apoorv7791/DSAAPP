@@ -16,7 +16,7 @@ import { spacingUtils } from "@/theme/Spacing";
 import Card from "@/components/Card/Card";
 import { useAuth } from "@/auth/AuthContext";
 import { supabase } from "@/lib/supabase";
-import { useTranslation } from "@/context/LanguageContext";
+import { useTranslation } from "@/app/context/LanguageContext";
 
 interface Topic {
   name: string;
@@ -89,24 +89,24 @@ const Settings = () => {
           // Add Profile option when logged in
           ...(isLoggedIn
             ? [
-                {
-                  name: t("settings.profile"),
-                  icon: "person-outline",
-                  route: "/Screens/Profile",
-                  right: null,
-                },
-              ]
+              {
+                name: t("settings.profile"),
+                icon: "person-outline",
+                route: "/Screens/Profile",
+                right: null,
+              },
+            ]
             : []),
           // Add Logout option when logged in
           ...(isLoggedIn
             ? [
-                {
-                  name: t("settings.logout"),
-                  icon: "log-out-outline",
-                  route: undefined,
-                  right: null,
-                },
-              ]
+              {
+                name: t("settings.logout"),
+                icon: "log-out-outline",
+                route: undefined,
+                right: null,
+              },
+            ]
             : []),
         ],
       },

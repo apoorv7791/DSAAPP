@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, Text } from "react-native";
 import Expandables from "@/components/Expandable/Expandables";
 import { useRouter } from "expo-router";
 import { ThemeContext } from "@/theme/ThemeContext";
-import { useTranslation } from "@/context/LanguageContext";
+import { useTranslation } from "@/app/context/LanguageContext";
 import { useLearningProgress } from "@/context/LearningProgressContext";
 import { LEARNING_TOPICS } from "@/lib/learningTopics";
 import { createTypography } from "@/theme/Typography";

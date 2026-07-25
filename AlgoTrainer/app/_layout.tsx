@@ -9,7 +9,7 @@ import {
   DarkTheme,
   DefaultTheme,
 } from "@react-navigation/native";
-import { LanguageProvider } from "@/context/LanguageContext";
+import { LanguageProvider } from "@/app/context/LanguageContext";
 
 function RootNavigation() {
   const { theme } = useContext(ThemeContext);
@@ -17,27 +17,27 @@ function RootNavigation() {
   const navTheme =
     theme.mode === "dark"
       ? {
-          ...DarkTheme,
-          colors: {
-            ...DarkTheme.colors,
-            background: theme.bg,
-            card: theme.bg, // header + tab bg
-            text: theme.text,
-            border: theme.border,
-            primary: theme.primary,
-          },
-        }
+        ...DarkTheme,
+        colors: {
+          ...DarkTheme.colors,
+          background: theme.bg,
+          card: theme.bg, // header + tab bg
+          text: theme.text,
+          border: theme.border,
+          primary: theme.primary,
+        },
+      }
       : {
-          ...DefaultTheme,
-          colors: {
-            ...DefaultTheme.colors,
-            background: theme.bg,
-            card: theme.bg,
-            text: theme.text,
-            border: theme.border,
-            primary: theme.primary,
-          },
-        };
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          background: theme.bg,
+          card: theme.bg,
+          text: theme.text,
+          border: theme.border,
+          primary: theme.primary,
+        },
+      };
 
   return (
     <NavThemeProvider value={navTheme}>

@@ -3,7 +3,7 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import CustomTabBar from "@/navigation/Tabbar";
 import { ThemeContext } from "@/theme/ThemeContext";
-import { useTranslation } from "@/context/LanguageContext";
+import { useTranslation } from "@/app/context/LanguageContext";
 
 export default function TabsLayout() {
   const { theme } = useContext(ThemeContext);
