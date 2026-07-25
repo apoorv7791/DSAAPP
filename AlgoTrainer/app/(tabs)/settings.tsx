@@ -327,10 +327,6 @@ const Settings = () => {
             </View>
           );
         case "section":
-          function handleNavigation(topic: Topic): void {
-            throw new Error("Function not implemented.");
-          }
-
           return (
             <View style={[spacingUtils.mx.lg, { marginBottom: 16 }]}>
               <Expandables
