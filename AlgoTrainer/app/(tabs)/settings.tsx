@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useMemo } from "react";
+import React, { useContext, useCallback, useMemo, useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,7 +17,7 @@ import Card from "@/components/Card/Card";
 import { useAuth } from "@/auth/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTranslation } from "@/app/context/LanguageContext";
-
+import { areNotificationsEnabled, requestNotificationPermissions, enableNotifications as enableNotificationsFn, disableNotifications } from "@/lib/notifications";
 interface Topic {
   name: string;
   route?: string;
@@ -42,11 +42,38 @@ const Settings = () => {
   const typography = createTypography(theme);
   const { isLoggedIn, logout } = useAuth();
   const { t } = useTranslation();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     logout();
   }, [logout]);
+
+  // Check notification status on component mount
+  useEffect(() => {
+    const checkNotificationStatus = async () => {
+      const enabled = await areNotificationsEnabled();
+      setNotificationsEnabled(enabled);
+    };
+    checkNotificationStatus();
+  }, []);
+
+  const handleToggleNotification = useCallback(async (value: boolean) => {
+    if (value) {
+      const hasPermission = await requestNotificationPermissions();
+      if (hasPermission) {
+        const success = await enableNotificationsFn();
+        if (success) {
+          setNotificationsEnabled(true);
+        }
+      }
+    } else {
+      const success = await disableNotifications();
+      if (success) {
+        setNotificationsEnabled(false);
+      }
+    }
+  }, []);
 
   const handleNavigation = useCallback(
     (topic: Topic) => {
@@ -76,6 +103,21 @@ const Settings = () => {
                 trackColor={{ false: theme.border, true: theme.primary }}
                 thumbColor={
                   theme.mode === "dark" ? theme.text : theme.textSecondary
+                }
+              />
+            ),
+
+          },
+          {
+            name: "Notifications",
+            icon: "notifications-outline",
+            right: (
+              <Switch
+                value={notificationsEnabled}
+                onValueChange={handleToggleNotification}
+                trackColor={{ false: theme.border, true: theme.primary }}
+                thumbColor={
+                  notificationsEnabled ? theme.text : theme.textSecondary
                 }
               />
             ),
@@ -285,6 +327,10 @@ const Settings = () => {
             </View>
           );
         case "section":
+          function handleNavigation(topic: Topic): void {
+            throw new Error("Function not implemented.");
+          }
+
           return (
             <View style={[spacingUtils.mx.lg, { marginBottom: 16 }]}>
               <Expandables

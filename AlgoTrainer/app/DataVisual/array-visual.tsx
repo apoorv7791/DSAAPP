@@ -10,7 +10,7 @@ import {
     ToastAndroid
 } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
-import { useTranslation } from '@/context/LanguageContext';
+import { useTranslation } from '@/app/context/LanguageContext';
 
 const ArrayVisual = () => {
     const { theme } = useContext(ThemeContext);

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
-import { useTranslation } from '@/context/LanguageContext';
+import { useTranslation } from '@/app/context/LanguageContext';
 import { Language as LanguageType } from '@/lib/i18n';
 
 const LANGUAGES: { code: LanguageType; label: string; native: string; flag: string }[] = [

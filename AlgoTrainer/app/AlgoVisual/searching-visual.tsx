@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { ThemeContext } from '@/theme/ThemeContext';
-import { useTranslation } from '@/context/LanguageContext';
+import { useTranslation } from '@/app/context/LanguageContext';
 
 const INITIAL_ARRAY = [11, 12, 22, 25, 34, 64, 90];
 

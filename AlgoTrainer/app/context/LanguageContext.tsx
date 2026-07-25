@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { Language, t } from '@/lib/i18n';
+import { Language, t, tArray as tArrayFn } from '@/lib/i18n';
 import { storage } from '@/lib/storage';
 
 interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => Promise<void>;
     t: (path: string) => string;
+    tArray: (path: string) => string[];
 }
 
 export const LanguageContext = createContext<LanguageContextType | null>(null);
@@ -41,9 +42,13 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
         return t(language, path);
     }, [language]);
 
+    const translateArray = useCallback((path: string) => {
+        return tArrayFn(language, path);
+    }, [language]);
+
     const value = useMemo(
-        () => ({ language, setLanguage, t: translate }),
-        [language, setLanguage, translate]
+        () => ({ language, setLanguage, t: translate, tArray: translateArray }),
+        [language, setLanguage, translate, translateArray]
     );
 
     return (

@@ -13,7 +13,7 @@ import {
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { ThemeContext } from '@/theme/ThemeContext';
-import { useTranslation } from '@/context/LanguageContext';
+import { useTranslation } from '@/app/context/LanguageContext';
 import { LESSON_REGISTRY } from '@/lib/lessonRegistry';
 import { LearningTopicId } from '@/lib/learningTopics';
 

@@ -12,7 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { ThemeContext } from '@/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useAuth, authUserFromSupabase } from '@/auth/AuthContext';
-import { useTranslation } from '@/context/LanguageContext';
+import { useTranslation } from '@/app/context/LanguageContext';
 
 const Login = () => {
     const { theme } = useContext(ThemeContext);
