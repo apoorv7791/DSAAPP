@@ -1570,81 +1570,55 @@ export const translations: Record<Language, any> = {
     },
 };
 
-// Cache lookup results so repeated calls with the same lang+path skip traversal.
-const _cache = new Map<string, string>();
+// Flatten translations into lookup tables so t() and tArray() resolve with direct access.
+const flattenTranslations = (obj: any, prefix = ''): Record<string, string | string[]> => {
+    const flattened: Record<string, string | string[]> = {};
 
-export const t = (
-    lang: Language,
-    path: string
-): string => {
-    const cacheKey = `${lang}:${path}`;
-    const cached = _cache.get(cacheKey);
-    if (cached !== undefined) return cached;
+    for (const key of Object.keys(obj)) {
+        const value = obj[key];
+        const path = prefix ? `${prefix}.${key}` : key;
 
-    const keys = path.split('.');
-    let result: any = translations[lang] || translations.en;
-
-    for (const key of keys) {
-        if (result[key] === undefined) {
-            // Fallback to English if key not found in current language
-            let fallback: any = translations.en;
-            for (const fallbackKey of keys) {
-                if (fallback[fallbackKey] === undefined) {
-                    _cache.set(cacheKey, path);
-                    return path;
-                }
-                fallback = fallback[fallbackKey];
-            }
-            const fallbackStr = String(fallback);
-            _cache.set(cacheKey, fallbackStr);
-            return fallbackStr;
+        if (typeof value === 'string' || Array.isArray(value)) {
+            flattened[path] = value;
+        } else if (value && typeof value === 'object') {
+            Object.assign(flattened, flattenTranslations(value, path));
         }
-        result = result[key];
     }
 
-    const resultStr = String(result);
-    _cache.set(cacheKey, resultStr);
-    return resultStr;
+    return flattened;
 };
 
-// Cache for array lookups (separate from string cache)
-const _arrayCache = new Map<string, string[]>();
+const flattenedTranslations: Record<Language, Record<string, string | string[]>> = {
+    en: flattenTranslations(translations.en),
+    hi: flattenTranslations(translations.hi),
+    es: flattenTranslations(translations.es),
+    fr: flattenTranslations(translations.fr),
+    de: flattenTranslations(translations.de),
+    zh: flattenTranslations(translations.zh),
+    ja: flattenTranslations(translations.ja),
+    ar: flattenTranslations(translations.ar),
+};
 
-/**
- * Like t(), but returns a string array instead of a string.
- * Use this for translation keys whose value is an array (e.g. list items).
- * Falls back to an empty array if the key is missing or is not an array.
- */
-export const tArray = (
-    lang: Language,
-    path: string
-): string[] => {
-    const cacheKey = `${lang}:${path}`;
-    const cached = _arrayCache.get(cacheKey);
-    if (cached !== undefined) return cached;
+export const t = (lang: Language, path: string): string => {
+    const langMap = flattenedTranslations[lang] || flattenedTranslations.en;
+    const value = langMap[path];
 
-    const keys = path.split('.');
-    let result: any = translations[lang] || translations.en;
-
-    for (const key of keys) {
-        if (result == null || result[key] === undefined) {
-            // Fallback to English
-            let fallback: any = translations.en;
-            for (const fbKey of keys) {
-                if (fallback == null || fallback[fbKey] === undefined) {
-                    _arrayCache.set(cacheKey, []);
-                    return [];
-                }
-                fallback = fallback[fbKey];
-            }
-            const arr = Array.isArray(fallback) ? (fallback as string[]) : [];
-            _arrayCache.set(cacheKey, arr);
-            return arr;
-        }
-        result = result[key];
+    if (typeof value === 'string') {
+        return value;
     }
 
-    const arr = Array.isArray(result) ? (result as string[]) : [];
-    _arrayCache.set(cacheKey, arr);
-    return arr;
+    const fallbackValue = flattenedTranslations.en[path];
+    return typeof fallbackValue === 'string' ? fallbackValue : path;
+};
+
+export const tArray = (lang: Language, path: string): string[] => {
+    const langMap = flattenedTranslations[lang] || flattenedTranslations.en;
+    const value = langMap[path];
+
+    if (Array.isArray(value)) {
+        return value;
+    }
+
+    const fallbackValue = flattenedTranslations.en[path];
+    return Array.isArray(fallbackValue) ? fallbackValue : [];
 };
