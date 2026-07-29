@@ -11,7 +11,7 @@ const DataLayout = () => {
             <Stack.Screen name="hash-map-visual" options={{ title: "Hash Map Visualizer" }} />
             <Stack.Screen name="tree-visual" options={{ title: "Tree Visualizer" }} />
             <Stack.Screen name="graph-visual" options={{ title: "Graph Visualizer" }} />
-            <Stack.Screen name="heaps-visual" options={{ title: "Heaps Visualizer" }} />
+            <Stack.Screen name="heap-visual" options={{ title: "Heap Visualizer" }} />
         </Stack>
     );
 }

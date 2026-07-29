@@ -192,7 +192,7 @@ const getStyles = (theme: any) =>
             flex: 1,
             borderWidth: 1,
             borderColor: theme.border,
-            backgroundColor: theme.card,
+            backgroundColor: "white",
             padding: 10,
             borderRadius: 10,
             color: theme.text,
