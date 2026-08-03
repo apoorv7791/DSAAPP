@@ -122,6 +122,19 @@ export const translations: Record<Language, any> = {
                 noStructuredWay: "No structured way to store large data",
                 memoryInefficient: "Memory handling becomes inefficient",
                 solveDescription: "Arrays solve this by storing multiple values in a single variable and allowing easy access using index.",
+            "graph-algorithms": {
+                title: "グラフとは何ですか？",
+                description: "グラフは、エッジで接続されたノード（頂点とも呼ばれる）の集合です。",
+                whyTitle: "なぜグラフを使用するのですか？",
+                whyDesc: "グラフは、ソーシャルネットワークや交通システムなど、オブジェクト間のペアごとの関係をモデル化するために使用されます。",
+                typesTitle: "グラフの種類",
+                types: [
+                    "無向グラフ：エッジに方向がありません。関係は双方向です。",
+                    "有向グラフ：エッジに方向があります。関係は一方向です。"
+                ],
+                repsTitle: "グラフの表現",
+                repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接表（リストの配列）があります。",
+            },
                 fixedSize: "Fixed size",
                 fastAccess: "Fast access using index",
                 contiguousMemory: "Stored in contiguous memory",
@@ -186,6 +199,19 @@ export const translations: Record<Language, any> = {
                 ]
             },
             graphs: {
+                title: "What is a Graph?",
+                description: "A graph is a collection of nodes (also called vertices) connected by edges.",
+                whyTitle: "Why do we use Graphs?",
+                whyDesc: "Graphs are used to model pairwise relationships between objects, such as social networks or transit systems.",
+                typesTitle: "Types of Graphs",
+                types: [
+                    "Undirected Graph: Edges do not have a direction. The relationship is bidirectional.",
+                    "Directed Graph: Edges have a direction. The relationship is unidirectional."
+                ],
+                repsTitle: "Graph Representations",
+                repsDesc: "Common representations include adjacency matrix (2D array) and adjacency list (array of lists).",
+            },
+            "graph-algorithms": {
                 title: "What is a Graph?",
                 description: "A graph is a collection of nodes (also called vertices) connected by edges.",
                 whyTitle: "Why do we use Graphs?",
@@ -480,6 +506,19 @@ export const translations: Record<Language, any> = {
                 repsTitle: "ग्राफ प्रतिनिधित्व",
                 repsDesc: "सामान्य प्रतिनिधित्व में आसन्न मैट्रिक्स (2D एरे) और आसन्न सूची (सूचियों का एरे) शामिल हैं।",
             },
+            "graph-algorithms": {
+                title: "ग्राफ क्या है?",
+                description: "एक ग्राफ नोड्स (जिन्हें वर्टिसेस भी कहा जाता है) का एक संग्रह है जो किनारों (edges) द्वारा जुड़े होते हैं।",
+                whyTitle: "हम ग्राफ का उपयोग क्यों करते हैं?",
+                whyDesc: "ग्राफ का उपयोग वस्तुओं के बीच युग्मवार संबंधों को मॉडल करने के लिए किया जाता है, जैसे सोशल नेटवर्क या पारगमन प्रणाली।",
+                typesTitle: "ग्राफ के प्रकार",
+                types: [
+                    "अनडिरेक्टेड ग्राफ: किनारों की कोई दिशा नहीं होती है। संबंध द्विदिशीय होता है।",
+                    "डिरेक्टेड ग्राफ: किनारों की एक दिशा होती है। संबंध एकदिशीय होता है।"
+                ],
+                repsTitle: "ग्राफ प्रतिनिधित्व",
+                repsDesc: "सामान्य प्रतिनिधित्व में आसन्न मैट्रिक्स (2D एरे) और आसन्न सूची (सूचियों का एरे) शामिल हैं।",
+            },
             heaps: {
                 title: "हीप क्या है?",
                 description: "हीप एक विशेष ट्री-आधारित डेटा संरचना है जो हीप गुण को संतुष्ट करती है।",
@@ -705,6 +744,19 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Representaciones de Grafos",
                 repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
             },
+            "graph-algorithms": {
+                title: "¿Qué es un Grafo?",
+                description: "Un grafo es una colección de nodos (también llamados vértices) conectados por bordes.",
+                whyTitle: "¿Por qué usamos Grafos?",
+                whyDesc: "Los grafos se utilizan para modelar relaciones por pares entre objetos, como redes sociales o sistemas de tránsito.",
+                typesTitle: "Tipos de Grafos",
+                types: [
+                    "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
+                    "Grafo dirigido: Los bordes tienen una dirección. La relación es unidireccional."
+                ],
+                repsTitle: "Representaciones de Grafos",
+                repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
+            },
             heaps: {
                 title: "¿Qué es un Montículo?",
                 description: "Un montículo es una estructura de datos especializada basada en árboles que satisface la propiedad de montículo.",
@@ -862,6 +914,12 @@ export const translations: Record<Language, any> = {
                 ]
             },
             graphs: {
+                title: "Qu'est-ce qu'un graphe ?",
+                description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
+                whyTitle: "Pourquoi utiliser des graphes ?",
+                whyDesc: "Les graphes sont utilisés pour représenter des réseaux, tels que des réseaux sociaux ou des systèmes de transport.",
+            },
+            "graph-algorithms": {
                 title: "Qu'est-ce qu'un graphe ?",
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
@@ -1032,6 +1090,19 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Graphen-Darstellungen",
                 repsDesc: "Häufige Darstellungen umfassen Adjazenzmatrix (2D-Array) und Adjazenzliste (Array von Listen).",
             },
+            "graph-algorithms": {
+                title: "Was ist ein Graph?",
+                description: "Ein Graph ist eine Sammlung von Knoten (auch Vertices genannt), die durch Kanten verbunden sind.",
+                whyTitle: "Warum verwenden wir Graphen?",
+                whyDesc: "Graphen werden verwendet, um paarweise Beziehungen zwischen Objekten zu modellieren, wie soziale Netzwerke oder Verkehrssysteme.",
+                typesTitle: "Arten von Graphen",
+                types: [
+                    "Ungerichteter Graph: Kanten haben keine Richtung. Die Beziehung ist bidirektional.",
+                    "Gerichteter Graph: Kanten haben eine Richtung. Die Beziehung ist unidirektional."
+                ],
+                repsTitle: "Graphen-Darstellungen",
+                repsDesc: "Häufige Darstellungen umfassen Adjazenzmatrix (2D-Array) und Adjazenzliste (Array von Listen).",
+            },
             heaps: {
                 title: "Was ist ein Heap?",
                 description: "Ein Heap ist eine spezialisierte baumbasierte Datenstruktur, die die Heap-Eigenschaft erfüllt.",
@@ -1189,6 +1260,19 @@ export const translations: Record<Language, any> = {
                 ]
             },
             graphs: {
+                title: "什么是图？",
+                description: "图是由节点（也称为顶点）和边组成的非线性数据结构。",
+                whyTitle: "为什么我们要使用图？",
+                whyDesc: "图用于建模对象之间的成对关系，例如社交网络或交通系统。",
+                typesTitle: "图的类型",
+                types: [
+                    "无向图：边没有方向。关系是双向的。",
+                    "有向图：边有方向。关系是单向的。"
+                ],
+                repsTitle: "图的表示",
+                repsDesc: "常见的表示方法包括邻接矩阵（二维数组）和邻接表（数组的列表）。",
+            },
+            "graph-algorithms": {
                 title: "什么是图？",
                 description: "图是由节点（也称为顶点）和边组成的非线性数据结构。",
                 whyTitle: "为什么我们要使用图？",
@@ -1527,6 +1611,19 @@ export const translations: Record<Language, any> = {
                 ]
             },
             graphs: {
+                title: "ما هو الرسم البياني؟",
+                description: "الرسم البياني هو مجموعة من العقد (تسمى أيضاً الرؤوس) مرتبطة بحواف.",
+                whyTitle: "لماذا نستخدم الرسوم البيانية؟",
+                whyDesc: "تُستخدم الرسوم البيانية لنمذجة العلاقات الزوجية بين الأشياء، مثل الشبكات الاجتماعية أو أنظمة النقل.",
+                typesTitle: "أنواع الرسوم البيانية",
+                types: [
+                    "رسم بياني غير موجه: الحواف ليس لها اتجاه. العلاقة ثنائية الاتجاه.",
+                    "رسم بياني موجه: الحواف لها اتجاه. العلاقة أحادية الاتجاه."
+                ],
+                repsTitle: "تمثيلات الرسم البياني",
+                repsDesc: "تشمل التمثيلات الشائعة مصفوفة المجاورة (مصفوفة ثنائية الأبعاد) وقائمة المجاورة (مصفوفة من القوائم).",
+            },
+            "graph-algorithms": {
                 title: "ما هو الرسم البياني؟",
                 description: "الرسم البياني هو مجموعة من العقد (تسمى أيضاً الرؤوس) مرتبطة بحواف.",
                 whyTitle: "لماذا نستخدم الرسوم البيانية؟",
