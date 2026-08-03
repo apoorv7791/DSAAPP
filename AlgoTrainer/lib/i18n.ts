@@ -160,6 +160,15 @@ export const translations: Record<Language, any> = {
                 efficientInsertDelete: "Efficient insert/delete",
                 noShifting: "No shifting required",
             },
+            linkedlist: {
+                whatIs: "What is a Linked List?",
+                whatIsDesc: "A linked list is a linear data structure where each element (node) contains a value and a reference to the next node.",
+                whyUse: "Why do we use Linked Lists?",
+                whyUseDesc: "Linked lists are used for dynamic memory allocation and efficient insertions/deletions without shifting elements.",
+                dynamicSize: "Dynamic size",
+                efficientInsertDelete: "Efficient insert/delete",
+                noShifting: "No shifting required",
+            },
             stacks: {
                 title: "What is a Stack?",
                 description: "A stack is a linear data structure that follows the LIFO (Last In, First Out) principle.",
@@ -178,6 +187,14 @@ export const translations: Record<Language, any> = {
                 ]
             },
             hashMaps: {
+                title: "What is a HashMap?",
+                description: "A HashMap is a data structure that stores data in key-value pairs.",
+                realLife: "Real Life Example",
+                realLifeDesc: "Think of a contact list — you search using a name to find a phone number.",
+                howWorks: "How it works?",
+                howWorksDesc: "A HashMap uses a hash function to convert a key into an index where the value is stored.",
+            },
+            hashmaps: {
                 title: "What is a HashMap?",
                 description: "A HashMap is a data structure that stores data in key-value pairs.",
                 realLife: "Real Life Example",
@@ -455,6 +472,15 @@ export const translations: Record<Language, any> = {
                 efficientInsertDelete: "कुशल सम्मिलन/हटाना",
                 noShifting: "शिफ्टिंग की आवश्यकता नहीं",
             },
+            linkedlist: {
+                whatIs: "लिंक्ड लिस्ट क्या है?",
+                whatIsDesc: "लिंक्ड लिस्ट एक रैखिक डेटा संरचना है जहाँ प्रत्येक तत्व (नोड) में एक मान और अगले नोड का संदर्भ होता है।",
+                whyUse: "हम लिंक्ड लिस्ट का उपयोग क्यों करते हैं?",
+                whyUseDesc: "लिंक्ड लिस्ट का उपयोग डायनेमिक मेमोरी आवंटन और तत्वों को स्थानांतरित किए बिना कुशल सम्मिलन/हटाने के लिए किया जाता है।",
+                dynamicSize: "डायनेमिक आकार (Dynamic size)",
+                efficientInsertDelete: "कुशल सम्मिलन/हटाना",
+                noShifting: "शिफ्टिंग की आवश्यकता नहीं",
+            },
             stacks: {
                 title: "स्टैक क्या है?",
                 description: "स्टैक एक रैखिक डेटा संरचना है जो LIFO (लास्ट इन, फर्स्ट आउट) सिद्धांत का पालन करती है।",
@@ -473,6 +499,14 @@ export const translations: Record<Language, any> = {
                 ]
             },
             hashMaps: {
+                title: "हैशमैप क्या है?",
+                description: "हैशमैप एक डेटा संरचना है जो डेटा को की-वैल्यू पेयर में स्टोर करती है।",
+                realLife: "वास्तविक जीवन का उदाहरण",
+                realLifeDesc: "संपर्क सूची के बारे में सोचें — आप फ़ोन नंबर खोजने के लिए नाम का उपयोग करके खोजते हैं।",
+                howWorks: "यह कैसे काम करता है?",
+                howWorksDesc: "एक हैशमैप एक हैश फंक्शन का उपयोग करके एक की (key) को एक इंडेक्स में बदलता है जहाँ वैल्यू स्टोर होती है।",
+            },
+            hashmaps: {
                 title: "हैशमैप क्या है?",
                 description: "हैशमैप एक डेटा संरचना है जो डेटा को की-वैल्यू पेयर में स्टोर करती है।",
                 realLife: "वास्तविक जीवन का उदाहरण",
@@ -698,6 +732,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "¿Por qué usamos Listas Enlazadas?",
                 whyUseDesc: "Las listas enlazadas se utilizan para la asignación dinámica de memoria e inserciones/eliminaciones eficientes.",
             },
+            linkedlist: {
+                whatIs: "¿Qué es una Lista Enlazada?",
+                whatIsDesc: "Una lista enlazada es una estructura de datos lineal donde cada elemento (nodo) contiene un valor y una referencia al siguiente nodo.",
+                whyUse: "¿Por qué usamos Listas Enlazadas?",
+                whyUseDesc: "Las listas enlazadas se utilizan para la asignación dinámica de memoria e inserciones/eliminaciones eficientes.",
+            },
             stacks: {
                 title: "¿Qué es una Pila?",
                 description: "Una pila es una estructura de datos lineal que sigue el principio LIFO (Último en entrar, primero en salir).",
@@ -711,6 +751,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "Las colas se utilizan en la programación de tareas, el almacenamiento en búfer y la búsqueda en anchura.",
             },
             hashMaps: {
+                title: "¿Qué es un Mapa Hash?",
+                description: "Un mapa hash es una estructura de datos que almacena datos en pares clave-valor.",
+                realLife: "Ejemplo de la vida real",
+                realLifeDesc: "Piense en una lista de contactos: busca un nombre para encontrar un número de teléfono.",
+                howWorks: "¿Cómo funciona?",
+                howWorksDesc: "Un mapa hash utiliza una función hash para convertir una clave en un índice donde se almacena el valor.",
+            },
+            hashmaps: {
                 title: "¿Qué es un Mapa Hash?",
                 description: "Un mapa hash es una estructura de datos que almacena datos en pares clave-valor.",
                 realLife: "Ejemplo de la vida real",
@@ -880,6 +928,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "Pourquoi utiliser des listes chaînées ?",
                 whyUseDesc: "Les listes chaînées sont utilisées pour l'allocation dynamique de mémoire et les insertions/suppressions efficaces.",
             },
+            linkedlist: {
+                whatIs: "Qu'est-ce qu'une liste chaînée ?",
+                whatIsDesc: "Une liste chaînée est une structure de données linéaire où chaque élément (nœud) contient une valeur et une référence au nœud suivant.",
+                whyUse: "Pourquoi utiliser des listes chaînées ?",
+                whyUseDesc: "Les listes chaînées sont utilisées pour l'allocation dynamique de mémoire et des insertions/suppressions efficaces.",
+            },
             stacks: {
                 title: "Qu'est-ce qu'une pile ?",
                 description: "Une pile est une structure de données linéaire qui suit le principe LIFO (Dernier entré, premier sorti).",
@@ -893,6 +947,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "Les files sont utilisées dans la planification des tâches, la mise en mémoire tampon et la recherche en largeur.",
             },
             hashMaps: {
+                title: "Qu'est-ce qu'une table de hachage ?",
+                description: "Une table de hachage est une structure de données qui stocke les données sous forme de paires clé-valeur.",
+                realLife: "Exemple de la vie réelle",
+                realLifeDesc: "Pensez à une liste de contacts : vous recherchez un nom pour trouver un numéro de téléphone.",
+                howWorks: "Comment ça fonctionne ?",
+                howWorksDesc: "Une table de hachage utilise une fonction de hachage pour convertir une clé en un index où la valeur est stockée.",
+            },
+            hashmaps: {
                 title: "Qu'est-ce qu'une table de hachage ?",
                 description: "Une table de hachage est une structure de données qui stocke les données sous forme de paires clé-valeur.",
                 realLife: "Exemple de la vie réelle",
@@ -1044,6 +1106,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "Warum verwenden wir verknüpfte Listen?",
                 whyUseDesc: "Verknüpfte Listen werden für die dynamische Speicherzuweisung und effiziente Einfügungen/Löschungen verwendet.",
             },
+            linkedlist: {
+                whatIs: "Was ist eine verknüpfte Liste?",
+                whatIsDesc: "Eine verknüpfte Liste ist eine lineare Datenstruktur, bei der jedes Element (Knoten) einen Wert und einen Verweis auf den nächsten Knoten enthält.",
+                whyUse: "Warum verwenden wir verknüpfte Listen?",
+                whyUseDesc: "Verknüpfte Listen werden für die dynamische Speicherzuweisung und effiziente Einfügungen/Löschungen verwendet.",
+            },
             stacks: {
                 title: "Was ist ein Stack?",
                 description: "Ein Stack ist eine lineare Datenstruktur, die dem LIFO-Prinzip (Last In, First Out) folgt.",
@@ -1057,6 +1125,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "Queues werden bei der Aufgabenplanung, Pufferung und Breitensuche verwendet.",
             },
             hashMaps: {
+                title: "Was ist eine HashMap?",
+                description: "Eine HashMap ist eine Datenstruktur, die Daten in Schlüssel-Wert-Paaren speichert.",
+                realLife: "Beispiel aus dem echten Leben",
+                realLifeDesc: "Denken Sie an eine Kontaktliste — Sie suchen mit einem Namen nach einer Telefonnummer.",
+                howWorks: "Wie funktioniert es?",
+                howWorksDesc: "Eine HashMap verwendet eine Hash-Funktion, um einen Schlüssel in einen Index umzuwandeln, an dem der Wert gespeichert wird.",
+            },
+            hashmaps: {
                 title: "Was ist eine HashMap?",
                 description: "Eine HashMap ist eine Datenstruktur, die Daten in Schlüssel-Wert-Paaren speichert.",
                 realLife: "Beispiel aus dem echten Leben",
@@ -1226,6 +1302,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "为什么我们要使用链表？",
                 whyUseDesc: "链表用于动态内存分配和高效的插入/删除，而无需移动元素。",
             },
+            linkedlist: {
+                whatIs: "什么是链表？",
+                whatIsDesc: "链表是一种线性数据结构，其中每个元素（节点）包含一个值和对下一个节点的引用。",
+                whyUse: "为什么我们要使用链表？",
+                whyUseDesc: "链表用于动态内存分配和高效的插入/删除，而无需移动元素。",
+            },
             stacks: {
                 title: "什么是栈？",
                 description: "栈是一种遵循后进先出（LIFO）原则的线性数据结构。",
@@ -1239,6 +1321,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "队列用于任务调度、缓冲和广度优先搜索。",
             },
             hashMaps: {
+                title: "什么是哈希表？",
+                description: "哈希表是一种以键值对形式存储数据的数据结构。",
+                realLife: "现实生活中的例子",
+                realLifeDesc: "想象一下通讯录——你通过姓名来查找电话号码。",
+                howWorks: "它是如何工作的？",
+                howWorksDesc: "哈希表使用哈希函数将键转换为存储值的索引。",
+            },
+            hashmaps: {
                 title: "什么是哈希表？",
                 description: "哈希表是一种以键值对形式存储数据的数据结构。",
                 realLife: "现实生活中的例子",
@@ -1408,6 +1498,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "なぜ連結リストを使用するのですか？",
                 whyUseDesc: "連結リストは、動的なメモリ割り当てや、要素をシフトすることなく効率的な挿入/削除を行うために使用されます。",
             },
+            linkedlist: {
+                whatIs: "連結リストとは何ですか？",
+                whatIsDesc: "連結リストは、各要素（ノード）に値と次のノードへの参照が含まれる線形データ構造です。",
+                whyUse: "なぜ連結リストを使用するのですか？",
+                whyUseDesc: "連結リストは、動的なメモリ割り当てや、要素をシフトすることなく効率的な挿入/削除を行うために使用されます。",
+            },
             stacks: {
                 title: "スタックとは何ですか？",
                 description: "スタックは、LIFO（後入れ先出し）の原則に従う線形データ構造です。",
@@ -1421,6 +1517,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "キューは、タスクスケジューリング、バッファリング、および幅優先探索で使用されます。",
             },
             hashMaps: {
+                title: "ハッシュマップとは何ですか？",
+                description: "ハッシュマップは、データをキーと値のペアで格納するデータ構造です。",
+                realLife: "実生活の例",
+                realLifeDesc: "連絡先リストを思い浮かべてください。名前を使用して電話番号を検索します。",
+                howWorks: "どのように機能しますか？",
+                howWorksDesc: "ハッシュマップは、ハッシュ関数を使用してキーを値が格納されているインデックスに変換します。",
+            },
+            hashmaps: {
                 title: "ハッシュマップとは何ですか？",
                 description: "ハッシュマップは、データをキーと値のペアで格納するデータ構造です。",
                 realLife: "実生活の例",
@@ -1577,6 +1681,12 @@ export const translations: Record<Language, any> = {
                 whyUse: "لماذا نستخدم القوائم المرتبطة؟",
                 whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الديناميكي وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
             },
+            linkedlist: {
+                whatIs: "ما هي القائمة المرتبطة؟",
+                whatIsDesc: "القائمة المرتبطة هي هيكل بيانات خطي حيث يحتوي كل عنصر (عقدة) على قيمة ومرجع للعقدة التالية.",
+                whyUse: "لماذا نستخدم القوائم المرتبطة؟",
+                whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الديناميكي وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
+            },
             stacks: {
                 title: "ما هو المكدس؟",
                 description: "المكدس هو هيكل بيانات خطي يتبع مبدأ LIFO (الأخير في الدخول، الأول في الخروج).",
@@ -1590,6 +1700,14 @@ export const translations: Record<Language, any> = {
                 whyDesc: "تُستخدم الطوابير في جدولة المهام، والتخزين المؤقت، والبحث بالعرض أولاً.",
             },
             hashMaps: {
+                title: "ما هي خريطة التجزئة؟",
+                description: "خريطة التجزئة هي هيكل بيانات يخزن البيانات في أزواج مفتاح وقيمة.",
+                realLife: "مثال من الحياة الواقعية",
+                realLifeDesc: "فكر في قائمة جهات الاتصال - أنت تبحث باستخدام اسم للعثور على رقم هاتف.",
+                howWorks: "كيف تعمل؟",
+                howWorksDesc: "تستخدم خريطة التجزئة دالة تجزئة لتحويل المفتاح إلى فهرس حيث يتم تخزين القيمة.",
+            },
+            hashmaps: {
                 title: "ما هي خريطة التجزئة؟",
                 description: "خريطة التجزئة هي هيكل بيانات يخزن البيانات في أزواج مفتاح وقيمة.",
                 realLife: "مثال من الحياة الواقعية",

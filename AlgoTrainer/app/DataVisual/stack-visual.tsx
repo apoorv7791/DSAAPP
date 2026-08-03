@@ -107,7 +107,7 @@ const StackVisual = () => {
                     keyboardType="numeric"
                     value={input}
                     onChangeText={setInput}
-                    placeholderTextColor="#201f1f"
+                    placeholderTextColor={theme.mode === 'dark' ? '#9ca3af' : '#6b7280'}
                 />
 
                 <Pressable style={styles.button} onPress={handlePush}>

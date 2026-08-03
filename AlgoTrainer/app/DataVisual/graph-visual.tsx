@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
-  Alert,
+  ToastAndroid,
 } from "react-native";
 import { ThemeContext, ThemeType } from "@/theme/ThemeContext";
 
@@ -82,7 +82,7 @@ const GraphsVisual = () => {
 
   const addNode = () => {
     if (nodes.length >= MAX_NODES) {
-      Alert.alert("Limit reached", `Maximum ${MAX_NODES} nodes allowed.`);
+      ToastAndroid.show(`Maximum ${MAX_NODES} nodes allowed.`, ToastAndroid.LONG);
       return;
     }
     const pos = PRESET_POSITIONS[nodes.length];
@@ -271,7 +271,6 @@ const GraphsVisual = () => {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.container}>
-        <Text style={styles.title}>Graph Visualizer</Text>
 
         {/* ── Mode selector ── */}
         <View style={styles.modeRow}>

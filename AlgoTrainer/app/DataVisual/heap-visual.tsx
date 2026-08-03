@@ -224,9 +224,7 @@ export default function HeapVisual() {
 
     return (
         <View style={[styles.container, { backgroundColor: theme.bg }]}>
-            <Text style={[styles.title, { color: theme.text }]}>
-                Min Heap Visualizer
-            </Text>
+           
 
             {/* INPUT */}
             <View style={styles.row}>

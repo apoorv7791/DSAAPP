@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import {
     Pressable,
     StyleSheet,
@@ -6,13 +6,40 @@ import {
     View,
     Text,
     ScrollView,
+    Animated,
+    Platform,
+    UIManager,  
+    LayoutAnimation,
 } from 'react-native';
 
 import { ThemeContext } from '@/theme/ThemeContext';
 
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
 const HashMapVisual = () => {
     const { theme } = useContext(ThemeContext);
     const styles = getStyles(theme);
+
+
+    const AnimationBox = ({ children }: { children: React.ReactNode }) => {
+        const scale = useRef(new Animated.Value(0)).current;
+
+        React.useEffect(() => {
+            Animated.spring(scale, {
+                toValue: 1,
+                useNativeDriver: true,
+                friction: 5,
+            }).start();
+        }, []);
+        
+        return (
+            <Animated.View style={{ transform: [{ scale }] }}>
+                {children}
+            </Animated.View>
+        );
+    }
 
     // input field
     const [input, setInput] = useState('');
@@ -28,6 +55,8 @@ const HashMapVisual = () => {
 
         // prevent invalid numbers
         if (isNaN(num)) return;
+
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
         setMap(prev => ({
             ...prev,
@@ -45,6 +74,8 @@ const HashMapVisual = () => {
         if (!input.trim()) return;
 
         const num = Number(input);
+
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 
         setMap(prev => {
             // key doesn't exist
@@ -67,6 +98,7 @@ const HashMapVisual = () => {
 
     // RESET HASHMAP
     const clearMap = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setMap({});
     };
 
@@ -127,7 +159,8 @@ const HashMapVisual = () => {
                     </Text>
                 ) : (
                     Object.entries(map).map(([key, freq]) => (
-                        <View key={key} style={styles.box}>
+                        <AnimationBox>
+                            <View key={key} style={styles.box}>
 
                             <Text style={styles.keyText}>
                                 {key}
@@ -140,6 +173,7 @@ const HashMapVisual = () => {
                             </Text>
 
                         </View>
+                        </AnimationBox>
                     ))
                 )}
             </ScrollView>
