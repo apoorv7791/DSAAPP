@@ -38,7 +38,7 @@ interface FlatListItem {
 
 const Settings = () => {
   const router = useRouter();
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, useSystemTheme, toggleTheme, setUseSystemTheme } = useContext(ThemeContext);
   const typography = createTypography(theme);
   const { isLoggedIn, logout } = useAuth();
   const { t } = useTranslation();
@@ -98,8 +98,13 @@ const Settings = () => {
             icon: "moon-outline",
             right: (
               <Switch
-                value={theme.mode === "dark"}
-                onValueChange={toggleTheme}
+                value={theme.mode === "dark" && !useSystemTheme}
+                onValueChange={() => {
+                  if (useSystemTheme) {
+                    setUseSystemTheme(false)
+                  }
+                  toggleTheme()
+                }}
                 trackColor={{ false: theme.border, true: theme.primary }}
                 thumbColor={
                   theme.mode === "dark" ? theme.text : theme.textSecondary
@@ -107,6 +112,18 @@ const Settings = () => {
               />
             ),
 
+          },
+          {
+            name: "Follow System Theme",
+            icon: "phone-portrait-outline",
+            right: (
+              <Switch
+                value={useSystemTheme}
+                onValueChange={setUseSystemTheme}
+                trackColor={{ false: theme.border, true: theme.primary }}
+                thumbColor={useSystemTheme ? theme.text : theme.textSecondary}
+              />
+            ),
           },
           {
             name: "Notifications",

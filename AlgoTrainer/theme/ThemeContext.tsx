@@ -1,5 +1,9 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useEffect, useState } from "react"
+import { Appearance, ColorSchemeName } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ColorValue } from "react-native/Libraries/StyleSheet/StyleSheet";
+
+const THEME_STORAGE_KEY = "algotrainer_theme"
 
 export interface ThemeType {
     colors: any;
@@ -48,8 +52,10 @@ interface ThemeContextProps {
 
 interface ThemeContextType {
     theme: ThemeType;
+    useSystemTheme: boolean;
     setTheme: (theme: ThemeType) => void;
     toggleTheme: () => void;
+    setUseSystemTheme: (value: boolean) => void;
     createCustomTheme: (customTheme: Partial<ThemeType>) => ThemeType;
     resetToDefault: () => void;
 }
@@ -126,46 +132,122 @@ const defaultDarkTheme: ThemeType = {
 
 export const ThemeContext = createContext<ThemeContextType>({
     theme: defaultLightTheme,
+    useSystemTheme: false,
     setTheme: () => { },
     toggleTheme: () => { },
+    setUseSystemTheme: () => { },
     createCustomTheme: () => defaultLightTheme,
     resetToDefault: () => { },
 });
 
 export const ThemeProvider: React.FC<ThemeContextProps> = ({ children }) => {
     const [theme, setTheme] = useState<ThemeType>(defaultLightTheme);
+    const [useSystemTheme, setUseSystemThemeState] = useState(false);
+
+    const getThemeFromScheme = (scheme: ColorSchemeName) =>
+        scheme === 'dark' ? defaultDarkTheme : defaultLightTheme;
+
+    const persistThemeState = async (
+        nextTheme: ThemeType,
+        nextUseSystemTheme: boolean,
+    ) => {
+        try {
+            await AsyncStorage.setItem(
+                THEME_STORAGE_KEY,
+                JSON.stringify({ theme: nextTheme, useSystemTheme: nextUseSystemTheme }),
+            )
+        } catch (error) {
+            console.warn('Failed to save theme state', error)
+        }
+    }
+
+    const loadStoredTheme = async () => {
+        try {
+            const raw = await AsyncStorage.getItem(THEME_STORAGE_KEY)
+            if (raw) {
+                const stored = JSON.parse(raw)
+                if (stored?.useSystemTheme) {
+                    const systemTheme = getThemeFromScheme(Appearance.getColorScheme())
+                    setTheme(systemTheme)
+                    setUseSystemThemeState(true)
+                    return
+                }
+                if (stored?.theme?.mode) {
+                    setTheme(stored.theme as ThemeType)
+                    setUseSystemThemeState(false)
+                    return
+                }
+                const storedTheme = stored as ThemeType
+                if (storedTheme?.mode) {
+                    setTheme(storedTheme)
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to load saved theme', error)
+        }
+    }
+
+    useEffect(() => {
+        void loadStoredTheme()
+    }, [])
+
+    useEffect(() => {
+        const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+            if (useSystemTheme) {
+                setTheme(getThemeFromScheme(colorScheme))
+            }
+        })
+        return () => subscription.remove()
+    }, [useSystemTheme])
+
+    const applyTheme = (nextTheme: ThemeType, systemThemeEnabled = false) => {
+        setTheme(nextTheme)
+        setUseSystemThemeState(systemThemeEnabled)
+        void persistThemeState(nextTheme, systemThemeEnabled)
+    }
+
+    const setThemeAndPersist = (nextTheme: ThemeType) => {
+        applyTheme(nextTheme, false)
+    }
 
     const toggleTheme = () => {
-        setTheme(prevTheme => {
-            if (prevTheme.mode === 'light') {
-                return defaultDarkTheme;
-            } else if (prevTheme.mode === 'dark') {
-                return defaultLightTheme;
-            } else {
-                // If custom, toggle to light
-                return defaultLightTheme;
-            }
-        });
-    };
+        const nextTheme =
+            theme.mode === 'dark' ? defaultLightTheme : defaultDarkTheme
+        applyTheme(nextTheme, false)
+    }
+
+    const setUseSystemTheme = (value: boolean) => {
+        if (value) {
+            const systemTheme = getThemeFromScheme(Appearance.getColorScheme())
+            applyTheme(systemTheme, true)
+            return
+        }
+        setUseSystemThemeState(false)
+        void persistThemeState(theme, false)
+    }
 
     const createCustomTheme = (customTheme: Partial<ThemeType>): ThemeType => {
-        return {
+        const nextTheme: ThemeType = {
             ...defaultLightTheme,
             mode: 'custom',
             name: customTheme.name || 'Custom',
-            ...customTheme
-        };
-    };
+            ...customTheme,
+        }
+        applyTheme(nextTheme, false)
+        return nextTheme
+    }
 
     const resetToDefault = () => {
-        setTheme(defaultLightTheme);
-    };
+        applyTheme(defaultLightTheme, false)
+    }
 
     return (
         <ThemeContext.Provider value={{
             theme,
+            useSystemTheme,
             setTheme,
             toggleTheme,
+            setUseSystemTheme,
             createCustomTheme,
             resetToDefault
         }}>

@@ -73,7 +73,7 @@ const DPVisualizer = () => {
       <View style={styles.tableContainer}>
         <Text style={styles.sectionTitle}>DP Table (Bottom-Up)</Text>
         <View style={styles.grid}>
-          {Array.from({ length: parseInt(n) || 0 + 1 }).map((_, i) => (
+          {Array.from({ length: (parseInt(n, 10) || 0) + 1 }).map((_, i) => (
             <View key={i} style={styles.cellWrapper}>
               <Text style={styles.indexText}>i={i}</Text>
               <View
