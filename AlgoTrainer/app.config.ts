@@ -4,6 +4,16 @@ import type { ExpoConfig } from "expo/config";
  * EAS Build does not read local `.env` on build workers unless variables are set as EAS Environment Variables
  * or EAS Secrets (see docs/RELEASE_ANDROID.md). `EXPO_PUBLIC_*` values are inlined at bundle time.
  */
+function getRequiredEnv(variableName: string): string {
+  const rawValue = process.env[variableName];
+  if (typeof rawValue !== "string" || rawValue.trim().length === 0) {
+    throw new Error(
+      `${variableName} is required for production builds. Set it in EAS environment variables for the production environment.`
+    );
+  }
+  return rawValue.trim();
+}
+
 const config: ExpoConfig = {
   name: "AlgoTrainer",
   slug: "AlgoTrainer",
@@ -50,10 +60,10 @@ const config: ExpoConfig = {
     eas: {
       projectId: "d030d009-29da-43d2-aa9d-58f7cad158e5",
     },
-    backendUrl: process.env.EXPO_PUBLIC_BACKEND_URL ?? "",
+    backendUrl: getRequiredEnv("EXPO_PUBLIC_BACKEND_URL"),
     /** Public HTTPS URL for Play Console + in-app "open in browser". Set EXPO_PUBLIC_PRIVACY_POLICY_URL in EAS. */
-    privacyPolicyUrl: process.env.EXPO_PUBLIC_PRIVACY_POLICY_URL ?? "",
-    termsOfServiceUrl: process.env.EXPO_PUBLIC_TERMS_OF_SERVICE_URL ?? "",
+    privacyPolicyUrl: getRequiredEnv("EXPO_PUBLIC_PRIVACY_POLICY_URL"),
+    termsOfServiceUrl: process.env.EXPO_PUBLIC_TERMS_OF_SERVICE_URL?.trim() ?? "",
   },
 };
 

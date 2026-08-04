@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useRef } from 'react';
 import {
     View,
     Text,
@@ -33,7 +33,8 @@ const TreesVisual = () => {
     const [activeNode, setActiveNode] = useState<string | null>(null);
     const [explanation, setExplanation] = useState('');
     const [running, setRunning] = useState(false);
-
+    const [paused, setPaused] = useState(false);
+    const isPaused = useRef(false);
     const SPEED = 2;
 
     /* ---------------- UTILITIES ---------------- */
@@ -42,40 +43,60 @@ const TreesVisual = () => {
         new Promise(res => setTimeout(res, ms));
 
     const explain = async (msg: string, wait = 400) => {
+        await waitifPaused();
         setExplanation(msg);
         await delay(wait * SPEED);
     };
 
+    const togglepause = async () => {
+        setPaused(prev => {
+            isPaused.current = !prev;
+            return !prev;
+        });
+    }
+
+    const waitifPaused = async () => {
+        while(isPaused.current) {
+            await delay(100);
+        }
+    }
+
     const reset = useCallback(() => {
-        setActiveNode(null);
-        setExplanation('');
-        setRunning(false);
-    }, []);
+    setActiveNode(null);
+    setExplanation('');
+}, []);
 
     /* ---------------- DFS ---------------- */
 
     const dfs = useCallback(async (node: any) => {
         if (!node) return;
+        await waitifPaused();
 
         setActiveNode(node.value);
         await explain(`Visiting node ${node.value} (DFS)`);
 
         if (node.left) {
             await explain(`Going LEFT → ${node.left.value}`);
-            await dfs(node.left);
+            await dfs(node.left);   
+            setActiveNode(node.value);
+            await explain(`Returning to ${node.value} after exploring LEFT`, 300);
         }
 
         if (node.right) {
             await explain(`Going RIGHT → ${node.right.value}`);
             await dfs(node.right);
+
+        setActiveNode(node.value);     // ← Returned again
+        await explain(`Returned to ${node.value} from RIGHT`);
         }
 
-        await explain(`Backtracking from ${node.value}`, 300);
+        await explain(`Finished exploring ${node.value}`, 300);
     }, []);
 
     const runDFS = async () => {
         if (running) return;
 
+        
         reset();
         setRunning(true);
 
@@ -99,6 +120,7 @@ const TreesVisual = () => {
         await explain('BFS starts: level-order traversal using queue', 600);
 
         while (queue.length) {
+            await waitifPaused();
             const node = queue.shift();
             if (!node) continue;
 
@@ -136,7 +158,6 @@ const TreesVisual = () => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.title}>Tree Visualizer</Text>
 
                 {/* ── Canvas with edges + nodes ── */}
                 <View style={{ width: 320, height: 300, position: 'relative', marginBottom: 10 }}>
@@ -189,6 +210,7 @@ const TreesVisual = () => {
                     <Btn text="DFS" onPress={runDFS} theme={theme} />
                     <Btn text="BFS" onPress={() => bfs(tree)} theme={theme} />
                     <Btn text="Reset" onPress={reset} theme={theme} />
+                    <Btn text={paused ? "Resume" : "Pause"} onPress={togglepause} theme={theme} />
                 </View>
 
                 <Text style={styles.info}>

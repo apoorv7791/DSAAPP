@@ -61,8 +61,7 @@ const GraphVisualizer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [algorithm, setAlgorithm] = useState<"BFS" | "DFS" | null>(null);
   const [explanation, setExplanation] = useState("");
-  const [paused, setPaused] = useState(false);
-
+  const [paused, setPaused] = useState(false); // this state was used as a pause feature so that user can stop the algortihm.
   const isPaused = useRef(false);
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
