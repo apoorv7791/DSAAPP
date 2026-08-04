@@ -17,21 +17,32 @@ const DPVisualizer = () => {
   const [table, setTable] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [message, setMessage] = useState("Enter a number to see the Fibonacci table.");
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+  const reset = () => {
+    setTable([]);
+    setCurrentIndex(null);
+    setMessage("Enter a number to see the Fibonacci table.");
+  };
+
   const runFibonacciTabulation = async () => {
     if (isRunning) return;
-    const num = parseInt(n);
-    if (isNaN(num) || num < 0 || num > 12) return;
 
+    const parsed = parseInt(n, 10);
+    if (Number.isNaN(parsed) || parsed < 0 || parsed > 12) {
+      setMessage("Please enter a number between 0 and 12.");
+      return;
+    }
+
+    reset();
     setIsRunning(true);
-    const dp = new Array(num + 1).fill(0);
-    setTable([]);
+    const dp = new Array(parsed + 1).fill(0);
 
-    for (let i = 0; i <= num; i++) {
+    for (let i = 0; i <= parsed; i++) {
       setCurrentIndex(i);
-      await delay(600);
+      await delay(500);
 
       if (i <= 1) {
         dp[i] = i;
@@ -40,9 +51,10 @@ const DPVisualizer = () => {
       }
 
       setTable([...dp.slice(0, i + 1)]);
-      await delay(400);
+      await delay(300);
     }
 
+    setMessage(`Fibonacci(${parsed}) = ${dp[parsed]}`);
     setCurrentIndex(null);
     setIsRunning(false);
   };

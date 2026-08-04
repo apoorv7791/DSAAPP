@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
 
@@ -15,6 +15,15 @@ const GreedyVisualizer = () => {
     const [remaining, setRemaining] = useState(67);
     const [running, setRunning] = useState(false);
     const [explanation, setExplanation] = useState('');
+    const [totalCoins, setTotalCoins] = useState<number | null>(null);
+
+    useEffect(() => {
+        setRemaining(amount);
+        setSteps([]);
+        setCurrentCoin(null);
+        setExplanation("");
+        setTotalCoins(null);
+    }, [amount]);
 
     const delay = (ms: number) =>
         new Promise(res => setTimeout(res, ms));
@@ -24,34 +33,36 @@ const GreedyVisualizer = () => {
 
         setRunning(true);
         setSteps([]);
+        setCurrentCoin(null);
+        setExplanation("");
         setRemaining(amount);
+        setTotalCoins(null);
 
         let temp = amount;
+        let used = 0;
 
         for (const coin of COINS) {
             setCurrentCoin(coin);
-            await delay(400);
+            await delay(350);
 
-            setExplanation(`Checking ${coin}¢ coin because greedy picks the largest possible value first.`);
-
+            setExplanation(`Checking ${coin}¢ because greedy picks the largest coin first.`);
             const count = Math.floor(temp / coin);
 
             if (count > 0) {
                 temp %= coin;
-
-                setExplanation(`${coin} fits ${count} time(s). Remaining amount becomes ${temp}.`);
-
-                setSteps(prev => [...prev, { value: coin, count }]);
+                used += count;
+                setExplanation(`${coin}¢ fits ${count} time(s). Remaining amount is ${temp}.`);
+                setSteps((prev) => [...prev, { value: coin, count }]);
                 setRemaining(temp);
             } else {
-                setExplanation(
-                    `${coin}¢ is too large for remaining value ${temp}.`
-                );
+                setExplanation(`${coin}¢ is too large for the remaining ${temp}.`);
             }
 
-            await delay(400);
+            await delay(350);
         }
 
+        setTotalCoins(used);
+        setExplanation(`Done. Total coins used: ${used}.`);
         setCurrentCoin(null);
         setRunning(false);
     };
@@ -141,6 +152,12 @@ const GreedyVisualizer = () => {
                     )}
                 </View>
             </View>
+
+            {totalCoins !== null && (
+                <Text style={{ color: theme.primary, fontWeight: "bold" }}>
+                    Total coins: {totalCoins}
+                </Text>
+            )}
         </ScrollView>
     );
 };

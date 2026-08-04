@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemeContext } from "@/theme/ThemeContext";
@@ -61,12 +61,29 @@ const GraphVisualizer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [algorithm, setAlgorithm] = useState<"BFS" | "DFS" | null>(null);
   const [explanation, setExplanation] = useState("");
+  const [paused, setPaused] = useState(false);
 
+  const isPaused = useRef(false);
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  const togglePause = () => {
+    setPaused(prev => {
+      isPaused.current = !prev;
+      return !prev;
+    })
+  }
+
+  const waitIfpaused = (async () => {
+    while (isPaused.current) {
+      await delay(100);
+    }
+  });
 
   const explain = async (msg: string, wait = 400) => {
     setExplanation(msg);
+    await waitIfpaused();
     await delay(wait * SPEED);
+    await waitIfpaused();
   };
 
   const reset = () => {
@@ -84,6 +101,8 @@ const GraphVisualizer = () => {
     reset();
     setIsRunning(true);
     setAlgorithm("BFS");
+    setPaused(false);
+    isPaused.current = false;
 
     const q = [0];
     const visited = new Set<number>();
@@ -96,6 +115,7 @@ const GraphVisualizer = () => {
     );
 
     while (q.length > 0) {
+      await waitIfpaused();
       const current = q.shift()!;
       setQueue([...q]);
 
@@ -139,6 +159,7 @@ const GraphVisualizer = () => {
     );
 
     const dfsRecursive = async (node: number) => {
+      await waitIfpaused();
       if (visited.has(node)) return;
 
       currentStack.push(node);
@@ -210,7 +231,7 @@ const GraphVisualizer = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Graph Algorithms: BFS & DFS</Text>
+      
 
       <View style={styles.controls}>
         <Pressable
@@ -229,6 +250,17 @@ const GraphVisualizer = () => {
         </Pressable>
         <Pressable style={styles.resetButton} onPress={reset}>
           <Ionicons name="refresh" size={20} color={theme.text} />
+        </Pressable>
+        <Pressable 
+        style={styles.resetButton}
+        onPress={togglePause}
+        disabled={!isRunning}
+        >
+          <Ionicons 
+            name={paused ? "play" : "pause"}
+            size={20}
+            color={theme.text}
+          />
         </Pressable>
       </View>
 
