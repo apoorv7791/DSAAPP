@@ -29,8 +29,9 @@ const HashMapVisual = () => {
         React.useEffect(() => {
             Animated.spring(scale, {
                 toValue: 1,
-                useNativeDriver: true,
-                friction: 5,
+		friction: 6,
+		tension: 90,
+                useNativeDriver: true
             }).start();
         }, []);
         
@@ -159,8 +160,8 @@ const HashMapVisual = () => {
                     </Text>
                 ) : (
                     Object.entries(map).map(([key, freq]) => (
-                        <AnimationBox>
-                            <View key={key} style={styles.box}>
+                        <AnimationBox key={key}>
+                            <Animated.View style={[styles.box], {trasnform : [{scale}]}}>
 
                             <Text style={styles.keyText}>
                                 {key}
@@ -172,7 +173,7 @@ const HashMapVisual = () => {
                                 Freq: {freq}
                             </Text>
 
-                        </View>
+                        />
                         </AnimationBox>
                     ))
                 )}
@@ -252,6 +253,15 @@ const getStyles = (theme: any) => {
             width: 110,
             minHeight: 110,
             borderWidth: 1,
+	    shadowColor: "#000",
+	    shadowOffset: {
+	    	width:0,
+		height:5,
+	    },
+            shadowOpacity:0.15,
+   	    shadowRadius:8,
+
+   	    elevation:6,
             borderColor: theme.border,
             borderRadius: 16,
             backgroundColor: theme.inputBackground,
