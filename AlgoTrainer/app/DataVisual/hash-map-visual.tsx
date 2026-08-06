@@ -161,7 +161,7 @@ const HashMapVisual = () => {
                 ) : (
                     Object.entries(map).map(([key, freq]) => (
                         <AnimationBox key={key}>
-                            <Animated.View style={[styles.box], {trasnform : [{scale}]}}>
+                            <Animated.View style={[styles.box, { opacity: freq > 0 ? 1 : 0.5 }]}>
 
                             <Text style={styles.keyText}>
                                 {key}
@@ -173,7 +173,7 @@ const HashMapVisual = () => {
                                 Freq: {freq}
                             </Text>
 
-                        />
+                       	    </Animated.View>
                         </AnimationBox>
                     ))
                 )}
