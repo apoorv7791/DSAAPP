@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import {
   View,
   Text,
@@ -27,8 +27,22 @@ const RecursionVisualizer = () => {
   const [stack, setStack] = useState<StackFrame[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
+  const [paused, setPaused] = useState(false);
+  const isPaused = useRef(paused);
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+  const togglePause = () => {
+  
+    const next = !isPaused.current;
+    isPaused.current = next;
+    setPaused(next);
+};
+
+  const pauseIfNeeded = async () => {
+    while (isPaused.current) {
+      await delay(100); 
+    }
+  }
 
   const runFactorial = async () => {
     if (isRunning) return;
@@ -37,7 +51,6 @@ const RecursionVisualizer = () => {
       setLogs(["Please enter a number between 0 and 10"]);
       return;
     }
-
     setIsRunning(true);
     setStack([]);
     setLogs([`Calculating factorial(${num})...`]);
@@ -57,6 +70,7 @@ const RecursionVisualizer = () => {
 
       setStack((prev) => [newFrame, ...prev]);
       setLogs((prev) => [`factorial(${currentN}) called`, ...prev]);
+      await pauseIfNeeded();
       await delay(800);
 
       if (currentN <= 1) {
@@ -69,6 +83,7 @@ const RecursionVisualizer = () => {
             f.id === frameId ? { ...f, result: 1, isReturning: true } : f,
           ),
         );
+        await pauseIfNeeded();
         await delay(800);
         return 1;
       }
@@ -85,9 +100,11 @@ const RecursionVisualizer = () => {
         `factorial(${currentN}) returns ${currentN} * ${subResult} = ${result}`,
         ...prev,
       ]);
+      await pauseIfNeeded();
       await delay(800);
 
       // Pop frame after returning
+      await pauseIfNeeded();
       setStack((prev) => prev.filter((f) => f.id !== frameId));
       return result;
     };
@@ -126,6 +143,17 @@ const RecursionVisualizer = () => {
           </Pressable>
           <Pressable style={styles.resetButton} onPress={reset}>
             <Ionicons name="refresh" size={20} color={theme.text} />
+          </Pressable>
+          <Pressable
+            style={[styles.button, !isRunning && styles.buttonDisabled]}
+            onPress={togglePause}
+            disabled={!isRunning}
+          >
+            <Ionicons 
+                        name={paused ? "play" : "pause"}
+                        size={20}
+                        color={theme.text}
+                      />
           </Pressable>
         </View>
       </View>
