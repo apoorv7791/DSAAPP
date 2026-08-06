@@ -267,7 +267,7 @@ const Settings = () => {
               ]}
             >
               <Text style={[typography.h1, { color: theme.text }]}>
-                {t("settings.title")}
+                
               </Text>
               <Text
                 style={[
