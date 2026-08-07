@@ -146,10 +146,7 @@ const SearchingVisual = () => {
     return (
         <View style={styles.container}>
 
-            {/* TITLE */}
-            <Text style={styles.title}>
-                Searching Visualizer
-            </Text>
+    
 
             <Text style={styles.subtitle}>
                 {t('common.target')}: {TARGET}

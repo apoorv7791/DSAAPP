@@ -7,16 +7,10 @@ import {
     Text,
     ScrollView,
     Animated,
-    Platform,
-    UIManager,  
-    LayoutAnimation,
 } from 'react-native';
 
 import { ThemeContext } from '@/theme/ThemeContext';
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-}
 
 const HashMapVisual = () => {
     const { theme } = useContext(ThemeContext);
@@ -57,7 +51,7 @@ const HashMapVisual = () => {
         // prevent invalid numbers
         if (isNaN(num)) return;
 
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+       
 
         setMap(prev => ({
             ...prev,
@@ -76,7 +70,7 @@ const HashMapVisual = () => {
 
         const num = Number(input);
 
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+       
 
         setMap(prev => {
             // key doesn't exist
@@ -99,7 +93,7 @@ const HashMapVisual = () => {
 
     // RESET HASHMAP
     const clearMap = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+       
         setMap({});
     };
 
