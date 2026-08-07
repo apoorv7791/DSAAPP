@@ -267,11 +267,11 @@ export const translations: Record<Language, any> = {
                 heapTitle: "Heap Sort",
                 heapDesc: "Heap sort is a comparison-based sorting technique based on the Binary Heap data structure.",
             },
-            greedy: {
+            'greedy-algorithm': {
                 title: "Greedy Algorithms",
                 description: "Greedy algorithms build up a solution piece by piece, always choosing the next piece that offers the most immediate benefit.",
             },
-            dp: {
+            'dynamic-programming': {
                 title: "What is Dynamic Programming?",
                 description: "Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable to problems exhibiting optimal substructure and overlapping subproblems.",
                 charTitle: "Key Characteristics",
