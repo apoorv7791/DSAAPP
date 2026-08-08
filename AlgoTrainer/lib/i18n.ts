@@ -122,26 +122,6 @@ export const translations: Record<Language, any> = {
                 noStructuredWay: "No structured way to store large data",
                 memoryInefficient: "Memory handling becomes inefficient",
                 solveDescription: "Arrays solve this by storing multiple values in a single variable and allowing easy access using index.",
-            "graph-algorithms": {
-                title: "グラフとは何ですか？",
-                description: "グラフは、エッジで接続されたノード（頂点とも呼ばれる）の集合です。",
-                whyTitle: "なぜグラフを使用するのですか？",
-                whyDesc: "グラフは、ソーシャルネットワークや交通システムなど、オブジェクト間のペアごとの関係をモデル化するために使用されます。",
-                typesTitle: "グラフの種類",
-                types: [
-                    "無向グラフ：エッジに方向がありません。関係は双方向です。",
-                    "有向グラフ：エッジに方向があります。関係は一方向です。"
-                ],
-                repsTitle: "グラフの表現",
-                repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接表（リストの配列）があります。",
-            },
-                fixedSize: "Fixed size",
-                fastAccess: "Fast access using index",
-                contiguousMemory: "Stored in contiguous memory",
-                traversal: "Traversal",
-                insertion: "Insertion",
-                deletion: "Deletion",
-                searching: "Searching",
             },
             searching: {
                 title: "Searching Algorithms",
@@ -456,186 +436,186 @@ export const translations: Record<Language, any> = {
                 searching: "सर्चिंग (Searching)",
             },
             searching: {
-                title: "सर्चिंग एल्गोरिदम",
-                desc: "सर्चिंग तत्वों के संग्रह में एक विशिष्ट तत्व खोजने की प्रक्रिया है।",
-                linearTitle: "लिनियर सर्च",
-                linearDesc: "लिनियर सर्च एक सरल सर्चिंग एल्गोरिदम है जो सूची के प्रत्येक तत्व की तब तक जांच करता है जब तक उसे लक्षित तत्व नहीं मिल जाता।",
-                binaryTitle: "बाइनरी सर्च",
-                binaryDesc: "बाइनरी सर्च एक सर्चिंग एल्गोरिदम है जो सॉर्ट किए गए एरे के भीतर लक्षित मान की स्थिति ढूंढता है।",
+                title: "Searching Algorithms",
+                desc: "Searching is the process of finding a specific element in a collection of elements.",
+                linearTitle: "Linear Search",
+                linearDesc: "Linear search is a simple searching algorithm that checks each element in a list until it finds the target element.",
+                binaryTitle: "Binary Search",
+                binaryDesc: "Binary search is a searching algorithm that finds the position of a target value within a sorted array.",
             },
             linkedList: {
-                whatIs: "लिंक्ड लिस्ट क्या है?",
-                whatIsDesc: "लिंक्ड लिस्ट एक रैखिक डेटा संरचना है जहाँ प्रत्येक तत्व (नोड) में एक मान और अगले नोड का संदर्भ होता है।",
-                whyUse: "हम लिंक्ड लिस्ट का उपयोग क्यों करते हैं?",
-                whyUseDesc: "लिंक्ड लिस्ट का उपयोग डायनेमिक मेमोरी आवंटन और तत्वों को स्थानांतरित किए बिना कुशल सम्मिलन/हटाने के लिए किया जाता है।",
-                dynamicSize: "डायनेमिक आकार (Dynamic size)",
-                efficientInsertDelete: "कुशल सम्मिलन/हटाना",
-                noShifting: "शिफ्टिंग की आवश्यकता नहीं",
+                whatIs: "Linked List",
+                whatIsDesc: "A linked list is a linear data structure where each element (node) contains a value and a reference to the next node.",
+                whyUse: "Why do we use Linked Lists?",
+                whyUseDesc: "Linked lists are used for dynamic memory allocation and efficient insertions/deletions without shifting elements.",
+                dynamicSize: "Dynamic size",
+                efficientInsertDelete: "Efficient insert/delete",
+                noShifting: "No shifting required",
             },
             linkedlist: {
-                whatIs: "लिंक्ड लिस्ट क्या है?",
-                whatIsDesc: "लिंक्ड लिस्ट एक रैखिक डेटा संरचना है जहाँ प्रत्येक तत्व (नोड) में एक मान और अगले नोड का संदर्भ होता है।",
-                whyUse: "हम लिंक्ड लिस्ट का उपयोग क्यों करते हैं?",
-                whyUseDesc: "लिंक्ड लिस्ट का उपयोग डायनेमिक मेमोरी आवंटन और तत्वों को स्थानांतरित किए बिना कुशल सम्मिलन/हटाने के लिए किया जाता है।",
-                dynamicSize: "डायनेमिक आकार (Dynamic size)",
-                efficientInsertDelete: "कुशल सम्मिलन/हटाना",
-                noShifting: "शिफ्टिंग की आवश्यकता नहीं",
+                whatIs: "Linked List",
+                whatIsDesc: "A linked list is a linear data structure where each element (node) contains a value and a reference to the next node.",
+                whyUse: "Why do we use Linked Lists?",
+                whyUseDesc: "Linked lists are used for dynamic memory allocation and efficient insertions/deletions without shifting elements.",
+                dynamicSize: "Dynamic size",
+                efficientInsertDelete: "Efficient insert/delete",
+                noShifting: "No shifting required",
             },
             stacks: {
-                title: "स्टैक क्या है?",
-                description: "स्टैक एक रैखिक डेटा संरचना है जो LIFO (लास्ट इन, फर्स्ट आउट) सिद्धांत का पालन करती है।",
-                whyTitle: "हम स्टैक का उपयोग क्यों करते हैं?",
-                whyDesc: "स्टैक का उपयोग फंक्शन कॉल, रिकर्सन और अनडू/रीडू ऑपरेशंस में किया जाता है।",
+                title: "Stack",
+                description: "A stack is a linear data structure that follows the LIFO (Last In, First Out) principle.",
+                whyTitle: "Why do we use Stacks?",
+                whyDesc: "Stacks are used in function calls, recursion, and undo/redo operations.",
             },
             queues: {
-                title: "क्यू क्या है?",
-                description: "क्यू एक रैखिक डेटा संरचना है जो FIFO (फर्स्ट इन, फर्स्ट आउट) सिद्धांत का पालन करती है।",
-                whyTitle: "हम क्यू का उपयोग क्यों करते हैं?",
-                whyDesc: "क्यू का उपयोग टास्क शेड्यूलिंग, बफरिंग और ब्रेथ-फर्स्ट सर्च में किया जाता है।",
+                title: "Queue",
+                description: "A queue is a linear data structure that follows the FIFO (First In, First Out) principle.",
+                whyTitle: "Why do we use Queues?",
+                whyDesc: "Queues are used in task scheduling, buffering, and breadth-first search.",
                 listItems: [
-                    "क्यू एक मौलिक डेटा संरचना है जिसका उपयोग विभिन्न अनुप्रयोगों जैसे टास्क शेड्यूलिंग, ब्रेथ-फर्स्ट सर्च एल्गोरिदम और ऑपरेटिंग सिस्टम में संसाधनों के प्रबंधन में किया जाता है।",
-                    "यह फर्स्ट इन फर्स्ट आउट (FIFO) सिद्धांत का पालन करता है, जहां तत्वों को पीछे (rear) से जोड़ा जाता है और सामने (front) से निकाला जाता है।",
-                    "क्यू को एरे या लिंक्ड लिस्ट का उपयोग करके कार्यान्वित किया जा सकता है, और वे डेटा को उसी क्रम में संसाधित करने का एक सरल तरीका प्रदान करते हैं जिस क्रम में वह प्राप्त हुआ था।"
+                    "Queue is a fundamental data structure used in various applications such as task scheduling, breadth-first search algorithms, and managing resources in operating systems.",
+                    "It follows the First In First Out (FIFO) principle, where elements are added at the rear and removed from the front.",
+                    "Queues can be implemented using arrays or linked lists, and they provide a simple way to manage data that needs to be processed in the order it was received."
                 ]
             },
             hashMaps: {
-                title: "हैशमैप क्या है?",
-                description: "हैशमैप एक डेटा संरचना है जो डेटा को की-वैल्यू पेयर में स्टोर करती है।",
-                realLife: "वास्तविक जीवन का उदाहरण",
-                realLifeDesc: "संपर्क सूची के बारे में सोचें — आप फ़ोन नंबर खोजने के लिए नाम का उपयोग करके खोजते हैं।",
-                howWorks: "यह कैसे काम करता है?",
-                howWorksDesc: "एक हैशमैप एक हैश फंक्शन का उपयोग करके एक की (key) को एक इंडेक्स में बदलता है जहाँ वैल्यू स्टोर होती है।",
+                title: "HashMap",
+                description: "A HashMap is a data structure that stores data in key-value pairs.",
+                realLife: "Real Life Example",
+                realLifeDesc: "Think of a contact list — you search using a name to find a phone number.",
+                howWorks: "How it works?",
+                howWorksDesc: "A HashMap uses a hash function to convert a key into an index where the value is stored.",
             },
             hashmaps: {
-                title: "हैशमैप क्या है?",
-                description: "हैशमैप एक डेटा संरचना है जो डेटा को की-वैल्यू पेयर में स्टोर करती है।",
-                realLife: "वास्तविक जीवन का उदाहरण",
-                realLifeDesc: "संपर्क सूची के बारे में सोचें — आप फ़ोन नंबर खोजने के लिए नाम का उपयोग करके खोजते हैं।",
-                howWorks: "यह कैसे काम करता है?",
-                howWorksDesc: "एक हैशमैप एक हैश फंक्शन का उपयोग करके एक की (key) को एक इंडेक्स में बदलता है जहाँ वैल्यू स्टोर होती है।",
+                title: "HashMap",
+                description: "A HashMap is a data structure that stores data in key-value pairs.",
+                realLife: "Real Life Example",
+                realLifeDesc: "Think of a contact list — you search using a name to find a phone number.",
+                howWorks: "How it works?",
+                howWorksDesc: "A HashMap uses a hash function to convert a key into an index where the value is stored.",
             },
             trees: {
-                title: "ट्री क्या है?",
-                description: "ट्री एक पदानुक्रमित डेटा संरचना है जिसमें किनारों द्वारा जुड़े नोड्स होते हैं।",
-                whyTitle: "हम ट्री का उपयोग क्यों करते हैं?",
-                whyDesc: "ट्री डेटा को व्यवस्थित करने और खोजने का एक कुशल तरीका प्रदान करते हैं, जिससे तेज़ पहुंच और पुनर्प्राप्ति की अनुमति मिलती है।",
-                keyOps: "ट्री पर मुख्य ऑपरेशन",
+                title: "Tree",
+                description: "A tree is a hierarchical data structure that consists of nodes connected by edges.",
+                whyTitle: "Why do we use Trees?",
+                whyDesc: "Trees provide an efficient way to organize and search data, allowing for fast access and retrieval.",
+                keyOps: "Key operations on Trees",
                 keyOpsItems: [
-                    "इंसर्शन: ट्री में एक नया नोड जोड़ना।",
-                    "डिलीशन: ट्री से एक नोड को हटाना।",
-                    "ट्रैवर्सल: नोड्स को एक विशिष्ट क्रम में देखना।",
-                    "सर्चिंग: ट्री में एक विशिष्ट मान खोजना।"
+                    "Insertion: Adding a new node to the tree.",
+                    "Deletion: Removing a node from the tree.",
+                    "Traversal: Visiting all nodes in a specific order.",
+                    "Searching: Finding a specific value in the tree."
                 ]
             },
             graphs: {
-                title: "ग्राफ क्या है?",
-                description: "एक ग्राफ नोड्स (जिन्हें वर्टिसेस भी कहा जाता है) का एक संग्रह है जो किनारों (edges) द्वारा जुड़े होते हैं।",
-                whyTitle: "हम ग्राफ का उपयोग क्यों करते हैं?",
-                whyDesc: "ग्राफ का उपयोग वस्तुओं के बीच युग्मवार संबंधों को मॉडल करने के लिए किया जाता है, जैसे सोशल नेटवर्क या पारगमन प्रणाली।",
-                typesTitle: "ग्राफ के प्रकार",
+                title: "Graph",
+                description: "A graph is a collection of nodes (also called vertices) connected by edges.",
+                whyTitle: "Why do we use Graphs?",
+                whyDesc: "Graphs are used to model pairwise relationships between objects, such as social networks or transit systems.",
+                typesTitle: "Types of Graphs",
                 types: [
-                    "अनडिरेक्टेड ग्राफ: किनारों की कोई दिशा नहीं होती है। संबंध द्विदिशीय होता है।",
-                    "डिरेक्टेड ग्राफ: किनारों की एक दिशा होती है। संबंध एकदिशीय होता है।"
+                    "Undirected Graph: Edges do not have a direction. The relationship is bidirectional.",
+                    "Directed Graph: Edges have a direction. The relationship is unidirectional."
                 ],
-                repsTitle: "ग्राफ प्रतिनिधित्व",
-                repsDesc: "सामान्य प्रतिनिधित्व में आसन्न मैट्रिक्स (2D एरे) और आसन्न सूची (सूचियों का एरे) शामिल हैं।",
+                repsTitle: "Graph Representations",
+                repsDesc: "Common representations include adjacency matrix (2D array) and adjacency list (array of lists).",
             },
             "graph-algorithms": {
-                title: "ग्राफ क्या है?",
-                description: "एक ग्राफ नोड्स (जिन्हें वर्टिसेस भी कहा जाता है) का एक संग्रह है जो किनारों (edges) द्वारा जुड़े होते हैं।",
-                whyTitle: "हम ग्राफ का उपयोग क्यों करते हैं?",
-                whyDesc: "ग्राफ का उपयोग वस्तुओं के बीच युग्मवार संबंधों को मॉडल करने के लिए किया जाता है, जैसे सोशल नेटवर्क या पारगमन प्रणाली।",
-                typesTitle: "ग्राफ के प्रकार",
+                title: "Graph",
+                description: "A graph is a collection of nodes (also called vertices) connected by edges.",
+                whyTitle: "Why do we use Graphs?",
+                whyDesc: "Graphs are used to model pairwise relationships between objects, such as social networks or transit systems.",
+                typesTitle: "Types of Graphs",
                 types: [
-                    "अनडिरेक्टेड ग्राफ: किनारों की कोई दिशा नहीं होती है। संबंध द्विदिशीय होता है।",
-                    "डिरेक्टेड ग्राफ: किनारों की एक दिशा होती है। संबंध एकदिशीय होता है।"
+                    "Undirected Graph: Edges do not have a direction. The relationship is bidirectional.",
+                    "Directed Graph: Edges have a direction. The relationship is unidirectional."
                 ],
-                repsTitle: "ग्राफ प्रतिनिधित्व",
-                repsDesc: "सामान्य प्रतिनिधित्व में आसन्न मैट्रिक्स (2D एरे) और आसन्न सूची (सूचियों का एरे) शामिल हैं।",
+                repsTitle: "Graph Representations",
+                repsDesc: "Common representations include adjacency matrix (2D array) and adjacency list (array of lists).",
             },
             heaps: {
-                title: "हीप क्या है?",
-                description: "हीप एक विशेष ट्री-आधारित डेटा संरचना है जो हीप गुण को संतुष्ट करती है।",
-                whyTitle: "हम हीप का उपयोग क्यों करते हैं?",
-                whyDesc: "हीप का उपयोग संग्रह में अधिकतम या न्यूनतम तत्व को कुशलतापूर्वक एक्सेस करने के लिए किया जाता है, जो आमतौर पर प्राथमिकता कतारों (priority queues) में उपयोग किया जाता है।",
-                typesTitle: "हीप के प्रकार",
-                typesDesc: "मैक्स हीप: पैरेंट नोड हमेशा ≥ चाइल्ड नोड्स होता है। मिन हीप: पैरेंट नोड हमेशा ≤ चाइल्ड नोड्स होता है।",
-                opsTitle: "हीप ऑपरेशंस",
-                opsDesc: "मुख्य ऑपरेशंस में इंसर्शन, डिलीशन और मैक्स/मिन निकालना शामिल है, जिसमें O(log n) समय जटिलता होती है।",
+                title: "Heap",
+                description: "A heap is a specialized tree-based data structure that satisfies the heap property.",
+                whyTitle: "Why do we use Heaps?",
+                whyDesc: "Heaps are used to efficiently access the maximum or minimum element in a collection, commonly used in priority queues.",
+                typesTitle: "Types of Heaps",
+                typesDesc: "Max Heap: Parent node is always ≥ child nodes. Min Heap: Parent node is always ≤ child nodes.",
+                opsTitle: "Heap Operations",
+                opsDesc: "Main operations include insertion, deletion, and extraction of max/min, with O(log n) time complexity.",
             },
             sorting: {
-                title: "सॉर्टिंग एल्गोरिदम",
-                description: "सॉर्टिंग तत्वों को एक विशिष्ट क्रम (आरोही या अवरोही) में व्यवस्थित करने की प्रक्रिया है।",
-                bubbleTitle: "बबल सॉर्ट",
-                bubbleDesc: "बबल सॉर्ट बार-बार सूची के माध्यम से कदम उठाता है, आसन्न तत्वों की तुलना करता है और यदि वे गलत क्रम में हैं तो उन्हें स्वैप करता है।",
-                selectionTitle: "सिलेक्शन सॉर्ट",
-                selectionDesc: "सिलेक्शन सॉर्ट इनपुट सूची को दो भागों में विभाजित करता है: एक सॉर्ट की गई सबलिस्ट और एक अनसॉर्टेड सबलिस्ट, फिर बार-बार अनसॉर्टेड सबलिस्ट में सबसे छोटा तत्व ढूंढता है और उसे सॉर्ट की गई सबलिस्ट में ले जाता है।",
-                insertionTitle: "इंसर्शन सॉर्ट",
-                insertionDesc: "इंसर्शन सॉर्ट बार-बार अगला तत्व चुनकर और उसे उसकी सही स्थिति में सम्मिलित करके एक बार में एक आइटम के साथ अंतिम सॉर्ट किए गए एरे का निर्माण करता है।",
-                mergeTitle: "मर्ज सॉर्ट",
-                mergeDesc: "मर्ज सॉर्ट एक डिवाइड और कॉनकर एल्गोरिदम है जो इनपुट एरे को दो हिस्सों में विभाजित करता है, उन्हें सॉर्ट करता है, और फिर उन्हें मर्ज करता है।",
-                quickTitle: "क्विक सॉर्ट",
-                quickDesc: "क्विक सॉर्ट एक डिवाइड और कॉनकर एल्गोरिदम है जो एक पिवट तत्व चुनता है और एरे को उसके चारों ओर विभाजित करता है।",
-                heapTitle: "हीप सॉर्ट",
-                heapDesc: "हीप सॉर्ट बाइनरी हीप डेटा संरचना पर आधारित एक तुलना-आधारित सॉर्टिंग तकनीक है।",
+                title: "Sorting Algorithms",
+                description: "Sorting is the process of arranging elements in a specific order (ascending or descending).",
+                bubbleTitle: "Bubble Sort",
+                bubbleDesc: "Bubble sort repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.",
+                selectionTitle: "Selection Sort",
+                selectionDesc: "Selection sort divides the input list into two parts: a sorted sublist and an unsorted sublist, then repeatedly finds the smallest element in the unsorted sublist and moves it to the sorted sublist.",
+                insertionTitle: "Insertion Sort",
+                insertionDesc: "Insertion sort builds the final sorted array one item at a time by repeatedly picking the next element and inserting it into its correct position.",
+                mergeTitle: "Merge Sort",
+                mergeDesc: "Merge sort is a divide and conquer algorithm that divides the input array into two halves, sorts them, and then merges them.",
+                quickTitle: "Quick Sort",
+                quickDesc: "Quick sort is a divide and conquer algorithm that picks a pivot element and partitions the array around it.",
+                heapTitle: "Heap Sort",
+                heapDesc: "Heap sort is a comparison-based sorting technique based on the Binary Heap data structure.",
             },
-            greedy: {
-                title: "ग्रीडी एल्गोरिदम",
-                description: "ग्रीडी एल्गोरिदम समाधान को टुकड़े-टुकड़े करके बनाते हैं, हमेशा अगले टुकड़े को चुनते हैं जो सबसे तत्काल लाभ प्रदान करता है।",
+            'greedy-algorithm': {
+                title: "Greedy Algorithms",
+                description: "Greedy algorithms build up a solution piece by piece, always choosing the next piece that offers the most immediate benefit.",
             },
-            dp: {
-                title: "डायनेमिक प्रोग्रामिंग क्या है?",
-                description: "डायनेमिक प्रोग्रामिंग जटिल समस्याओं को सरल उप-समस्याओं में तोड़कर हल करने की एक विधि है। यह इष्टतम सबस्ट्रक्चर और ओवरलैपिंग उप-समस्याओं वाली समस्याओं पर लागू होती है।",
-                charTitle: "मुख्य विशेषताएं",
+            'dynamic-programming': {
+                title: "What is Dynamic Programming?",
+                description: "Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable to problems exhibiting optimal substructure and overlapping subproblems.",
+                charTitle: "Key Characteristics",
                 charDesc: [
-                    "इष्टतम सबस्ट्रक्चर: एक इष्टतम समाधान में उसकी उप-समस्याओं के इष्टतम समाधान होते हैं।",
-                    "ओवरलैपिंग उप-समस्याएं: समस्या को उन उप-समस्याओं में तोड़ा जा सकता है जिन्हें कई बार हल किया जाता है।"
+                    "Optimal Substructure: An optimal solution contains optimal solutions to its subproblems.",
+                    "Overlapping Subproblems: The problem can be broken down into subproblems that are solved multiple times."
                 ],
-                whyTitle: "हम DP का उपयोग क्यों करते हैं?",
-                whyDesc: "DP का उपयोग अनावश्यक गणनाओं से बचने के लिए उप-समस्याओं के परिणामों को संग्रहीत करके अनुकूलन समस्याओं को हल करने के लिए किया जाता है।",
-                typesTitle: "DP के प्रकार",
+                whyTitle: "Why do we use DP?",
+                whyDesc: "DP is used to solve optimization problems by storing the results of subproblems to avoid redundant calculations.",
+                typesTitle: "Types of DP",
                 typesDesc: [
-                    "मेमोइज़ेशन के साथ टॉप-डाउन (रिकर्सन + कैशिंग)",
-                    "टेबुलेशन के साथ बॉटम-अप (इटरेटिव)"
+                    "Top-down with memoization (Recursion + Caching)",
+                    "Bottom-up with tabulation (Iterative)"
                 ]
             },
-            recursion: {
-                title: "रिकर्सन क्या है?",
-                description: "रिकर्सन एक प्रोग्रामिंग तकनीक है जहाँ एक फंक्शन किसी समस्या को हल करने के लिए खुद को कॉल करता है।",
-                whyTitle: "हम रिकर्सन का उपयोग क्यों करते हैं?",
-                whyDesc: "रिकर्सन उन समस्याओं के लिए उपयोगी है जिनमें स्वाभाविक रूप से रिकर्सिव संरचना होती है, जैसे ट्री ट्रैवर्सल, ग्राफ एल्गोरिदम और फैक्टोरियल जैसी गणितीय गणनाएं।",
-                howWorks: "रिकर्सन कैसे काम करता है?",
-                howWorksDesc: "रिकर्सन एक समस्या को एक ही प्रकार की छोटी उप-समस्याओं में तोड़कर तब तक काम करता है जब तक कि वह बेस केस तक न पहुँच जाए।",
-            },
             graphAlgo: {
-                title: "ग्राफ एल्गोरिदम क्या हैं?",
-                description: "ग्राफ एल्गोरिदम ग्राफ संरचनाओं से संबंधित समस्याओं को हल करने के लिए उपयोग किए जाने वाले एल्गोरिदम का एक सेट है, जैसे कि पथ, चक्र या जुड़े घटकों को ढूंढना।",
-                whyTitle: "हम ग्राफ एल्गोरिदम का उपयोग क्यों करते हैं?",
-                whyDesc: "ये नेटवर्क रूटिंग, सोशल नेटवर्क विश्लेषण, जीपीएस नेविगेशन और कई अन्य वास्तविक दुनिया के अनुप्रयोगों के लिए आवश्यक हैं।",
+                title: "What are Graph Algorithms?",
+                description: "Graph algorithms are a set of algorithms used to solve problems related to graph structures, such as finding paths, cycles, or connected components.",
+                whyTitle: "Why do we use Graph Algorithms?",
+                whyDesc: "They are essential for network routing, social network analysis, GPS navigation, and many other real-world applications.",
+            },
+            recursion: {
+                title: "What is Recursion?",
+                description: "Recursion is a programming technique where a function calls itself to solve a problem.",
+                whyTitle: "Why do we use Recursion?",
+                whyDesc: "Recursion is useful for problems that have a naturally recursive structure, such as tree traversals, graph algorithms, and mathematical computations like factorials.",
+                howWorks: "How does Recursion work?",
+                howWorksDesc: "Recursion works by breaking down a problem into smaller subproblems of the same type until it reaches a base case.",
             }
         },
         languageScreen: {
-            heading: "भाषा चुनें",
-            subheading: "ऐप इंटरफ़ेस के लिए अपनी पसंदीदा भाषा चुनें।",
-            save: "भाषा सहेजें",
-            toast: "भाषा सेट की गई",
+            heading: "Choose Language",
+            subheading: "Select your preferred language for the app interface.",
+            save: "Save Language",
+            toast: "Language set to",
         },
         auth: {
-            loginTitle: "लॉगिन",
-            signupTitle: "साइनअप",
-            emailPlaceholder: "ईमेल",
-            usernamePlaceholder: "यूज़रनेम",
-            passwordPlaceholder: "पासवर्ड",
-            loginBtn: "लॉगिन",
-            signupBtn: "साइनअप",
-            dontHaveAccount: "खाता नहीं है? साइनअप करें",
-            alreadyHaveAccount: "पहले से खाता है? लॉगिन करें",
-            loginSuccess: "सफलतापूर्वक लॉगिन किया गया 🚀",
-            signupSuccess: "खाता बनाया गया! पुष्टि करने के लिए अपना ईमेल जांचें। 📧",
-            enterEmailPass: "कृपया ईमेल और पासवर्ड दर्ज करें",
-            verifyEmail: "कृपया पहले अपना ईमेल सत्यापित करें। इनबॉक्स/स्पैम जांचें।",
-            loginFailed: "लॉगिन विफल रहा। कृपया पुनः प्रयास करें।",
-            somethingWrong: "कुछ गलत हो गया",
+            loginTitle: "Login",
+            signupTitle: "Sign Up",
+            emailPlaceholder: "Email",
+            usernamePlaceholder: "Username",
+            passwordPlaceholder: "Password",
+            loginBtn: "Login",
+            signupBtn: "Sign Up",
+            dontHaveAccount: "Don't have an account? Sign Up",
+            alreadyHaveAccount: "Already have an account? Login",
+            loginSuccess: "Logged in successfully 🚀",
+            signupSuccess: "Account created! Check your email to verify. 📧",
+            enterEmailPass: "Please enter email and password",
+            verifyEmail: "Please verify your email first. Check inbox/spam.",
+            loginFailed: "Login failed. Please try again.",
+            somethingWrong: "Something went wrong",
         },
     },
     es: {
@@ -774,16 +754,16 @@ export const translations: Record<Language, any> = {
                 keyOps: "Operaciones clave en árboles",
                 keyOpsItems: [
                     "Inserción: Agregar un nuevo nodo al árbol.",
-                    "Eliminación: Eliminar un nodo del árbol.",
-                    "Recorrido: Visitar todos los nodos en un orden específico.",
+                    "Supresión: Eliminar un nodo del árbol.",
+                    "Parcours: Visitar todos los nodos en un orden específico.",
                     "Búsqueda: Encontrar un valor específico en el árbol."
                 ]
             },
             graphs: {
                 title: "¿Qué es un Grafo?",
-                description: "Un grafo es una colección de nodos (también llamados vértices) conectados por bordes.",
+                description: "Un grafo es una estructura de datos no lineal compuesta de nodos y aristas.",
                 whyTitle: "¿Por qué usamos Grafos?",
-                whyDesc: "Los grafos se utilizan para modelar relaciones por pares entre objetos, como redes sociales o sistemas de tránsito.",
+                whyDesc: "Los grafos se utilizan para representar relaciones entre objetos, como redes sociales o sistemas de transporte.",
                 typesTitle: "Tipos de Grafos",
                 types: [
                     "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
@@ -794,9 +774,9 @@ export const translations: Record<Language, any> = {
             },
             "graph-algorithms": {
                 title: "¿Qué es un Grafo?",
-                description: "Un grafo es una colección de nodos (también llamados vértices) conectados por bordes.",
+                description: "Un grafo es una estructura de datos no lineal compuesta de nodos y aristas.",
                 whyTitle: "¿Por qué usamos Grafos?",
-                whyDesc: "Los grafos se utilizan para modelar relaciones por pares entre objetos, como redes sociales o sistemas de tránsito.",
+                whyDesc: "Los grafos se utilizan para representar relaciones entre objetos, como redes sociales o sistemas de transporte.",
                 typesTitle: "Tipos de Grafos",
                 types: [
                     "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
@@ -806,33 +786,33 @@ export const translations: Record<Language, any> = {
                 repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
             },
             heaps: {
-                title: "¿Qué es un Montículo?",
-                description: "Un montículo es una estructura de datos especializada basada en árboles que satisface la propiedad de montículo.",
-                whyTitle: "¿Por qué usamos Montículos?",
-                whyDesc: "Los montículos se utilizan para acceder de manera eficiente al elemento máximo o mínimo en una colección, comúnmente utilizados en colas de prioridad.",
-                typesTitle: "Tipos de Montículos",
-                typesDesc: "Montículo Máximo: El nodo padre es siempre ≥ nodos hijos. Montículo Mínimo: El nodo padre es siempre ≤ nodos hijos.",
-                opsTitle: "Operaciones de Montículo",
+                title: "¿Qué es un Tas?",
+                description: "Un tas es una estructura de datos especializada basada en árboles que satisface la propiedad de tas.",
+                whyTitle: "¿Por qué usamos Tas?",
+                whyDesc: "Los tas se utilizan para acceder de manera eficiente al elemento máximo o mínimo en una colección, comúnmente utilizados en colas de prioridad.",
+                typesTitle: "Tipos de Tas",
+                typesDesc: "Max Tas: El nodo padre es siempre ≥ nodos hijos. Min Tas: El nodo padre es siempre ≤ nodos hijos.",
+                opsTitle: "Operaciones de Tas",
                 opsDesc: "Las operaciones principales incluyen la inserción, eliminación y extracción de máximo/mínimo, con una complejidad de tiempo O(log n).",
             },
             sorting: {
-                title: "Algoritmos de Ordenación",
-                description: "La ordenación es el proceso de organizar elementos en un orden específico (ascendente o descendente).",
+                title: "Algoritmos de Tri",
+                description: "El tri es el proceso de organizar elementos en un orden específico (ascendente o descendente).",
             },
             greedy: {
                 title: "Algoritmos Voraces",
                 description: "Los algoritmos voraces construyen una solución pieza por pieza, eligiendo siempre la pieza que ofrece el beneficio más inmediato.",
             },
             dp: {
-                title: "Programación Dinámica",
-                description: "La programación dinámica es un método para resolver problemas complejos dividiéndolos en subproblemas más simples.",
+                title: "Programmation dynamique",
+                description: "La programmation dynamique est une méthode pour résoudre des problèmes complexes en les divisant en sous-problèmes plus simples.",
             },
             recursion: {
-                title: "Recursión",
-                description: "La recursión es un proceso en el que una función se llama a sí misma como una subrutina.",
+                title: "Récursivité",
+                description: "La récursivité est un processus dans lequel une fonction s'appelle elle-même comme un sous-programme.",
             }
         },
-        languageScreen: { heading: "Elegir idioma", subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.", save: "Guardar idioma", toast: "Idioma configurado en" },
+        languageScreen: { heading: "Elegir idioma", subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.", save: "Enregistrer la langue", toast: "Langue définie sur" },
     },
     fr: {
         common: {
@@ -980,12 +960,26 @@ export const translations: Record<Language, any> = {
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
                 whyDesc: "Les graphes sont utilisés pour représenter des réseaux, tels que des réseaux sociaux ou des systèmes de transport.",
+                typesTitle: "Types de Graphs",
+                types: [
+                    "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
+                    "Grafo dirigido: Los bordes tienen una dirección. La relación es unidireccional."
+                ],
+                repsTitle: "Representaciones de Grafos",
+                repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
             },
             "graph-algorithms": {
                 title: "Qu'est-ce qu'un graphe ?",
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
                 whyDesc: "Les graphes sont utilisés pour représenter des réseaux, tels que des réseaux sociaux ou des systèmes de transport.",
+                typesTitle: "Types de Graphs",
+                types: [
+                    "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
+                    "Grafo dirigido: Los bordes tienen una dirección. La relación es unidireccional."
+                ],
+                repsTitle: "Representaciones de Grafos",
+                repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
             },
             heaps: {
                 title: "Qu'est-ce qu'un tas ?",
@@ -1094,7 +1088,7 @@ export const translations: Record<Language, any> = {
             },
             searching: {
                 title: "Suchalgorithmen",
-                desc: "Suchen ist der Prozess des Findens eines bestimmten Elements in einer Sammlung.",
+                desc: "Die Suche ist der Prozess des Findens eines bestimmten Elements in einer Sammlung.",
                 linearTitle: "Lineare Suche",
                 linearDesc: "Die lineare Suche ist ein einfacher Suchalgorithmus, der jedes Element nacheinander prüft.",
                 binaryTitle: "Binäre Suche",
@@ -1149,7 +1143,7 @@ export const translations: Record<Language, any> = {
                 keyOpsItems: [
                     "Einfügen: Einen neuen Knoten zum Baum hinzufügen.",
                     "Löschen: Einen Knoten aus dem Baum entfernen.",
-                    "Traversierung: Alle Knoten in einer bestimmten Reihenfolge besuchen.",
+                    "Parcours: Visiter alle Knoten in einer bestimmten Reihenfolge.",
                     "Suchen: Einen bestimmten Wert im Baum finden."
                 ]
             },
@@ -1191,7 +1185,7 @@ export const translations: Record<Language, any> = {
             },
             sorting: {
                 title: "Sortieralgorithmen",
-                description: "Sortieren ist der Prozess des Anordnens von Elementen in einer bestimmten Reihenfolge (aufsteigend oder absteigend).",
+                description: "Das Sortieren ist der Prozess des Anordnens von Elementen in einer bestimmten Reihenfolge (aufsteigend oder absteigend).",
             },
             greedy: {
                 title: "Greedy-Algorithmen",
@@ -1486,7 +1480,7 @@ export const translations: Record<Language, any> = {
             },
             searching: {
                 title: "検索アルゴリズム",
-                desc: "検索とは、要素の集合の中から特定の要素を見つけるプロセスです。",
+                desc: "検索は、要素の集合の中から特定の要素を見つけるプロセスです。",
                 linearTitle: "線形探索",
                 linearDesc: "線形探索は、ターゲット要素が見つかるまでリスト内の各要素を順番にチェックする単純な検索アルゴリズムです。",
                 binaryTitle: "二分探索",
@@ -1556,7 +1550,20 @@ export const translations: Record<Language, any> = {
                     "有向グラフ：エッジに方向があります。関係は一方向です。"
                 ],
                 repsTitle: "グラフの表現",
-                repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接リスト（リストの配列）があります。",
+                repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接表（リストの配列）があります。",
+            },
+            "graph-algorithms": {
+                title: "グラフとは何ですか？",
+                description: "グラフは、エッジで接続されたノード（頂点とも呼ばれる）の集合です。",
+                whyTitle: "なぜグラフを使用するのですか？",
+                whyDesc: "グラフは、ソーシャルネットワークや交通システムなど、オブジェクト間のペアごとの関係をモデル化するために使用されます。",
+                typesTitle: "グラフの種類",
+                types: [
+                    "無向グラフ：エッジに方向がありません。関係は双方向です。",
+                    "有向グラフ：エッジに方向があります。関係は一方向です。"
+                ],
+                repsTitle: "グラフの表現",
+                repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接表（リストの配列）があります。",
             },
             heaps: {
                 title: "ヒープとは何ですか？",
@@ -1564,13 +1571,13 @@ export const translations: Record<Language, any> = {
                 whyTitle: "なぜヒープを使用するのですか？",
                 whyDesc: "ヒープは、集合内の最大要素または最小要素に効率的にアクセスするために使用され、通常は優先度付きキューで使用されます。",
                 typesTitle: "ヒープの種類",
-                typesDesc: "最大ヒープ：親ノードは常に子ノード以上。最小ヒープ：親ノードは常に子ノード以下。",
+                typesDesc: "最大ヒープ：親ノードは常に ≥ 子ノード。最小ヒープ：親ノードは常に ≤ 子ノード。",
                 opsTitle: "ヒープ操作",
                 opsDesc: "主な操作には挿入、削除、最大/最小の抽出が含まれ、時間計算量はO(log n)です。",
             },
             sorting: {
                 title: "ソートアルゴリズム",
-                description: "ソートとは、要素を特定の順序（昇順または降順）で並べるプロセスです。",
+                description: "ソートは、要素を特定の順序（昇順または降順）で並べるプロセスです。",
             },
             greedy: {
                 title: "貪欲法",
@@ -1679,13 +1686,13 @@ export const translations: Record<Language, any> = {
                 whatIs: "ما هي القائمة المرتبطة؟",
                 whatIsDesc: "القائمة المرتبطة هي هيكل بيانات خطي حيث يحتوي كل عنصر (عقدة) على قيمة ومرجع للعقدة التالية.",
                 whyUse: "لماذا نستخدم القوائم المرتبطة؟",
-                whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الديناميكي وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
+                whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الدينامية وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
             },
             linkedlist: {
                 whatIs: "ما هي القائمة المرتبطة؟",
                 whatIsDesc: "القائمة المرتبطة هي هيكل بيانات خطي حيث يحتوي كل عنصر (عقدة) على قيمة ومرجع للعقدة التالية.",
                 whyUse: "لماذا نستخدم القوائم المرتبطة؟",
-                whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الديناميكي وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
+                whyUseDesc: "تُستخدم القوائم المرتبطة لتخصيص الذاكرة الدينامية وعمليات الإدراج/الحذف الفعالة دون إزاحة العناصر.",
             },
             stacks: {
                 title: "ما هو المكدس؟",
@@ -1814,26 +1821,52 @@ const flattenedTranslations: Record<Language, Record<string, string | string[]>>
     ar: flattenTranslations(translations.ar),
 };
 
+const stringLookupCache = new Map<string, string>();
+const arrayLookupCache = new Map<string, string[]>();
+const MAX_TRANSLATION_CACHE_SIZE = 1000;
+
+const getNormalizedLanguage = (lang: Language): Language =>
+  flattenedTranslations[lang] ? lang : 'en';
+
+const getCachedValue = <T,>(
+  cache: Map<string, T>,
+  key: string,
+  factory: () => T,
+): T => {
+  const cachedValue = cache.get(key);
+  if (cachedValue !== undefined) return cachedValue;
+
+  const nextValue = factory();
+  if (cache.size >= MAX_TRANSLATION_CACHE_SIZE) cache.clear();
+  cache.set(key, nextValue);
+
+  return nextValue;
+};
+
 export const t = (lang: Language, path: string): string => {
-    const langMap = flattenedTranslations[lang] || flattenedTranslations.en;
+  const normalizedLang = getNormalizedLanguage(lang);
+
+  return getCachedValue(stringLookupCache, `${normalizedLang}:${path}`, () => {
+    const langMap = flattenedTranslations[normalizedLang];
     const value = langMap[path];
 
-    if (typeof value === 'string') {
-        return value;
-    }
+    if (typeof value === 'string') return value;
 
     const fallbackValue = flattenedTranslations.en[path];
     return typeof fallbackValue === 'string' ? fallbackValue : path;
+  });
 };
 
 export const tArray = (lang: Language, path: string): string[] => {
-    const langMap = flattenedTranslations[lang] || flattenedTranslations.en;
+  const normalizedLang = getNormalizedLanguage(lang);
+
+  return getCachedValue(arrayLookupCache, `${normalizedLang}:${path}`, () => {
+    const langMap = flattenedTranslations[normalizedLang];
     const value = langMap[path];
 
-    if (Array.isArray(value)) {
-        return value;
-    }
+    if (Array.isArray(value)) return value;
 
     const fallbackValue = flattenedTranslations.en[path];
     return Array.isArray(fallbackValue) ? fallbackValue : [];
+  });
 };
