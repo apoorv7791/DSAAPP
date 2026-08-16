@@ -7,6 +7,7 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemeContext } from "@/theme/ThemeContext";
@@ -49,6 +50,9 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [deletingAccount, setDeletingAccount] = useState(false);
   const [streak, setStreak] = useState(0);
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [tempUsername, setTempUsername] = useState("");
+  const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const BACKEND_URL = getBackendUrl();
 
@@ -158,6 +162,41 @@ const Profile = () => {
     }
   };
 
+  const handleUpdateUsername = async () => {
+    const trimmedUsername = tempUsername.trim();
+    if (!trimmedUsername) {
+      showToast("Username cannot be empty");
+      return;
+    }
+
+    if (!user?.id) {
+      showToast("Failed to update username");
+      return;
+    }
+
+    setUpdatingProfile(true);
+    try {
+      const { error } = await supabase
+        .from("profiles")
+        .update({ username: trimmedUsername })
+        .eq("id", user.id);
+
+      if (error) throw error;
+
+      setProfile((currentProfile) => ({
+        id: user.id,
+        username: trimmedUsername,
+        ...(currentProfile ?? {}),
+      }));
+      setEditingUsername(false);
+      showToast("Username updated");
+    } catch (error) {
+      showToast("Failed to update username");
+    } finally {
+      setUpdatingProfile(false);
+    }
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Avatar */}
@@ -231,6 +270,27 @@ const Profile = () => {
         <Ionicons name="log-out-outline" size={20} color={theme.error} />
         <Text style={styles.logoutText}>Log Out</Text>
       </Pressable>
+
+      {editingUsername ? (
+        <View style={styles.editSection}>
+          <TextInput
+            value={tempUsername}
+            onChangeText={setTempUsername}
+            placeholder="New username"
+            style={styles.input}
+          />
+          <Pressable onPress={handleUpdateUsername} disabled={updatingProfile}>
+            <Text>{updatingProfile ? "Saving..." : "Save"}</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Pressable onPress={() => {
+          setTempUsername(profile?.username || "");
+          setEditingUsername(true);
+        }}>
+          <Text>{profile?.username || "No username"}</Text>
+        </Pressable>
+      )}
     </ScrollView>
   );
 };
@@ -350,6 +410,21 @@ const getStyles = (theme: any) =>
       fontSize: 15,
       fontWeight: "600",
       color: theme.error,
+    },
+    editSection: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      padding: 14,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: theme.border,
+      marginBottom: 12,
+    },
+    input: {
+      fontSize: 15,
+      color: theme.text,
+      fontWeight: "500",
     },
   });
 

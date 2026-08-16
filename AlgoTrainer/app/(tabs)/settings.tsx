@@ -18,6 +18,9 @@ import { useAuth } from "@/auth/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useTranslation } from "@/app/context/LanguageContext";
 import { areNotificationsEnabled, requestNotificationPermissions, enableNotifications as enableNotificationsFn, disableNotifications } from "@/lib/notifications";
+import { getDifficulty, setDifficulty, getGoal, setGoal } from "@/lib/backendApi";
+import { showToast } from "@/lib/toast";
+
 interface Topic {
   name: string;
   route?: string;
@@ -40,23 +43,54 @@ const Settings = () => {
   const router = useRouter();
   const { theme, useSystemTheme, toggleTheme, setUseSystemTheme } = useContext(ThemeContext);
   const typography = createTypography(theme);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout }: { isLoggedIn: boolean; logout: () => void } = useAuth() as {
+    isLoggedIn: boolean;
+    logout: () => void;
+  };
   const { t } = useTranslation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [difficulty, setDifficulty] = useState<string | null>(null);
+  const [dailyGoal, setDailyGoal] = useState<number | null>(null);
+  const [loadingSettings, setLoadingSettings] = useState(true);
+
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const loadSettings = async () => {
+        setLoadingSettings(true);
+        try {
+          const [diffRes, goalRes] = await Promise.all([
+            getDifficulty(),
+            getGoal(),
+          ]);
+          setDifficulty(diffRes.difficulty);
+          setDailyGoal(goalRes.daily_minutes);
+        } catch (error) {
+          console.error("Failed to load settings", error);
+        } finally {
+          setLoadingSettings(false);
+        }
+      };
+
+      loadSettings();
+    }
+  }, [isLoggedIn]);
+
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const checkNotificationStatus = async () => {
+        const enabled = await areNotificationsEnabled();
+        setNotificationsEnabled(enabled);
+      };
+      checkNotificationStatus();
+    }
+  }, []);
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     logout();
   }, [logout]);
-
-  // Check notification status on component mount
-  useEffect(() => {
-    const checkNotificationStatus = async () => {
-      const enabled = await areNotificationsEnabled();
-      setNotificationsEnabled(enabled);
-    };
-    checkNotificationStatus();
-  }, []);
 
   const handleToggleNotification = useCallback(async (value: boolean) => {
     if (value) {
@@ -86,6 +120,26 @@ const Settings = () => {
     },
     [handleLogout, router, t],
   );
+
+  const handleSetDifficulty = async (level: string) => {
+    try {
+      await setDifficulty(level as any);
+      setDifficulty(level);
+      showToast(`Difficulty set to ${level}`);
+    } catch (error) {
+      showToast("Failed to update difficulty");
+    }
+  };
+
+  const handleSetGoal = async (minutes: number) => {
+    try {
+      await setGoal(minutes);
+      setDailyGoal(minutes);
+      showToast(`Daily goal set to ${minutes} minutes`);
+    } catch (error) {
+      showToast("Failed to update goal");
+    }
+  };
 
   // 🔥 memoized settings data (performance + clarity)
   const settingsData: Section[] = useMemo(
