@@ -5,10 +5,9 @@ import {
     updateProfile,
     getGoal,
     setGoal,
-    getStreak,
 } from '../controller/userController.js';
 import { getDifficulty, setDifficulty } from '../controller/difficultyController.js';
-import { updateStreak } from '../controller/streakController.js';
+import { getStreak, updateStreak } from '../controller/streakController.js';
 
 const router = express.Router();
 

@@ -80,23 +80,3 @@ export async function setGoal(req, res) {
     res.json({ success: true });
 }
 
-// GET /api/user/streak
-export async function getStreak(req, res) {
-    const userId = req.user.id;
-
-    const { data, error } = await supabase
-        .from('user_streaks')
-        .select('current_streak, last_active_date')
-        .eq('user_id', userId)
-        .single();
-
-    if (error && error.code !== 'PGRST116') {
-        console.error('Failed to fetch streak', error);
-        return res.status(500).json({ error: 'Failed to fetch streak' });
-    }
-
-    res.json({
-        current_streak: data?.current_streak ?? 0,
-        last_active_date: data?.last_active_date ?? null,
-    });
-}
