@@ -7,10 +7,10 @@ import {
     Pressable,
     Animated,
     ScrollView,
-    ToastAndroid
 } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
 import { useTranslation } from '@/app/context/LanguageContext';
+import { showToast } from '@/lib/toast';
 
 const ArrayVisual = () => {
     const { theme } = useContext(ThemeContext);
@@ -99,11 +99,11 @@ const ArrayVisual = () => {
         );
 
         if (index === -1) {
-            ToastAndroid.show(t('common.elementNotFound'), ToastAndroid.SHORT);
+            showToast(t('common.elementNotFound'));
             return;
         }
 
-        ToastAndroid.show(`${t('common.foundAtIndex')} ${index}`, ToastAndroid.SHORT);
+        showToast(`${t('common.foundAtIndex')} ${index}`);
 
         setIsAnimating(true);
 

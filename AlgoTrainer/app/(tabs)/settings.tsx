@@ -180,8 +180,9 @@ const Settings = () => {
             ),
           },
           {
-            name: "Notifications",
+            name: "Daily Reminder",
             icon: "notifications-outline",
+            subtitle: "In-app reminder when you open the app",
             right: (
               <Switch
                 value={notificationsEnabled}
@@ -320,7 +321,7 @@ const Settings = () => {
                 { paddingTop: 24, paddingBottom: 16 },
               ]}
             >
-            
+
               <Text style={[typography.h1, { color: theme.text }]}>
                 {t("settings.title")}
               </Text>

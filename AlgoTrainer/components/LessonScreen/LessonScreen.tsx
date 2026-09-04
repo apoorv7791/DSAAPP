@@ -6,9 +6,6 @@ import {
   FlatList,
   Pressable,
   ScrollView,
-  ToastAndroid,
-  Platform,
-  Alert
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
@@ -16,6 +13,7 @@ import { ThemeContext } from '@/theme/ThemeContext';
 import { useTranslation } from '@/app/context/LanguageContext';
 import { LESSON_REGISTRY } from '@/lib/lessonRegistry';
 import { LearningTopicId } from '@/lib/learningTopics';
+import { showToast } from '@/lib/toast';
 
 interface LessonScreenProps {
   topicId: LearningTopicId;
@@ -31,11 +29,7 @@ const LessonScreen: React.FC<LessonScreenProps> = ({ topicId }) => {
 
   const handleCopy = useCallback(async (text: string) => {
     await Clipboard.setStringAsync(text);
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(t('common.copied'), ToastAndroid.SHORT);
-    } else {
-      Alert.alert('', t('common.copied'));
-    }
+    showToast(t('common.copied'));
   }, [t]);
 
   const resolvedContent = useMemo(() => {

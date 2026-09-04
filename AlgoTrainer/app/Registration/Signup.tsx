@@ -5,12 +5,12 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  ToastAndroid,
 } from "react-native";
 import { supabase } from "@/lib/supabase";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { useRouter } from "expo-router";
 import { useTranslation } from "@/app/context/LanguageContext";
+import { showToast } from "@/lib/toast";
 
 const Signup = () => {
   const { theme } = useContext(ThemeContext);
@@ -25,7 +25,7 @@ const Signup = () => {
 
   const handleSignup = async () => {
     if (!email || !password || !username) {
-      ToastAndroid.show(t("auth.enterEmailPass"), ToastAndroid.SHORT);
+      showToast(t("auth.enterEmailPass"));
       return;
     }
 
@@ -42,20 +42,17 @@ const Signup = () => {
       });
 
       if (error) {
-        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+        showToast(error.message);
         return;
       }
 
       // Profile is auto-created by DB trigger using username from metadata
 
-      ToastAndroid.show(t("auth.signupSuccess"), ToastAndroid.LONG);
+      showToast(t("auth.signupSuccess"), "long");
 
       router.replace("/Registration/Login");
     } catch (err: any) {
-      ToastAndroid.show(
-        err?.message || t("auth.somethingWrong"),
-        ToastAndroid.SHORT,
-      );
+      showToast(err?.message || t("auth.somethingWrong"));
     } finally {
       setLoading(false);
     }

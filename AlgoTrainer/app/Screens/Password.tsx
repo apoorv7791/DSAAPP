@@ -6,11 +6,11 @@ import {
     TextInput,
     Pressable,
     ScrollView,
-    ToastAndroid,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
 import { supabase } from '@/lib/supabase';
+import { showToast } from '@/lib/toast';
 
 const Password = () => {
     const { theme } = useContext(ThemeContext);
@@ -24,15 +24,15 @@ const Password = () => {
 
     const handleUpdate = async () => {
         if (!newPassword || !confirmPassword) {
-            ToastAndroid.show('Please fill in all fields', ToastAndroid.SHORT);
+            showToast('Please fill in all fields');
             return;
         }
         if (newPassword.length < 6) {
-            ToastAndroid.show('Password must be at least 6 characters', ToastAndroid.SHORT);
+            showToast('Password must be at least 6 characters');
             return;
         }
         if (newPassword !== confirmPassword) {
-            ToastAndroid.show('Passwords do not match', ToastAndroid.SHORT);
+            showToast('Passwords do not match');
             return;
         }
 
@@ -41,14 +41,14 @@ const Password = () => {
             const { error } = await supabase.auth.updateUser({ password: newPassword });
 
             if (error) {
-                ToastAndroid.show(error.message, ToastAndroid.SHORT);
+                showToast(error.message);
             } else {
-                ToastAndroid.show('Password updated successfully 🔒', ToastAndroid.SHORT);
+                showToast('Password updated successfully 🔒');
                 setNewPassword('');
                 setConfirmPassword('');
             }
         } catch (err: any) {
-            ToastAndroid.show(err?.message || 'Something went wrong', ToastAndroid.SHORT);
+            showToast(err?.message || 'Something went wrong');
         } finally {
             setLoading(false);
         }

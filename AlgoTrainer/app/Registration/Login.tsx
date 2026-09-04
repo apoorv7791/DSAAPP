@@ -5,7 +5,6 @@ import {
     StyleSheet,
     TextInput,
     Pressable,
-    ToastAndroid,
 } from 'react-native';
 
 import { supabase } from '@/lib/supabase';
@@ -13,6 +12,7 @@ import { ThemeContext } from '@/theme/ThemeContext';
 import { useRouter } from 'expo-router';
 import { useAuth, authUserFromSupabase } from '@/auth/AuthContext';
 import { useTranslation } from '@/app/context/LanguageContext';
+import { showToast } from '@/lib/toast';
 
 const Login = () => {
     const { theme } = useContext(ThemeContext);
@@ -68,7 +68,7 @@ const Login = () => {
             }
 
             // ✅ SUCCESS
-            ToastAndroid.show(t('auth.loginSuccess'), ToastAndroid.SHORT);
+            showToast(t('auth.loginSuccess'));
 
             if (data.user) {
                 login(authUserFromSupabase(data.user));

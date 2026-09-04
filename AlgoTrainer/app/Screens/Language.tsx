@@ -5,14 +5,12 @@ import {
     StyleSheet,
     Pressable,
     ScrollView,
-    ToastAndroid,
-    Platform,
-    Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemeContext } from '@/theme/ThemeContext';
 import { useTranslation } from '@/app/context/LanguageContext';
 import { Language as LanguageType } from '@/lib/i18n';
+import { showToast } from '@/lib/toast';
 
 const LANGUAGES: { code: LanguageType; label: string; native: string; flag: string }[] = [
     { code: 'en', label: 'English', native: 'English', flag: '🇬🇧' },
@@ -34,12 +32,7 @@ const Language = () => {
     const handleSave = () => {
         const lang = LANGUAGES.find((l) => l.code === selected);
         const message = `${t('languageScreen.toast')} ${lang?.label} ${lang?.flag}`;
-
-        if (Platform.OS === 'android') {
-            ToastAndroid.show(message, ToastAndroid.SHORT);
-        } else {
-            Alert.alert('Language Updated', message);
-        }
+        showToast(message);
     };
 
     return (

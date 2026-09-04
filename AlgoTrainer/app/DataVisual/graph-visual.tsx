@@ -5,10 +5,10 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
 import { ThemeContext, ThemeType } from "@/theme/ThemeContext";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
+import { showToast } from "@/lib/toast";
 
 /* ─── Types ─────────────────────────────────────────────────── */
 
@@ -82,23 +82,23 @@ const GraphsVisual = () => {
   const pausedRef = useRef(false);
 
   const togglePause = () => {
-	setPaused(prev => {
-		const next = !prev;
-		pausedRef.current = next;
-		return next;
-	});
+    setPaused(prev => {
+      const next = !prev;
+      pausedRef.current = next;
+      return next;
+    });
   }
   const waitIfPaused = async () => {
-	while(pausedRef.current) {
-		await new Promise(resolve => setTimeout(resolve, 100));
-	}
+    while (pausedRef.current) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
   }
 
   /* ── Add node ──────────────────────────────────────────── */
 
   const addNode = () => {
     if (nodes.length >= MAX_NODES) {
-      ToastAndroid.show(`Maximum ${MAX_NODES} nodes allowed.`, ToastAndroid.LONG);
+      showToast(`Maximum ${MAX_NODES} nodes allowed.`, "long");
       return;
     }
     const pos = PRESET_POSITIONS[nodes.length];
@@ -172,7 +172,7 @@ const GraphsVisual = () => {
 
   const runBFS = async (startId: number) => {
     if (isRunning || nodes.length === 0) return;
-  
+
     setIsRunning(true);
     setVisitedSet(new Set());
     setActiveNode(null);
@@ -210,7 +210,7 @@ const GraphsVisual = () => {
 
   const runDFS = async (startId: number) => {
     if (isRunning || nodes.length === 0) return;
-   
+
     setIsRunning(true);
     setVisitedSet(new Set());
     setActiveNode(null);
@@ -222,7 +222,7 @@ const GraphsVisual = () => {
     setTraversalLog("DFS started…");
 
     const dfsStep = async (id: number) => {
-       await waitIfPaused();
+      await waitIfPaused();
       if (visited.has(id)) return;
       visited.add(id);
       order.push(id);
@@ -240,7 +240,7 @@ const GraphsVisual = () => {
 
       await delay(350);
     };
-    
+
     await dfsStep(startId);
 
     setActiveNode(null);
@@ -427,17 +427,17 @@ const GraphsVisual = () => {
           >
             <Text style={styles.buttonText}>Reset</Text>
           </Pressable>
-        <Pressable
-  style={[styles.button, !isRunning && styles.disabledBtn]}
-  onPress={togglePause}
-  disabled={!isRunning}
->
-  <Ionicons
-    name={paused ? "play" : "pause"}
-    size={24}
-    color="#fff"
-  />
-</Pressable>
+          <Pressable
+            style={[styles.button, !isRunning && styles.disabledBtn]}
+            onPress={togglePause}
+            disabled={!isRunning}
+          >
+            <Ionicons
+              name={paused ? "play" : "pause"}
+              size={24}
+              color="#fff"
+            />
+          </Pressable>
         </View>
 
         {/* ── Legend ── */}

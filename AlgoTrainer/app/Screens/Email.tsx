@@ -5,10 +5,10 @@ import {
   TextInput,
   Pressable,
   ScrollView,
-  ToastAndroid,
 } from "react-native";
 import { ThemeContext } from "@/theme/ThemeContext";
 import { supabase } from "@/lib/supabase";
+import { showToast } from "@/lib/toast";
 
 const Email = () => {
   const { theme } = useContext(ThemeContext);
@@ -19,16 +19,13 @@ const Email = () => {
 
   const handleUpdate = async () => {
     if (!newEmail.trim()) {
-      ToastAndroid.show("Please enter a new email", ToastAndroid.SHORT);
+      showToast("Please enter a new email");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newEmail)) {
-      ToastAndroid.show(
-        "Please enter a valid email address",
-        ToastAndroid.SHORT,
-      );
+      showToast("Please enter a valid email address");
       return;
     }
 
@@ -37,19 +34,13 @@ const Email = () => {
       const { error } = await supabase.auth.updateUser({ email: newEmail });
 
       if (error) {
-        ToastAndroid.show(error.message, ToastAndroid.SHORT);
+        showToast(error.message);
       } else {
-        ToastAndroid.show(
-          "Confirmation sent to new email ✉️",
-          ToastAndroid.SHORT,
-        );
+        showToast("Confirmation sent to new email ✉️");
         setNewEmail("");
       }
     } catch (err: any) {
-      ToastAndroid.show(
-        err?.message || "Something went wrong",
-        ToastAndroid.SHORT,
-      );
+      showToast(err?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
