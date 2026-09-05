@@ -755,7 +755,7 @@ export const translations: Record<Language, any> = {
                 keyOpsItems: [
                     "Inserción: Agregar un nuevo nodo al árbol.",
                     "Supresión: Eliminar un nodo del árbol.",
-                    "Parcours: Visitar todos los nodos en un orden específico.",
+                    "Recorrido: Visitar todos los nodos en un orden específico.",
                     "Búsqueda: Encontrar un valor específico en el árbol."
                 ]
             },
@@ -804,15 +804,15 @@ export const translations: Record<Language, any> = {
                 description: "Los algoritmos voraces construyen una solución pieza por pieza, eligiendo siempre la pieza que ofrece el beneficio más inmediato.",
             },
             dp: {
-                title: "Programmation dynamique",
-                description: "La programmation dynamique est une méthode pour résoudre des problèmes complexes en les divisant en sous-problèmes plus simples.",
+                title: "Programación Dinámica",
+                description: "La programación dinámica es un método para resolver problemas complejos dividiéndolos en subproblemas más simples.",
             },
             recursion: {
-                title: "Récursivité",
-                description: "La récursivité est un processus dans lequel une fonction s'appelle elle-même comme un sous-programme.",
+                title: "Recursión",
+                description: "La recursión es una técnica de programación donde una función se llama a sí misma para resolver un problema.",
             }
         },
-        languageScreen: { heading: "Elegir idioma", subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.", save: "Enregistrer la langue", toast: "Langue définie sur" },
+        languageScreen: { heading: "Elegir idioma", subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.", save: "Guardar idioma", toast: "Idioma establecido en" },
     },
     fr: {
         common: {
@@ -960,26 +960,26 @@ export const translations: Record<Language, any> = {
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
                 whyDesc: "Les graphes sont utilisés pour représenter des réseaux, tels que des réseaux sociaux ou des systèmes de transport.",
-                typesTitle: "Types de Graphs",
+                typesTitle: "Types de graphes",
                 types: [
-                    "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
-                    "Grafo dirigido: Los bordes tienen una dirección. La relación es unidireccional."
+                    "Graphe non orienté : Les arêtes n'ont pas de direction. La relation est bidirectionnelle.",
+                    "Graphe orienté : Les arêtes ont une direction. La relation est unidirectionnelle."
                 ],
-                repsTitle: "Representaciones de Grafos",
-                repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
+                repsTitle: "Représentations des graphes",
+                repsDesc: "Les représentations courantes incluent la matrice d'adjacence (tableau 2D) et la liste d'adjacence (tableau de listes).",
             },
             "graph-algorithms": {
                 title: "Qu'est-ce qu'un graphe ?",
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
                 whyDesc: "Les graphes sont utilisés pour représenter des réseaux, tels que des réseaux sociaux ou des systèmes de transport.",
-                typesTitle: "Types de Graphs",
+                typesTitle: "Types de graphes",
                 types: [
-                    "Grafo no dirigido: Los bordes no tienen una dirección. La relación es bidireccional.",
-                    "Grafo dirigido: Los bordes tienen una dirección. La relación es unidireccional."
+                    "Graphe non orienté : Les arêtes n'ont pas de direction. La relation est bidirectionnelle.",
+                    "Graphe orienté : Les arêtes ont une direction. La relation est unidirectionnelle."
                 ],
-                repsTitle: "Representaciones de Grafos",
-                repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
+                repsTitle: "Représentations des graphes",
+                repsDesc: "Les représentations courantes incluent la matrice d'adjacence (tableau 2D) et la liste d'adjacence (tableau de listes).",
             },
             heaps: {
                 title: "Qu'est-ce qu'un tas ?",
@@ -1143,7 +1143,7 @@ export const translations: Record<Language, any> = {
                 keyOpsItems: [
                     "Einfügen: Einen neuen Knoten zum Baum hinzufügen.",
                     "Löschen: Einen Knoten aus dem Baum entfernen.",
-                    "Parcours: Visiter alle Knoten in einer bestimmten Reihenfolge.",
+                    "Traversierung: Alle Knoten in einer bestimmten Reihenfolge besuchen.",
                     "Suchen: Einen bestimmten Wert im Baum finden."
                 ]
             },
@@ -1826,47 +1826,47 @@ const arrayLookupCache = new Map<string, string[]>();
 const MAX_TRANSLATION_CACHE_SIZE = 1000;
 
 const getNormalizedLanguage = (lang: Language): Language =>
-  flattenedTranslations[lang] ? lang : 'en';
+    flattenedTranslations[lang] ? lang : 'en';
 
 const getCachedValue = <T,>(
-  cache: Map<string, T>,
-  key: string,
-  factory: () => T,
+    cache: Map<string, T>,
+    key: string,
+    factory: () => T,
 ): T => {
-  const cachedValue = cache.get(key);
-  if (cachedValue !== undefined) return cachedValue;
+    const cachedValue = cache.get(key);
+    if (cachedValue !== undefined) return cachedValue;
 
-  const nextValue = factory();
-  if (cache.size >= MAX_TRANSLATION_CACHE_SIZE) cache.clear();
-  cache.set(key, nextValue);
+    const nextValue = factory();
+    if (cache.size >= MAX_TRANSLATION_CACHE_SIZE) cache.clear();
+    cache.set(key, nextValue);
 
-  return nextValue;
+    return nextValue;
 };
 
 export const t = (lang: Language, path: string): string => {
-  const normalizedLang = getNormalizedLanguage(lang);
+    const normalizedLang = getNormalizedLanguage(lang);
 
-  return getCachedValue(stringLookupCache, `${normalizedLang}:${path}`, () => {
-    const langMap = flattenedTranslations[normalizedLang];
-    const value = langMap[path];
+    return getCachedValue(stringLookupCache, `${normalizedLang}:${path}`, () => {
+        const langMap = flattenedTranslations[normalizedLang];
+        const value = langMap[path];
 
-    if (typeof value === 'string') return value;
+        if (typeof value === 'string') return value;
 
-    const fallbackValue = flattenedTranslations.en[path];
-    return typeof fallbackValue === 'string' ? fallbackValue : path;
-  });
+        const fallbackValue = flattenedTranslations.en[path];
+        return typeof fallbackValue === 'string' ? fallbackValue : path;
+    });
 };
 
 export const tArray = (lang: Language, path: string): string[] => {
-  const normalizedLang = getNormalizedLanguage(lang);
+    const normalizedLang = getNormalizedLanguage(lang);
 
-  return getCachedValue(arrayLookupCache, `${normalizedLang}:${path}`, () => {
-    const langMap = flattenedTranslations[normalizedLang];
-    const value = langMap[path];
+    return getCachedValue(arrayLookupCache, `${normalizedLang}:${path}`, () => {
+        const langMap = flattenedTranslations[normalizedLang];
+        const value = langMap[path];
 
-    if (Array.isArray(value)) return value;
+        if (Array.isArray(value)) return value;
 
-    const fallbackValue = flattenedTranslations.en[path];
-    return Array.isArray(fallbackValue) ? fallbackValue : [];
-  });
+        const fallbackValue = flattenedTranslations.en[path];
+        return Array.isArray(fallbackValue) ? fallbackValue : [];
+    });
 };
