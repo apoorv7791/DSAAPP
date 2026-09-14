@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
+import { rateLimit } from 'express-rate-limit';
 import { authenticate } from './middleware/authenticate.js';
 import progressRouter from './routes/progress.js';
 import userRouter from './routes/user.js';
@@ -10,6 +12,8 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
+
+// ─── CORS ────────────────────────────────────────────────────────────────────
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -31,9 +35,36 @@ app.use(
   })
 );
 
+// ─── REQUEST LOGGING ─────────────────────────────────────────────────────────
+// 'dev' format: "GET /api/progress 200 4ms"
+// Switch to 'combined' in production if you want Apache-style logs for log aggregators.
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+
+// ─── BODY PARSING ────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '1mb' }));
 
-// Public routes
+// ─── RATE LIMITING ───────────────────────────────────────────────────────────
+
+// General limiter — applies to all /api routes
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,                  // 200 requests per window per IP
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+// Tighter limiter for mutating endpoints (POST/PUT/DELETE on user data)
+const writeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60,                   // 60 writes per window per IP
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+// ─── PUBLIC ROUTES ───────────────────────────────────────────────────────────
+
 app.get('/', (_req, res) => {
   res.send('AlgoTrainer backend is running');
 });
@@ -56,20 +87,29 @@ app.get('/health', async (_req, res) => {
   });
 });
 
-// Protected routes
-app.use('/api', authenticate, progressRouter);
-app.use('/api', authenticate, userRouter);
+// ─── PROTECTED ROUTES ────────────────────────────────────────────────────────
 
-// 404 handler
+app.use('/api', apiLimiter, authenticate, progressRouter);
+app.use('/api', apiLimiter, authenticate, userRouter);
+
+// Apply the tighter write limiter on top of the general one for mutations
+app.use('/api', writeLimiter, authenticate, (req, res, next) => {
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) return next();
+  next('route');
+});
+
+// ─── ERROR HANDLERS ──────────────────────────────────────────────────────────
+
 app.use((req, res) => {
   res.status(404).json({ error: `Route not found: ${req.method} ${req.originalUrl}` });
 });
 
-// Global error handler
 app.use((err, _req, res, _next) => {
   console.error('[SERVER ERROR]', err);
   res.status(500).json({ error: 'Internal server error' });
 });
+
+// ─── STARTUP ─────────────────────────────────────────────────────────────────
 
 async function startServer() {
   try {

@@ -41,6 +41,21 @@ export async function updateProfile(req, res) {
     res.json({ success: true });
 }
 
+// DELETE /api/user/profile
+// Deletes the user's Supabase auth account — DB cascades should clean up related rows.
+export async function deleteProfile(req, res) {
+    const userId = req.user.id;
+
+    const { error } = await supabase.auth.admin.deleteUser(userId);
+
+    if (error) {
+        console.error('Failed to delete user account', error);
+        return res.status(500).json({ error: 'Failed to delete account' });
+    }
+
+    res.json({ success: true });
+}
+
 // GET /api/user/goal
 export async function getGoal(req, res) {
     const userId = req.user.id;
@@ -64,7 +79,9 @@ export async function setGoal(req, res) {
     const userId = req.user.id;
     const { daily_minutes } = req.body;
 
-    if (!daily_minutes || typeof daily_minutes !== 'number') {
+    // FIX: previous code used `!daily_minutes` which rejects 0.
+    // We only reject missing or non-number values.
+    if (daily_minutes === undefined || daily_minutes === null || typeof daily_minutes !== 'number') {
         return res.status(400).json({ error: 'daily_minutes (number) is required' });
     }
 
@@ -80,3 +97,19 @@ export async function setGoal(req, res) {
     res.json({ success: true });
 }
 
+// DELETE /api/user/goal — removes the user's daily goal entirely
+export async function deleteGoal(req, res) {
+    const userId = req.user.id;
+
+    const { error } = await supabase
+        .from('user_goals')
+        .delete()
+        .eq('user_id', userId);
+
+    if (error) {
+        console.error('Failed to delete goal', error);
+        return res.status(500).json({ error: 'Failed to delete goal' });
+    }
+
+    res.json({ success: true });
+}

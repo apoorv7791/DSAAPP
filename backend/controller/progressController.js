@@ -1,6 +1,14 @@
 // controller/progressController.js — DB logic for learning topic progress
 import { supabase } from '../db/supabase.js';
 
+// Allowed characters for a topic ID: lowercase letters, digits, hyphens, underscores.
+// Rejects anything that could be used for injection or unexpected DB behaviour.
+const TOPIC_ID_RE = /^[a-z0-9_-]{1,64}$/;
+
+function isValidTopicId(id) {
+    return typeof id === 'string' && TOPIC_ID_RE.test(id);
+}
+
 // GET /api/progress
 export async function getProgress(req, res) {
     const userId = req.user.id;
@@ -30,14 +38,21 @@ export async function updateProgress(req, res) {
     const userId = req.user.id;
     const progress = req.body.progress;
 
-    if (!progress || typeof progress !== 'object') {
+    if (!progress || typeof progress !== 'object' || Array.isArray(progress)) {
         return res.status(400).json({ error: 'progress object is required' });
     }
 
     const completedEntries = [];
     const deleteIds = [];
+    const invalidIds = [];
 
     for (const [topicId, completed] of Object.entries(progress)) {
+        // Sanitize: reject any key that doesn't match the safe pattern
+        if (!isValidTopicId(topicId)) {
+            invalidIds.push(topicId);
+            continue;
+        }
+
         if (completed === true) {
             completedEntries.push({
                 user_id: userId,
@@ -48,6 +63,11 @@ export async function updateProgress(req, res) {
         } else if (completed === false) {
             deleteIds.push(topicId);
         }
+    }
+
+    // Return early if every key was invalid
+    if (invalidIds.length > 0 && completedEntries.length === 0 && deleteIds.length === 0) {
+        return res.status(400).json({ error: 'No valid topic IDs provided', invalid: invalidIds });
     }
 
     if (completedEntries.length > 0) {
@@ -74,5 +94,5 @@ export async function updateProgress(req, res) {
         }
     }
 
-    res.json({ success: true });
+    res.json({ success: true, ...(invalidIds.length > 0 && { skipped: invalidIds }) });
 }

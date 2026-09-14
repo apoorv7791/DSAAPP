@@ -1,7 +1,14 @@
-// middleware/authenticate.js — verifies Supabase JWT on every protected request
-import { supabase } from '../db/supabase.js';
+// middleware/authenticate.js — verifies Supabase JWT locally (no network round-trip)
+import jwt from 'jsonwebtoken';
 
-export async function authenticate(req, res, next) {
+const JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
+
+if (!JWT_SECRET) {
+    console.error('[authenticate] Missing SUPABASE_JWT_SECRET in environment. Add it to your .env file.');
+    process.exit(1);
+}
+
+export function authenticate(req, res, next) {
     const authorization = req.headers.authorization;
     const token =
         typeof authorization === 'string' && authorization.startsWith('Bearer ')
@@ -12,11 +19,23 @@ export async function authenticate(req, res, next) {
         return res.status(401).json({ error: 'Missing authorization token' });
     }
 
-    const { data, error } = await supabase.auth.getUser(token);
-    if (error || !data.user) {
-        return res.status(401).json({ error: 'Invalid or expired token' });
-    }
+    try {
+        // Supabase JWTs use HS256 signed with the project JWT secret.
+        // Verifying locally avoids a Supabase API call on every request.
+        const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
 
-    req.user = data.user;
-    next();
+        // Supabase puts the user UUID in the `sub` claim
+        if (!payload.sub) {
+            return res.status(401).json({ error: 'Invalid token: missing sub claim' });
+        }
+
+        // Mimic the shape that supabase.auth.getUser() used to return
+        req.user = { id: payload.sub, email: payload.email ?? null };
+        next();
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Token expired' });
+        }
+        return res.status(401).json({ error: 'Invalid token' });
+    }
 }
