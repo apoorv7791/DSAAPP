@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback } from "react";
+import React, { useContext, useMemo, useCallback, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, Pressable } from "react-native";
 
 import { ThemeContext } from "@/theme/ThemeContext";
@@ -10,6 +10,8 @@ import { useRouter } from "expo-router";
 import { useLearningProgress } from "@/context/LearningProgressContext";
 import { LEARNING_TOPICS } from "@/lib/learningTopics";
 import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "@/auth/AuthContext";
+import { useStreak } from "@/lib/useStreak";
 
 type Module = {
   id: string;
@@ -24,6 +26,15 @@ const HomeScreen = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { isDone } = useLearningProgress();
+  const { isLoggedIn } = useAuth();
+  const { streak, fetchStreak } = useStreak();
+
+  // Fetch streak when screen mounts and user is logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      void fetchStreak();
+    }
+  }, [isLoggedIn, fetchStreak]);
 
   // Calculate progress
   const completed = LEARNING_TOPICS.filter((t) => isDone(t.id)).length;
@@ -154,7 +165,15 @@ const HomeScreen = () => {
             <Text style={[typography.h3, { color: theme.text }]}>
               Your Progress
             </Text>
-            <Ionicons name="analytics" size={24} color={theme.primary} />
+            <View style={styles.streakBadge}>
+              <Text style={styles.streakFlame}>🔥</Text>
+              <Text style={[styles.streakCount, { color: theme.warning }]}>
+                {isLoggedIn && streak.loaded ? streak.currentStreak : 0}
+              </Text>
+              <Text style={[styles.streakLabel, { color: theme.textSecondary }]}>
+                {streak.currentStreak === 1 ? "day" : "days"}
+              </Text>
+            </View>
           </View>
 
           <View style={styles.progressStats}>
@@ -286,6 +305,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: spacing.md,
+  },
+  streakBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    backgroundColor: "rgba(245,158,11,0.12)",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+  },
+  streakFlame: {
+    fontSize: 16,
+  },
+  streakCount: {
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  streakLabel: {
+    fontSize: 12,
+    fontWeight: "500",
   },
   progressStats: {
     flexDirection: "row",

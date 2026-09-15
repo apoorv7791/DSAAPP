@@ -72,3 +72,7 @@ export async function setDifficulty(
 export async function getStreak() {
   return apiCall("/api/user/streak");
 }
+
+export async function updateStreak(): Promise<void> {
+  await apiCall("/api/user/streak", "POST");
+}

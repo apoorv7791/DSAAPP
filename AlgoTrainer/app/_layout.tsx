@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { AuthProvider } from "@/auth/AuthContext";
+import { AuthProvider, useAuth } from "@/auth/AuthContext";
 import { LearningProgressProvider } from "@/context/LearningProgressContext";
 import { ThemeContext, ThemeProvider } from "@/theme/ThemeContext";
 import {
@@ -10,6 +10,21 @@ import {
   DefaultTheme,
 } from "@react-navigation/native";
 import { LanguageProvider } from "@/app/context/LanguageContext";
+import { ToastProvider } from "@/components/Toast/ToastProvider";
+import { updateStreak } from "@/lib/backendApi";
+
+/** Fires POST /api/user/streak once per app launch when the user is logged in. */
+function AppOpenStreakTrigger() {
+  const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    // Fire-and-forget — streak is not critical enough to block anything
+    void updateStreak().catch(() => { });
+  }, [isLoggedIn]);
+
+  return null;
+}
 
 function RootNavigation() {
   const { theme } = useContext(ThemeContext);
@@ -64,7 +79,10 @@ const RootLayout = () => {
       <LanguageProvider>
         <AuthProvider>
           <LearningProgressProvider>
+            <AppOpenStreakTrigger />
             <RootNavigation />
+            {/* Non-blocking toast overlay — works on iOS and Android */}
+            <ToastProvider />
           </LearningProgressProvider>
         </AuthProvider>
       </LanguageProvider>

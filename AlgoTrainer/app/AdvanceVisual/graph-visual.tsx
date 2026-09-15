@@ -72,11 +72,11 @@ const GraphVisualizer = () => {
     })
   }
 
-  const waitIfpaused = (async () => {
+  const waitIfpaused = async () => {
     while (isPaused.current) {
       await delay(100);
     }
-  });
+  };
 
   const explain = async (msg: string, wait = 400) => {
     setExplanation(msg);
@@ -230,7 +230,7 @@ const GraphVisualizer = () => {
 
   return (
     <View style={styles.container}>
-      
+
 
       <View style={styles.controls}>
         <Pressable
@@ -250,12 +250,12 @@ const GraphVisualizer = () => {
         <Pressable style={styles.resetButton} onPress={reset}>
           <Ionicons name="refresh" size={20} color={theme.text} />
         </Pressable>
-        <Pressable 
-        style={styles.resetButton}
-        onPress={togglePause}
-        disabled={!isRunning}
+        <Pressable
+          style={styles.resetButton}
+          onPress={togglePause}
+          disabled={!isRunning}
         >
-          <Ionicons 
+          <Ionicons
             name={paused ? "play" : "pause"}
             size={20}
             color={theme.text}
