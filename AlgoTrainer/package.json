@@ -8,7 +8,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "translate": "node scripts/translate.mjs",
+    "translate:dry": "node scripts/translate.mjs --dry-run",
+    "translate:force": "node scripts/translate.mjs --force"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -51,6 +54,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
+    "@vitalets/google-translate-api": "^9.2.1",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
     "expo-module-scripts": "^3.0.5",

@@ -164,7 +164,7 @@ export const translations: Record<Language, any> = {
                     "Queue is a fundamental data structure used in various applications such as task scheduling, breadth-first search algorithms, and managing resources in operating systems.",
                     "It follows the First In First Out (FIFO) principle, where elements are added at the rear and removed from the front.",
                     "Queues can be implemented using arrays or linked lists, and they provide a simple way to manage data that needs to be processed in the order it was received."
-                ]
+                ],
             },
             hashMaps: {
                 title: "What is a HashMap?",
@@ -193,7 +193,7 @@ export const translations: Record<Language, any> = {
                     "Deletion: Removing a node from the tree.",
                     "Traversal: Visiting all nodes in a specific order.",
                     "Searching: Finding a specific value in the tree."
-                ]
+                ],
             },
             graphs: {
                 title: "What is a Graph?",
@@ -208,7 +208,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Graph Representations",
                 repsDesc: "Common representations include adjacency matrix (2D array) and adjacency list (array of lists).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "What is a Graph?",
                 description: "A graph is a collection of nodes (also called vertices) connected by edges.",
                 whyTitle: "Why do we use Graphs?",
@@ -265,7 +265,7 @@ export const translations: Record<Language, any> = {
                 typesDesc: [
                     "Top-down with memoization (Recursion + Caching)",
                     "Bottom-up with tabulation (Iterative)"
-                ]
+                ],
             },
             graphAlgo: {
                 title: "What are Graph Algorithms?",
@@ -280,7 +280,7 @@ export const translations: Record<Language, any> = {
                 whyDesc: "Recursion is useful for problems that have a naturally recursive structure, such as tree traversals, graph algorithms, and mathematical computations like factorials.",
                 howWorks: "How does Recursion work?",
                 howWorksDesc: "Recursion works by breaking down a problem into smaller subproblems of the same type until it reaches a base case.",
-            }
+            },
         },
         languageScreen: {
             heading: "Choose Language",
@@ -476,7 +476,7 @@ export const translations: Record<Language, any> = {
                     "Queue is a fundamental data structure used in various applications such as task scheduling, breadth-first search algorithms, and managing resources in operating systems.",
                     "It follows the First In First Out (FIFO) principle, where elements are added at the rear and removed from the front.",
                     "Queues can be implemented using arrays or linked lists, and they provide a simple way to manage data that needs to be processed in the order it was received."
-                ]
+                ],
             },
             hashMaps: {
                 title: "HashMap",
@@ -505,7 +505,7 @@ export const translations: Record<Language, any> = {
                     "Deletion: Removing a node from the tree.",
                     "Traversal: Visiting all nodes in a specific order.",
                     "Searching: Finding a specific value in the tree."
-                ]
+                ],
             },
             graphs: {
                 title: "Graph",
@@ -520,7 +520,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Graph Representations",
                 repsDesc: "Common representations include adjacency matrix (2D array) and adjacency list (array of lists).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "Graph",
                 description: "A graph is a collection of nodes (also called vertices) connected by edges.",
                 whyTitle: "Why do we use Graphs?",
@@ -577,7 +577,7 @@ export const translations: Record<Language, any> = {
                 typesDesc: [
                     "Top-down with memoization (Recursion + Caching)",
                     "Bottom-up with tabulation (Iterative)"
-                ]
+                ],
             },
             graphAlgo: {
                 title: "What are Graph Algorithms?",
@@ -592,7 +592,7 @@ export const translations: Record<Language, any> = {
                 whyDesc: "Recursion is useful for problems that have a naturally recursive structure, such as tree traversals, graph algorithms, and mathematical computations like factorials.",
                 howWorks: "How does Recursion work?",
                 howWorksDesc: "Recursion works by breaking down a problem into smaller subproblems of the same type until it reaches a base case.",
-            }
+            },
         },
         languageScreen: {
             heading: "Choose Language",
@@ -628,6 +628,43 @@ export const translations: Record<Language, any> = {
             copied: "Código copiado al portapapeles",
             elementNotFound: "Elemento no encontrado",
             foundAtIndex: "Encontrado en el índice",
+            add: "Añadir",
+            remove: "Eliminar",
+            removeFront: "Quitar el frente",
+            search: "Buscar",
+            reset: "Restablecer",
+            empty: "Vacío",
+            enterNumber: "Introduzca el número",
+            head: "CABEZA",
+            tail: "COLA",
+            null: "NULO",
+            deleteHead: "Eliminar encabezado",
+            deleteTail: "Eliminar cola",
+            reverse: "Reverso",
+            java: "Java",
+            comparison: "Comparación",
+            practice: "Práctica",
+            nodeClass: "Clase de nodo",
+            linkedListClass: "Lista enlazada de clase",
+            insertNode: "Insertar nodo",
+            displayNode: "Nodo de visualización",
+            deleteNode: "Eliminar nodo",
+            mainMethod: "Método principal",
+            output: "Salida",
+            target: "Objetivo",
+            searchingLabel: "Buscando",
+            foundLabel: "Encontrado",
+            stackImplementation: "Implementación de pila",
+            pushOperations: "Operaciones push",
+            popOperations: "Operaciones pop",
+            peekOperations: "Operaciones de vistazo",
+            isEmptyOperations: "Son operaciones vacías",
+            displayStack: "Pila de visualización",
+            queueImplementation: "Implementación de cola",
+            enqueueOperations: "Operaciones de puesta en cola",
+            dequeueOperations: "Operaciones de retirada de cola",
+            displayQueue: "Mostrar cola",
+            sizeOperation: "Operación de tamaño",
         },
         home: {
             title: "AlgoTrainer",
@@ -697,6 +734,11 @@ export const translations: Record<Language, any> = {
                 keyPoints: "Puntos Clave",
                 operations: "Operaciones Comunes",
                 tryYourself: "Pruébalo tú mismo",
+                withoutArrays: "Sin matrices: int a=10, b=20, c=30 (desordenado 😵)",
+                hardToProcess: "Difícil de procesar datos usando bucles",
+                noStructuredWay: "No hay forma estructurada de almacenar grandes datos",
+                memoryInefficient: "El manejo de la memoria se vuelve ineficiente",
+                solveDescription: "Las matrices resuelven esto almacenando múltiples valores en una sola variable y permitiendo un fácil acceso mediante el índice.",
             },
             searching: {
                 title: "Algoritmos de Búsqueda",
@@ -711,12 +753,18 @@ export const translations: Record<Language, any> = {
                 whatIsDesc: "Una lista enlazada es una estructura de datos lineal donde cada elemento (nodo) contiene un valor y una referencia al siguiente nodo.",
                 whyUse: "¿Por qué usamos Listas Enlazadas?",
                 whyUseDesc: "Las listas enlazadas se utilizan para la asignación dinámica de memoria e inserciones/eliminaciones eficientes.",
+                dynamicSize: "Tamaño dinámico",
+                efficientInsertDelete: "Insertar/eliminar eficientemente",
+                noShifting: "No se requieren cambios",
             },
             linkedlist: {
                 whatIs: "¿Qué es una Lista Enlazada?",
                 whatIsDesc: "Una lista enlazada es una estructura de datos lineal donde cada elemento (nodo) contiene un valor y una referencia al siguiente nodo.",
                 whyUse: "¿Por qué usamos Listas Enlazadas?",
                 whyUseDesc: "Las listas enlazadas se utilizan para la asignación dinámica de memoria e inserciones/eliminaciones eficientes.",
+                dynamicSize: "Tamaño dinámico",
+                efficientInsertDelete: "Insertar/eliminar eficientemente",
+                noShifting: "No se requieren cambios",
             },
             stacks: {
                 title: "¿Qué es una Pila?",
@@ -729,6 +777,11 @@ export const translations: Record<Language, any> = {
                 description: "Una cola es una estructura de datos lineal que sigue el principio FIFO (Primero en entrar, primero en salir).",
                 whyTitle: "¿Por qué usamos Colas?",
                 whyDesc: "Las colas se utilizan en la programación de tareas, el almacenamiento en búfer y la búsqueda en anchura.",
+                listItems: [
+                    "La cola es una estructura de datos fundamental que se utiliza en diversas aplicaciones, como la programación de tareas, los algoritmos de búsqueda en amplitud y la gestión de recursos en sistemas operativos.",
+                    "Sigue el principio Primero en entrar, primero en salir (FIFO), donde los elementos se agregan en la parte trasera y se retiran del frente.",
+                    "Las colas se pueden implementar mediante matrices o listas vinculadas y proporcionan una forma sencilla de gestionar los datos que deben procesarse en el orden en que se recibieron."
+                ],
             },
             hashMaps: {
                 title: "¿Qué es un Mapa Hash?",
@@ -757,7 +810,7 @@ export const translations: Record<Language, any> = {
                     "Supresión: Eliminar un nodo del árbol.",
                     "Recorrido: Visitar todos los nodos en un orden específico.",
                     "Búsqueda: Encontrar un valor específico en el árbol."
-                ]
+                ],
             },
             graphs: {
                 title: "¿Qué es un Grafo?",
@@ -772,7 +825,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Representaciones de Grafos",
                 repsDesc: "Las representaciones comunes incluyen la matriz de adyacencia (matriz 2D) y la lista de adyacencia (matriz de listas).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "¿Qué es un Grafo?",
                 description: "Un grafo es una estructura de datos no lineal compuesta de nodos y aristas.",
                 whyTitle: "¿Por qué usamos Grafos?",
@@ -798,6 +851,18 @@ export const translations: Record<Language, any> = {
             sorting: {
                 title: "Algoritmos de Tri",
                 description: "El tri es el proceso de organizar elementos en un orden específico (ascendente o descendente).",
+                bubbleTitle: "Clasificación de burbujas",
+                bubbleDesc: "La clasificación de burbujas recorre repetidamente la lista, compara elementos adyacentes y los intercambia si están en el orden incorrecto.",
+                selectionTitle: "Orden de selección",
+                selectionDesc: "La clasificación por selección divide la lista de entrada en dos partes: una sublista ordenada y una sublista sin clasificar, luego encuentra repetidamente el elemento más pequeño en la sublista sin clasificar y lo mueve a la sublista ordenada.",
+                insertionTitle: "Ordenación por inserción",
+                insertionDesc: "La ordenación por inserción construye la matriz ordenada final, un elemento a la vez, seleccionando repetidamente el siguiente elemento e insertándolo en su posición correcta.",
+                mergeTitle: "Combinar orden",
+                mergeDesc: "Merge sort es un algoritmo de divide y vencerás que divide la matriz de entrada en dos mitades, las clasifica y luego las fusiona.",
+                quickTitle: "Ordenación rápida",
+                quickDesc: "La clasificación rápida es un algoritmo de divide y vencerás que selecciona un elemento pivote y divide la matriz a su alrededor.",
+                heapTitle: "Ordenación del montón",
+                heapDesc: "La clasificación de montón es una técnica de clasificación basada en comparación basada en la estructura de datos de Binary Heap.",
             },
             greedy: {
                 title: "Algoritmos Voraces",
@@ -810,9 +875,61 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "Recursión",
                 description: "La recursión es una técnica de programación donde una función se llama a sí misma para resolver un problema.",
-            }
+                whyTitle: "¿Por qué utilizamos la recursividad?",
+                whyDesc: "La recursividad es útil para problemas que tienen una estructura naturalmente recursiva, como recorridos de árboles, algoritmos de gráficos y cálculos matemáticos como factoriales.",
+                howWorks: "¿Cómo funciona la recursividad?",
+                howWorksDesc: "La recursividad funciona dividiendo un problema en subproblemas más pequeños del mismo tipo hasta llegar a un caso base.",
+            },
+            'greedy-algorithm': {
+                title: "Algoritmos codiciosos",
+                description: "Los algoritmos codiciosos construyen una solución pieza por pieza, eligiendo siempre la siguiente pieza que ofrece el beneficio más inmediato.",
+            },
+            'dynamic-programming': {
+                title: "¿Qué es la programación dinámica?",
+                description: "La programación dinámica es un método para resolver problemas complejos dividiéndolos en subproblemas más simples. Es aplicable a problemas que exhiben una subestructura óptima y subproblemas superpuestos.",
+                charTitle: "Características clave",
+                whyTitle: "¿Por qué utilizamos DP?",
+                whyDesc: "DP se utiliza para resolver problemas de optimización almacenando los resultados de subproblemas para evitar cálculos redundantes.",
+                typesTitle: "Tipos de PD",
+                charDesc: [
+                    "Subestructura óptima: una solución óptima contiene soluciones óptimas a sus subproblemas.",
+                    "Subproblemas superpuestos: el problema se puede dividir en subproblemas que se resuelven varias veces."
+                ],
+                typesDesc: [
+                    "De arriba hacia abajo con memorización (Recursión + Almacenamiento en caché)",
+                    "Ascendente con tabulación (iterativo)"
+                ],
+            },
+            graphAlgo: {
+                title: "¿Qué son los algoritmos gráficos?",
+                description: "Los algoritmos de gráficos son un conjunto de algoritmos que se utilizan para resolver problemas relacionados con estructuras de gráficos, como encontrar rutas, ciclos o componentes conectados.",
+                whyTitle: "¿Por qué utilizamos algoritmos gráficos?",
+                whyDesc: "Son esenciales para el enrutamiento de redes, el análisis de redes sociales, la navegación GPS y muchas otras aplicaciones del mundo real.",
+            },
         },
-        languageScreen: { heading: "Elegir idioma", subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.", save: "Guardar idioma", toast: "Idioma establecido en" },
+        languageScreen: {
+            heading: "Elegir idioma",
+            subheading: "Seleccione su idioma preferido para la interfaz de la aplicación.",
+            save: "Guardar idioma",
+            toast: "Idioma establecido en",
+        },
+        auth: {
+            loginTitle: "Iniciar sesión",
+            signupTitle: "Regístrate",
+            emailPlaceholder: "Correo electrónico",
+            usernamePlaceholder: "Nombre de usuario",
+            passwordPlaceholder: "Contraseña",
+            loginBtn: "Iniciar sesión",
+            signupBtn: "Regístrate",
+            dontHaveAccount: "¿No tienes una cuenta? Regístrate",
+            alreadyHaveAccount: "¿Ya tienes una cuenta? Iniciar sesión",
+            loginSuccess: "Inicié sesión correctamente 🚀",
+            signupSuccess: "¡Cuenta creada! Revisa tu correo electrónico para verificar. 📧",
+            enterEmailPass: "Por favor ingrese su correo electrónico y contraseña",
+            verifyEmail: "Por favor verifique su correo electrónico primero. Revisa tu bandeja de entrada/spam.",
+            loginFailed: "Error de inicio de sesion. Por favor inténtalo de nuevo.",
+            somethingWrong: "algo salió mal",
+        },
     },
     fr: {
         common: {
@@ -953,7 +1070,7 @@ export const translations: Record<Language, any> = {
                     "Suppression : Supprimer un nœud de l'arbre.",
                     "Parcours : Visiter tous les nœuds dans un ordre spécifique.",
                     "Recherche : Trouver une valeur spécifique dans l'arbre."
-                ]
+                ],
             },
             graphs: {
                 title: "Qu'est-ce qu'un graphe ?",
@@ -968,7 +1085,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Représentations des graphes",
                 repsDesc: "Les représentations courantes incluent la matrice d'adjacence (tableau 2D) et la liste d'adjacence (tableau de listes).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "Qu'est-ce qu'un graphe ?",
                 description: "Un graphe est une structure de données non linéaire composée de nœuds et d'arêtes.",
                 whyTitle: "Pourquoi utiliser des graphes ?",
@@ -1002,9 +1119,14 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "Récursivité",
                 description: "La récursivité est un processus dans lequel une fonction s'appelle elle-même comme un sous-programme.",
-            }
+            },
         },
-        languageScreen: { heading: "Choisir la langue", subheading: "Sélectionnez votre langue préférée pour l'interface de l'application.", save: "Enregistrer la langue", toast: "Langue définie sur" },
+        languageScreen: {
+            heading: "Choisir la langue",
+            subheading: "Sélectionnez votre langue préférée pour l'interface de l'application.",
+            save: "Enregistrer la langue",
+            toast: "Langue définie sur",
+        },
     },
     de: {
         common: {
@@ -1145,7 +1267,7 @@ export const translations: Record<Language, any> = {
                     "Löschen: Einen Knoten aus dem Baum entfernen.",
                     "Traversierung: Alle Knoten in einer bestimmten Reihenfolge besuchen.",
                     "Suchen: Einen bestimmten Wert im Baum finden."
-                ]
+                ],
             },
             graphs: {
                 title: "Was ist ein Graph?",
@@ -1160,7 +1282,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "Graphen-Darstellungen",
                 repsDesc: "Häufige Darstellungen umfassen Adjazenzmatrix (2D-Array) und Adjazenzliste (Array von Listen).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "Was ist ein Graph?",
                 description: "Ein Graph ist eine Sammlung von Knoten (auch Vertices genannt), die durch Kanten verbunden sind.",
                 whyTitle: "Warum verwenden wir Graphen?",
@@ -1198,9 +1320,14 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "Rekursion",
                 description: "Rekursion ist ein Prozess, bei dem eine Funktion sich selbst als Unterprogramm aufruft.",
-            }
+            },
         },
-        languageScreen: { heading: "Sprache wählen", subheading: "Wählen Sie Ihre bevorzugte Sprache für die App-Oberfläche.", save: "Sprache speichern", toast: "Sprache eingestellt auf" },
+        languageScreen: {
+            heading: "Sprache wählen",
+            subheading: "Wählen Sie Ihre bevorzugte Sprache für die App-Oberfläche.",
+            save: "Sprache speichern",
+            toast: "Sprache eingestellt auf",
+        },
     },
     zh: {
         common: {
@@ -1341,7 +1468,7 @@ export const translations: Record<Language, any> = {
                     "删除：从树中移除节点。",
                     "遍历：按特定顺序访问所有节点。",
                     "搜索：在树中查找特定值。"
-                ]
+                ],
             },
             graphs: {
                 title: "什么是图？",
@@ -1356,7 +1483,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "图的表示",
                 repsDesc: "常见的表示方法包括邻接矩阵（二维数组）和邻接表（数组的列表）。",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "什么是图？",
                 description: "图是由节点（也称为顶点）和边组成的非线性数据结构。",
                 whyTitle: "为什么我们要使用图？",
@@ -1394,9 +1521,14 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "递归",
                 description: "递归是一个函数调用自身作为子程序的过程。",
-            }
+            },
         },
-        languageScreen: { heading: "选择语言", subheading: "为应用程序界面选择您的首选语言。", save: "保存语言", toast: "语言已设置为" },
+        languageScreen: {
+            heading: "选择语言",
+            subheading: "为应用程序界面选择您的首选语言。",
+            save: "保存语言",
+            toast: "语言已设置为",
+        },
     },
     ja: {
         common: {
@@ -1537,7 +1669,7 @@ export const translations: Record<Language, any> = {
                     "削除：樹木からノードを削除します。",
                     "探索：特定の順序ですべてのノードを訪問します。",
                     "検索：樹木内の特定の値を検索します。"
-                ]
+                ],
             },
             graphs: {
                 title: "グラフとは何ですか？",
@@ -1552,7 +1684,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "グラフの表現",
                 repsDesc: "一般的な表現には、隣接行列（2D配列）と隣接表（リストの配列）があります。",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "グラフとは何ですか？",
                 description: "グラフは、エッジで接続されたノード（頂点とも呼ばれる）の集合です。",
                 whyTitle: "なぜグラフを使用するのですか？",
@@ -1590,9 +1722,14 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "再帰",
                 description: "再帰は、関数がサブルーチンとして自分自身を呼び出すプロセスです。",
-            }
+            },
         },
-        languageScreen: { heading: "言語を選択", subheading: "アプリインターフェースの優先言語を選択してください。", save: "言語を保存", toast: "言語が設定されました：" },
+        languageScreen: {
+            heading: "言語を選択",
+            subheading: "アプリインターフェースの優先言語を選択してください。",
+            save: "言語を保存",
+            toast: "言語が設定されました：",
+        },
     },
     ar: {
         common: {
@@ -1733,7 +1870,7 @@ export const translations: Record<Language, any> = {
                     "الحذف: إزالة عقدة من الشجرة.",
                     "اجتياز: زيارة جميع العقد بترتيب معين.",
                     "البحث: العثور على قيمة معينة في الشجرة."
-                ]
+                ],
             },
             graphs: {
                 title: "ما هو الرسم البياني؟",
@@ -1748,7 +1885,7 @@ export const translations: Record<Language, any> = {
                 repsTitle: "تمثيلات الرسم البياني",
                 repsDesc: "تشمل التمثيلات الشائعة مصفوفة المجاورة (مصفوفة ثنائية الأبعاد) وقائمة المجاورة (مصفوفة من القوائم).",
             },
-            "graph-algorithms": {
+            'graph-algorithms': {
                 title: "ما هو الرسم البياني؟",
                 description: "الرسم البياني هو مجموعة من العقد (تسمى أيضاً الرؤوس) مرتبطة بحواف.",
                 whyTitle: "لماذا نستخدم الرسوم البيانية؟",
@@ -1786,9 +1923,14 @@ export const translations: Record<Language, any> = {
             recursion: {
                 title: "التعاود",
                 description: "التعاود هو عملية تستدعي فيها الدالة نفسها كدالة فرعية.",
-            }
+            },
         },
-        languageScreen: { heading: "اختر اللغة", subheading: "حدد لغتك المفضلة لواجهة التطبيق.", save: "حفظ اللغة", toast: "تم ضبط اللغة على" },
+        languageScreen: {
+            heading: "اختر اللغة",
+            subheading: "حدد لغتك المفضلة لواجهة التطبيق.",
+            save: "حفظ اللغة",
+            toast: "تم ضبط اللغة على",
+        },
     },
 };
 
