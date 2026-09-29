@@ -1,15 +1,8 @@
-// middleware/authenticate.js — verifies Supabase JWT locally (no network round-trip)
-import jwt from 'jsonwebtoken';
+import { supabase } from '../db/supabase.js';
 
-const JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
-
-if (!JWT_SECRET) {
-    console.error('[authenticate] Missing SUPABASE_JWT_SECRET in environment. Add it to your .env file.');
-    process.exit(1);
-}
-
-export function authenticate(req, res, next) {
+export async function authenticate(req, res, next) {
     const authorization = req.headers.authorization;
+
     const token =
         typeof authorization === 'string' && authorization.startsWith('Bearer ')
             ? authorization.slice(7)
@@ -20,22 +13,24 @@ export function authenticate(req, res, next) {
     }
 
     try {
-        // Supabase JWTs use HS256 signed with the project JWT secret.
-        // Verifying locally avoids a Supabase API call on every request.
-        const payload = jwt.verify(token, JWT_SECRET, { algorithms: ['HS256'] });
+        const {
+            data: { user },
+            error,
+        } = await supabase.auth.getUser(token);
 
-        // Supabase puts the user UUID in the `sub` claim
-        if (!payload.sub) {
-            return res.status(401).json({ error: 'Invalid token: missing sub claim' });
+        if (error || !user) {
+            console.error('[authenticate] Supabase token verification failed:', error?.message);
+            return res.status(401).json({ error: 'Invalid token' });
         }
 
-        // Mimic the shape that supabase.auth.getUser() used to return
-        req.user = { id: payload.sub, email: payload.email ?? null };
+        req.user = {
+            id: user.id,
+            email: user.email ?? null,
+        };
+
         next();
     } catch (err) {
-        if (err.name === 'TokenExpiredError') {
-            return res.status(401).json({ error: 'Token expired' });
-        }
+        console.error('[authenticate] Authentication failed:', err);
         return res.status(401).json({ error: 'Invalid token' });
     }
 }
