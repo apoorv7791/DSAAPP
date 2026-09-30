@@ -8,10 +8,13 @@ const SearchingVisual = () => {
     const [target, setTarget] = useState<string>('');
 
     const [array, setArray] = useState<string[]>([]);
-    const addElements = () => {
-        const elements = value.split(',').map(item => item.trim());
-        setArray(elements);
-    };
+    const AddElement = () => {
+        const element = value.trim();
+        if (element) {
+            setArray(prev => [...prev, element]);
+        }
+        setValue('')
+    }
 
     const getArray = () => {
         return value.split(',').map(Number);
@@ -36,8 +39,23 @@ const SearchingVisual = () => {
             />
 
             <View style={styles.buttonContainer}>
-
+                <Pressable style={styles.button} onPress={AddElement} >
+                    <Text style={styles.buttonText}> Add Element </Text>
+                </Pressable>
             </View>
+            {/* Boxes*/}
+            <View style={styles.arrayContainer}>
+                {array.map((item, index) => (
+                    <View key={`${item}-${index}`}
+                        style={styles.box}
+                    >
+                        <Text style={styles.boxText}>
+                            {item}
+                        </Text>
+                    </View>
+                ))}
+            </View>
+
         </View>
     );
 }
@@ -150,6 +168,7 @@ const getStyles = (theme: any) => {
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'center',
+            marginBottom: -80
         },
 
         button: {
