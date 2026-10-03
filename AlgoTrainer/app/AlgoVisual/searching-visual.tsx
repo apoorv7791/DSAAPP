@@ -115,26 +115,26 @@ const getStyles = (theme: any) => {
             justifyContent: 'center',
             marginBottom: 30,
         },
+	box: {
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    margin: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
 
-        box: {
-            width: 50,
-            height: 50,
-            borderRadius: 10,
-            margin: 6,
-            justifyContent: 'center',
-            alignItems: 'center',
+    backgroundColor: theme.primary,
 
-            elevation: 4,
+    elevation: 4,
 
-            shadowColor: '#000',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-        },
-
+    shadowColor: '#000',
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+},       
         boxText: {
             color: 'white',
             fontWeight: 'bold',
