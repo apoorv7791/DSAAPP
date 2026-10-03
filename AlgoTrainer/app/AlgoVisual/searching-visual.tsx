@@ -6,7 +6,7 @@ const SearchingVisual = () => {
     const styles = getStyles(theme);
     const [value, setValue] = useState<string>('');
     const [target, setTarget] = useState<string>('');
-
+    const [isSearching, setIsSearching] = useState<boolean>(false);
     const [array, setArray] = useState<string[]>([]);
     const AddElement = () => {
         const element = value.trim();
@@ -16,46 +16,45 @@ const SearchingVisual = () => {
         setValue('')
     }
 
-    const getArray = () => {
-        return value.split(',').map(Number);
-    };
+    const LinearSearch = async () => {
+        
+    }
     return (
         <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Array elements:"
-                placeholderTextColor={theme.textSecondary}
-                keyboardType={'numeric'}
-                value={value}
-                onChangeText={setValue}
-            />
-            <TextInput
-                style={styles.inputRow}
-                placeholder="Enter Target Value:"
-                placeholderTextColor={theme.textSecondary}
-                keyboardType={'numeric'}
-                value={target}
-                onChangeText={setTarget}
-            />
+           <View style={styles.gridContainer}>
 
-            <View style={styles.buttonContainer}>
-                <Pressable style={styles.button} onPress={AddElement} >
-                    <Text style={styles.buttonText}> Add Element </Text>
-                </Pressable>
-            </View>
-            {/* Boxes*/}
-            <View style={styles.arrayContainer}>
-                {array.map((item, index) => (
-                    <View key={`${item}-${index}`}
-                        style={styles.box}
-                    >
-                        <Text style={styles.boxText}>
-                            {item}
-                        </Text>
-                    </View>
-                ))}
-            </View>
+    <TextInput
+        style={styles.input}
+        placeholder="Enter Array elements:"
+        placeholderTextColor={theme.textSecondary}
+        keyboardType="numeric"
+        value={value}
+        onChangeText={setValue}
+    />
 
+    <TextInput
+        style={styles.inputRow}
+        placeholder="Enter Target Value:"
+        placeholderTextColor={theme.textSecondary}
+        keyboardType="numeric"
+        value={target}
+        onChangeText={setTarget}
+    />
+
+    <Pressable style={styles.button} onPress={AddElement}>
+        <Text style={styles.buttonText}>Add Element</Text>
+    </Pressable>
+
+</View>
+<View style={styles.arrayContainer}>
+    {array.map((item, index) => (
+        <View key={`${item}-${index}`} style={styles.box}>
+            <Text style={styles.boxText}>
+                {item}
+            </Text>
+        </View>
+    ))}
+</View>
         </View>
     );
 }
@@ -74,19 +73,18 @@ const getStyles = (theme: any) => {
             marginBottom: 8,
             color: theme.text,
         },
-        input: {
-            width: 180,
-            borderWidth: 1,
-            borderColor: theme.border,
-            backgroundColor: theme.card,
-            padding: 10,
-            borderRadius: 10,
-            color: theme.text,
-            alignSelf: 'flex-start',
-            marginTop: -580,
-            marginLeft: -4,
-            marginBottom: 10,
-        },
+            input: {
+        width: 180,
+        borderWidth: 1,
+        borderColor: theme.border,
+        backgroundColor: theme.card,
+        padding: 10,
+        borderRadius: 10,
+        color: theme.text,
+        alignSelf: 'flex-start',
+        marginLeft: -4,
+        marginBottom: 10,
+    },
         inputRow: {
             width: 180,
             borderWidth: 1,
