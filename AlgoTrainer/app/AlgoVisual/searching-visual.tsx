@@ -16,8 +16,13 @@ const SearchingVisual = () => {
         setValue('')
     }
 
-    const LinearSearch = async () => {
-        
+    const LinearSearch = async (nums: number[], target: number) => {
+        for(let i = 0; i < nums.length; i++){
+            if(nums[i] === target){
+                return i;
+            }
+        }
+        return -1;
     }
     return (
         <View style={styles.container}>
@@ -43,6 +48,9 @@ const SearchingVisual = () => {
 
     <Pressable style={styles.button} onPress={AddElement}>
         <Text style={styles.buttonText}>Add Element</Text>
+    </Pressable>
+    <Pressable style={styles.button} onPress={() => LinearSearch(array.map(Number), Number(target))}>
+        <Text style={styles.buttonText}>Search Element</Text>
     </Pressable>
 
 </View>
