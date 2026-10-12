@@ -8,6 +8,8 @@ const SearchingVisual = () => {
     const [target, setTarget] = useState<string>('');
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [array, setArray] = useState<string[]>([]);
+    const [message, setMessage] = useState<string>('');
+    const [result, setResult] = useState<number | null>(null);
     const AddElement = () => {
         const element = value.trim();
         if (element) {
@@ -17,12 +19,23 @@ const SearchingVisual = () => {
     }
 
     const LinearSearch = async (nums: number[], target: number) => {
+        setIsSearching(true);
+        setMessage('');
+        setResult(null);
         for(let i = 0; i < nums.length; i++){
             if(nums[i] === target){
+                setResult(i);
+                setMessage(`Element found at index ${i}`);  
+                setIsSearching(false);
                 return i;
             }
         }
+        setMessage('Element not found');
+        setResult(null);
         return -1;
+    }
+    const BinarySearch = async (nums: number[], target: number) => {
+        setIsSearching(true);
     }
     return (
         <View style={styles.container}>
@@ -50,8 +63,16 @@ const SearchingVisual = () => {
         <Text style={styles.buttonText}>Add Element</Text>
     </Pressable>
     <Pressable style={styles.button} onPress={() => LinearSearch(array.map(Number), Number(target))}>
-        <Text style={styles.buttonText}>Search Element</Text>
+        {isSearching ? (
+            <Text style={styles.buttonText}>Searching...</Text>
+        ) : (
+            <Text style={styles.buttonText}>Linear Search</Text>
+        )}
     </Pressable>
+    <View>
+         {message ? <Text style={{ color: theme.textSecondary, marginTop: 8 }}>{message}</Text> : null}
+         {result}
+    </View>
 
 </View>
 <View style={styles.arrayContainer}>
