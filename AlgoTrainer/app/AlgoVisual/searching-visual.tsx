@@ -17,6 +17,10 @@ const SearchingVisual = () => {
         }
         setValue('')
     }
+    const SortArray = () => {
+    const sortedArray = [...array].map(Number).sort((a, b) => a - b);
+    setArray(sortedArray.map(String));
+};
 
     const LinearSearch = async (nums: number[], target: number) => {
         setIsSearching(true);
@@ -36,6 +40,27 @@ const SearchingVisual = () => {
     }
     const BinarySearch = async (nums: number[], target: number) => {
         setIsSearching(true);
+        setMessage('');
+        setResult(null);
+        let left = 0;
+        let right = nums.length - 1;
+        while (left <= right) {
+            let mid = Math.floor((left + right) / 2);
+            if (nums[mid] == target) {
+                setResult(mid);
+                setIsSearching(true);
+                setMessage(`Element found at index ${mid}`);
+                return mid;
+            } else if (nums[mid] > target ){
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+            setIsSearching(false);
+        }
+        setMessage("Element not found: ");
+        setResult(null);
+        return -1;
     }
     return (
         <View style={styles.container}>
@@ -59,7 +84,8 @@ const SearchingVisual = () => {
         onChangeText={setTarget}
     />
 
-    <Pressable style={styles.button} onPress={AddElement}>
+    <View style={styles.buttonGrid}>
+        <Pressable style={styles.button} onPress={AddElement}>
         <Text style={styles.buttonText}>Add Element</Text>
     </Pressable>
     <Pressable style={styles.button} onPress={() => LinearSearch(array.map(Number), Number(target))}>
@@ -69,9 +95,25 @@ const SearchingVisual = () => {
             <Text style={styles.buttonText}>Linear Search</Text>
         )}
     </Pressable>
+    <Pressable style={styles.button} onPress={() => BinarySearch(array.map(Number), Number(target))}>
+         {isSearching ? (
+            <Text style={styles.buttonText}>Searching...</Text>
+        ) : (
+            <Text style={styles.buttonText}>Binary Search</Text>
+        )}
+    </Pressable>
     <View>
-         {message ? <Text style={{ color: theme.textSecondary, marginTop: 8 }}>{message}</Text> : null}
-         {result}
+        {message ? (
+        <Text style={{ color: theme.textSecondary, marginTop: 8 }}>
+            {message}
+        </Text>
+    ) : null}
+    {result !== null ? (
+         <Text style={{ color: theme.text }}>
+           
+        </Text>
+    ) : null }
+    </View>
     </View>
 
 </View>
@@ -190,6 +232,15 @@ const getStyles = (theme: any) => {
             fontSize: 13,
             fontWeight: '500',
         },
+
+buttonGrid: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
+},
 
         buttonContainer: {
             flexDirection: 'row',
