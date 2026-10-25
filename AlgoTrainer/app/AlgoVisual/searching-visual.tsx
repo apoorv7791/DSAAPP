@@ -18,18 +18,18 @@ const SearchingVisual = () => {
         setValue('')
     }
     const SortArray = () => {
-    const sortedArray = [...array].map(Number).sort((a, b) => a - b);
-    setArray(sortedArray.map(String));
-};
+        const sortedArray = [...array].map(Number).sort((a, b) => a - b);
+        setArray(sortedArray.map(String));
+    };
 
     const LinearSearch = async (nums: number[], target: number) => {
         setIsSearching(true);
         setMessage('');
         setResult(null);
-        for(let i = 0; i < nums.length; i++){
-            if(nums[i] === target){
+        for (let i = 0; i < nums.length; i++) {
+            if (nums[i] === target) {
                 setResult(i);
-                setMessage(`Element found at index ${i}`);  
+                setMessage(`Element found at index ${i}`);
                 setIsSearching(false);
                 return i;
             }
@@ -51,7 +51,7 @@ const SearchingVisual = () => {
                 setIsSearching(true);
                 setMessage(`Element found at index ${mid}`);
                 return mid;
-            } else if (nums[mid] > target ){
+            } else if (nums[mid] > target) {
                 right = mid - 1;
             } else {
                 left = mid + 1;
@@ -64,68 +64,71 @@ const SearchingVisual = () => {
     }
     return (
         <View style={styles.container}>
-           <View style={styles.gridContainer}>
+            <View style={styles.gridContainer}>
 
-    <TextInput
-        style={styles.input}
-        placeholder="Enter Array elements:"
-        placeholderTextColor={theme.textSecondary}
-        keyboardType="numeric"
-        value={value}
-        onChangeText={setValue}
-    />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Array elements:"
+                    placeholderTextColor={theme.textSecondary}
+                    keyboardType="numeric"
+                    value={value}
+                    onChangeText={setValue}
+                />
 
-    <TextInput
-        style={styles.inputRow}
-        placeholder="Enter Target Value:"
-        placeholderTextColor={theme.textSecondary}
-        keyboardType="numeric"
-        value={target}
-        onChangeText={setTarget}
-    />
+                <TextInput
+                    style={styles.inputRow}
+                    placeholder="Enter Target Value:"
+                    placeholderTextColor={theme.textSecondary}
+                    keyboardType="numeric"
+                    value={target}
+                    onChangeText={setTarget}
+                />
 
-    <View style={styles.buttonGrid}>
-        <Pressable style={styles.button} onPress={AddElement}>
-        <Text style={styles.buttonText}>Add Element</Text>
-    </Pressable>
-    <Pressable style={styles.button} onPress={() => LinearSearch(array.map(Number), Number(target))}>
-        {isSearching ? (
-            <Text style={styles.buttonText}>Searching...</Text>
-        ) : (
-            <Text style={styles.buttonText}>Linear Search</Text>
-        )}
-    </Pressable>
-    <Pressable style={styles.button} onPress={() => BinarySearch(array.map(Number), Number(target))}>
-         {isSearching ? (
-            <Text style={styles.buttonText}>Searching...</Text>
-        ) : (
-            <Text style={styles.buttonText}>Binary Search</Text>
-        )}
-    </Pressable>
-    <View>
-        {message ? (
-        <Text style={{ color: theme.textSecondary, marginTop: 8 }}>
-            {message}
-        </Text>
-    ) : null}
-    {result !== null ? (
-         <Text style={{ color: theme.text }}>
-           
-        </Text>
-    ) : null }
-    </View>
-    </View>
+                <View style={styles.buttonGrid}>
+                    <Pressable style={styles.button} onPress={AddElement}>
+                        <Text style={styles.buttonText}>Add Element</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={() => LinearSearch(array.map(Number), Number(target))}>
+                        {isSearching ? (
+                            <Text style={styles.buttonText}>Searching...</Text>
+                        ) : (
+                            <Text style={styles.buttonText}>Linear Search</Text>
+                        )}
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={() => BinarySearch(array.map(Number), Number(target))}>
+                        {isSearching ? (
+                            <Text style={styles.buttonText}>Searching...</Text>
+                        ) : (
+                            <Text style={styles.buttonText}>Binary Search</Text>
+                        )}
+                    </Pressable>
+                    <Pressable onPress={() => SortArray()}>
+                        <Text>Sort Array</Text>
+                    </Pressable>
+                    <View>
+                        {message ? (
+                            <Text style={{ color: theme.textSecondary, marginTop: 8 }}>
+                                {message}
+                            </Text>
+                        ) : null}
+                        {result !== null ? (
+                            <Text style={{ color: theme.text }}>
 
-</View>
-<View style={styles.arrayContainer}>
-    {array.map((item, index) => (
-        <View key={`${item}-${index}`} style={styles.box}>
-            <Text style={styles.boxText}>
-                {item}
-            </Text>
-        </View>
-    ))}
-</View>
+                            </Text>
+                        ) : null}
+                    </View>
+                </View>
+
+            </View>
+            <View style={styles.arrayContainer}>
+                {array.map((item, index) => (
+                    <View key={`${item}-${index}`} style={styles.box}>
+                        <Text style={styles.boxText}>
+                            {item}
+                        </Text>
+                    </View>
+                ))}
+            </View>
         </View>
     );
 }
@@ -144,18 +147,18 @@ const getStyles = (theme: any) => {
             marginBottom: 8,
             color: theme.text,
         },
-            input: {
-        width: 180,
-        borderWidth: 1,
-        borderColor: theme.border,
-        backgroundColor: theme.card,
-        padding: 10,
-        borderRadius: 10,
-        color: theme.text,
-        alignSelf: 'flex-start',
-        marginLeft: -4,
-        marginBottom: 10,
-    },
+        input: {
+            width: 180,
+            borderWidth: 1,
+            borderColor: theme.border,
+            backgroundColor: theme.card,
+            padding: 10,
+            borderRadius: 10,
+            color: theme.text,
+            alignSelf: 'flex-start',
+            marginLeft: -4,
+            marginBottom: 10,
+        },
         inputRow: {
             width: 180,
             borderWidth: 1,
@@ -184,26 +187,26 @@ const getStyles = (theme: any) => {
             justifyContent: 'center',
             marginBottom: 30,
         },
-	box: {
-    width: 50,
-    height: 50,
-    borderRadius: 10,
-    margin: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
+        box: {
+            width: 50,
+            height: 50,
+            borderRadius: 10,
+            margin: 6,
+            justifyContent: 'center',
+            alignItems: 'center',
 
-    backgroundColor: theme.primary,
+            backgroundColor: theme.primary,
 
-    elevation: 4,
+            elevation: 4,
 
-    shadowColor: '#000',
-    shadowOffset: {
-        width: 0,
-        height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-},       
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+        },
         boxText: {
             color: 'white',
             fontWeight: 'bold',
@@ -233,14 +236,14 @@ const getStyles = (theme: any) => {
             fontWeight: '500',
         },
 
-buttonGrid: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-},
+        buttonGrid: {
+            width: '100%',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+        },
 
         buttonContainer: {
             flexDirection: 'row',
