@@ -10,6 +10,7 @@ const SearchingVisual = () => {
     const [array, setArray] = useState<string[]>([]);
     const [message, setMessage] = useState<string>('');
     const [result, setResult] = useState<number | null>(null);
+    const [paused, setIsPaused] = useState<boolean>(false);
     const AddElement = () => {
         const element = value.trim();
         if (element) {
@@ -36,6 +37,7 @@ const SearchingVisual = () => {
         }
         setMessage('Element not found');
         setResult(null);
+        setIsSearching(false);
         return -1;
     }
     const BinarySearch = async (nums: number[], target: number) => {
@@ -102,8 +104,8 @@ const SearchingVisual = () => {
                             <Text style={styles.buttonText}>Binary Search</Text>
                         )}
                     </Pressable>
-                    <Pressable onPress={() => SortArray()}>
-                        <Text>Sort Array</Text>
+                    <Pressable style={styles.button} onPress={() => SortArray()}>
+                        <Text style={styles.buttonText}>Sort Array</Text>
                     </Pressable>
                     <View>
                         {message ? (
@@ -127,6 +129,7 @@ const SearchingVisual = () => {
                             {item}
                         </Text>
                     </View>
+
                 ))}
             </View>
         </View>
