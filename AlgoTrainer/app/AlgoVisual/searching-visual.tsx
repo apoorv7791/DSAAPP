@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { StyleSheet, View, TextInput, Text, Pressable } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
 const SearchingVisual = () => {
@@ -11,6 +11,23 @@ const SearchingVisual = () => {
     const [message, setMessage] = useState<string>('');
     const [result, setResult] = useState<number | null>(null);
     const [paused, setIsPaused] = useState<boolean>(false);
+    const [currentIndex, setCurrentIndex] = useState<number>(-1);
+    const [leftIndex, setIsLeftIndex] = useState<number>(0);
+    const [rightIndex, setIsRightIndex] = useState<number>(-1);
+    const isPaused = useRef(false);
+    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+    const togglePause = () => {
+        setIsPaused(prev => {
+            isPaused.current = !prev;
+            return prev;
+        })
+    }
+    const waitIfpaused = async () => {
+        while (isPaused.current) {
+            await delay(100);
+        }
+    };
     const AddElement = () => {
         const element = value.trim();
         if (element) {
@@ -22,12 +39,19 @@ const SearchingVisual = () => {
         const sortedArray = [...array].map(Number).sort((a, b) => a - b);
         setArray(sortedArray.map(String));
     };
+    const Clear = () => {
+        setValue('');
+    }
 
     const LinearSearch = async (nums: number[], target: number) => {
         setIsSearching(true);
         setMessage('');
         setResult(null);
         for (let i = 0; i < nums.length; i++) {
+            await waitIfpaused();
+            setCurrentIndex(i);
+            await delay(800);
+
             if (nums[i] === target) {
                 setResult(i);
                 setMessage(`Element found at index ${i}`);
@@ -49,6 +73,7 @@ const SearchingVisual = () => {
         while (left <= right) {
             let mid = Math.floor((left + right) / 2);
             if (nums[mid] == target) {
+                await waitIfpaused();
                 setResult(mid);
                 setIsSearching(true);
                 setMessage(`Element found at index ${mid}`);
@@ -119,12 +144,22 @@ const SearchingVisual = () => {
                             </Text>
                         ) : null}
                     </View>
+                    <Pressable style={styles.button} onPress={() => togglePause} disabled={!isSearching}>
+                        <Text style={styles.buttonText}>
+                            {paused ? 'Resume' : 'Pause'}
+                        </Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={Clear}>
+                        <Text style={styles.buttonText}>
+                            Clear
+                        </Text>
+                    </Pressable>
                 </View>
 
             </View>
             <View style={styles.arrayContainer}>
                 {array.map((item, index) => (
-                    <View key={`${item}-${index}`} style={styles.box}>
+                    <View key={`${item}-${index}`} style={[styles.box, index === currentIndex && styles.activeBox]}>
                         <Text style={styles.boxText}>
                             {item}
                         </Text>
@@ -140,7 +175,7 @@ const getStyles = (theme: any) => {
         container: {
             flex: 1,
             padding: 20,
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             backgroundColor: theme.background,
         },
@@ -160,6 +195,7 @@ const getStyles = (theme: any) => {
             color: theme.text,
             alignSelf: 'flex-start',
             marginLeft: -4,
+            marginTop: -8,
             marginBottom: 10,
         },
         inputRow: {
@@ -172,6 +208,7 @@ const getStyles = (theme: any) => {
             color: theme.text,
             alignSelf: 'flex-start',
             marginBottom: 10,
+            marginTop: -4,
         },
         gridContainer: {
             width: '100%',
@@ -209,6 +246,9 @@ const getStyles = (theme: any) => {
             },
             shadowOpacity: 0.2,
             shadowRadius: 3,
+        },
+        activeBox: {
+            backgroundColor: theme.textSecondary,
         },
         boxText: {
             color: 'white',
